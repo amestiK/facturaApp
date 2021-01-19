@@ -38,21 +38,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.deepPurple[500],
           title: Center(child: Text('Adminsitración factura')),
         ),
         body: Column(
           children: [
             Expanded(
                 child: Container(
+              color: Colors.deepPurple[500],
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
                       child: Center(
                         child: TextFormField(
                           controller: rutt,
@@ -60,15 +62,37 @@ class _HomePageState extends State<HomePage> {
                           // validator: (value) =>
                           //     value.isEmpty ? "Ingrese un Rut" : null,
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30))),
+                              prefixText: 'Rut : ',
+                              labelStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              prefixIcon: Icon(
+                                Icons.domain,
+                                color: Colors.white,
+                              ),
+                              prefixStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                               labelText: 'Ej: 70657324-7'),
                         ),
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(200.0)),
+                            color: Colors.deepPurple[700],
+                            textColor: Colors.white,
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 setState(() {
@@ -79,8 +103,13 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: Text('Buscar')),
                         RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(200.0)),
+                          color: Colors.deepPurple[700],
+                          textColor: Colors.white,
                           onPressed: () {
                             setState(() {
+                              _visDataFact = false;
                               _limpiarForm();
                             });
                           },
@@ -93,31 +122,16 @@ class _HomePageState extends State<HomePage> {
               ),
             )),
             Expanded(
-                flex: 2,
+                flex: 4,
                 child: Visibility(
                   visible: _visDataFact,
-                  child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: _crearListado(rut),
                   ),
                 ))
           ],
         ));
-  }
-
-  void _limpiarForm() {
-    info.rut = '';
-    info.razonSocial = '';
-    info.email = '';
-    info.telefono = '';
-    info.direccion = '';
-    info.comuna = '';
-    giro = '';
-    actEconomica = '';
-    codActEco = '';
-    codSiiSuc = '';
-    comuna = '';
-    dir = '';
-    tel = '';
   }
 
   Widget _crearListado(String ruttt) {
@@ -153,81 +167,296 @@ class _HomePageState extends State<HomePage> {
               itemCount: 1,
               itemBuilder: (context, i) => Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 150, 8),
-                              child: Text('${info.rut}',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.italic)),
-                            ),
-                          ),
-                          Container(
-                            color: Colors.red,
-                            child: Text('${info.razonSocial}',
-                                style: TextStyle(
-                                    fontSize: 15, fontStyle: FontStyle.italic)),
-                          ),
-                        ],
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 8, 0, 20),
+                        child: Text(
+                          'Información de la factura',
+                          style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic),
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 120, 8),
-                            child: Text('${info.email}',
-                                style: TextStyle(
-                                    fontSize: 15, fontStyle: FontStyle.italic)),
-                          ),
-                          Text('${info.telefono}',
-                              style: TextStyle(
-                                  fontSize: 15, fontStyle: FontStyle.italic)),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 120, 8),
-                            child: Text('${info.direccion}',
-                                style: TextStyle(
-                                    fontSize: 15, fontStyle: FontStyle.italic)),
-                          ),
-                          Text('${info.comuna}',
-                              style: TextStyle(
-                                  fontSize: 15, fontStyle: FontStyle.italic)),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Actividad',
-                              style: TextStyle(
-                                fontSize: 20,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width - 20,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 50, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.rut}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 0, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.razonSocial}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              textAlign: TextAlign.left,
-                            ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 50, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.email}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 0, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.telefono}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 50, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.direccion}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 0, 10),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2.5,
+                                        child: Text('${info.comuna}',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                35,
+                                        child: Text('$giro',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                35,
+                                        child: Text('$actEconomica',
+                                            style: TextStyle(
+                                                color: Colors.deepPurple,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text(
+                                          'Actividad economica: $codActEco',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                child: Text(
+                                  'Sucursal',
+                                  style: TextStyle(
+                                      color: Colors.deepPurple,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text('Sucursal: $codSiiSuc',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text('Comuna: $comuna',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text('Dirección: $dir',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text('Ciudad: $ciudad',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          35,
+                                      child: Text('Teléfono: $tel',
+                                          style: TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('$giro',
-                                style: TextStyle(
-                                    fontSize: 15, fontStyle: FontStyle.italic)),
-                          ),
-                        ],
+                        ),
                       ),
-                      Text('$actEconomica'),
-                      Text('$codActEco'),
-                      Text('$codSiiSuc'),
-                      Text('$comuna'),
-                      Text('$dir'),
-                      Text('$tel'),
                     ],
                   ));
         } else {
@@ -236,5 +465,21 @@ class _HomePageState extends State<HomePage> {
         }
       },
     );
+  }
+
+  void _limpiarForm() {
+    info.rut = '';
+    info.razonSocial = '';
+    info.email = '';
+    info.telefono = '';
+    info.direccion = '';
+    info.comuna = '';
+    giro = '';
+    actEconomica = '';
+    codActEco = '';
+    codSiiSuc = '';
+    comuna = '';
+    dir = '';
+    tel = '';
   }
 }
