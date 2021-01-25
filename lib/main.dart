@@ -1,15 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:factura/bloc/provider.dart';
+import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
+import 'package:flutter/material.dart';
+import 'package:factura/pages/organization.dart';
+import 'package:factura/pages/receptor.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: 'HomePage',
-      routes: {'HomePage': (BuildContext context) => HomePage()},
+    return Provider(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: 'LoginPage',
+        routes: {
+          'LoginPage': (BuildContext context) => LoginPage(),
+          'HomePage': (BuildContext context) => Home(),
+          'ReceptorPage': (BuildContext context) => ReceptorPage(),
+          'OrganizationPage': (BuildContext context) => OrganizationPage()
+        },
+      ),
     );
   }
 }

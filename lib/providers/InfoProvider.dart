@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 // import 'dart:io';
 import 'package:factura/model/InfoModel.dart';
-import 'package:http/http.dart' as http;
 
 class InfoProvider {
   final _url = 'https://dev-api.haulmer.com';

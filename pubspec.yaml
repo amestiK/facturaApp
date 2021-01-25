@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   http:
   dart_rut_validator: ^1.1.0
+  intl: ^0.16.1
+  rxdart: ^0.25.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
