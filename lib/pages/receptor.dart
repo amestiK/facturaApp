@@ -1,3 +1,4 @@
+import 'package:factura/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/model/InfoModel.dart';
 import 'package:dart_rut_validator/dart_rut_validator.dart';
@@ -42,6 +43,19 @@ class _ReceptorPageState extends State<ReceptorPage> {
         appBar: AppBar(
           backgroundColor: Colors.deepPurple[500],
           title: Center(child: Text('Receptor')),
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context) {
+                return Constants.choices.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            )
+          ],
         ),
         body: Column(
           children: [
@@ -54,9 +68,11 @@ class _ReceptorPageState extends State<ReceptorPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
+                      padding: EdgeInsets.fromLTRB(20, 16, 20, 10),
                       child: Center(
                         child: TextFormField(
+                          cursorColor: Colors.white,
+                          style: TextStyle(color: Colors.white),
                           controller: rutt,
                           validator: RUTValidator().validator,
                           // validator: (value) =>
@@ -122,7 +138,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
               ),
             )),
             Expanded(
-                flex: 4,
+                flex: 3,
                 child: Visibility(
                   visible: _visDataFact,
                   child: Padding(
@@ -183,280 +199,298 @@ class _ReceptorPageState extends State<ReceptorPage> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width - 20,
-                        child: Container(
-                          child: Column(
-                            children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 50, 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: Text('${info.rut}',
-                                            style: TextStyle(
-                                                color: Colors.deepPurple,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            color: Colors.deepPurple,
+                            child: Column(
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 50, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text('${info.rut}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 0, 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: Text('${info.razonSocial}',
-                                            style: TextStyle(
-                                                color: Colors.deepPurple,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic)),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 10, 0, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text('${info.razonSocial}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 50, 10),
-                                      child: Container(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 50, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text(
+                                              '${info.email == null ? 'No tiene email' : info.email}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text('${info.telefono}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 50, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text('${info.direccion}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.5,
+                                          child: Text('${info.comuna}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              35,
+                                          child: Text('$giro',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              35,
+                                          child: Text('$actEconomica',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontStyle: FontStyle.italic)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
+                                            MediaQuery.of(context).size.width -
+                                                35,
                                         child: Text(
-                                            '${info.email == null ? 'No tiene email' : info.email}',
+                                            'Actividad economica: $codActEco',
                                             style: TextStyle(
-                                                color: Colors.deepPurple,
+                                                color: Colors.white,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                                 fontStyle: FontStyle.italic)),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 0, 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: Text('${info.telefono}',
-                                            style: TextStyle(
-                                                color: Colors.deepPurple,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic)),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 50, 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: Text('${info.direccion}',
-                                            style: TextStyle(
-                                                color: Colors.deepPurple,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic)),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 0, 10),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2.5,
-                                        child: Text('${info.comuna}',
-                                            style: TextStyle(
-                                                color: Colors.deepPurple,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic)),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(
+                                    'Sucursal',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic),
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('$giro',
+                                        child: Text('Sucursal: $codSiiSuc',
                                             style: TextStyle(
-                                                color: Colors.deepPurple,
+                                                color: Colors.white,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                                 fontStyle: FontStyle.italic)),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('$actEconomica',
+                                        child: Text('Comuna: $comuna',
                                             style: TextStyle(
-                                                color: Colors.deepPurple,
+                                                color: Colors.white,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
                                                 fontStyle: FontStyle.italic)),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text(
-                                          'Actividad economica: $codActEco',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                35,
+                                        child: Text('Dirección: $dir',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                child: Text(
-                                  'Sucursal',
-                                  style: TextStyle(
-                                      color: Colors.deepPurple,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                35,
+                                        child: Text('Ciudad: $ciudad',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text('Sucursal: $codSiiSuc',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                35,
+                                        child: Text('Teléfono: $tel',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text('Comuna: $comuna',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text('Dirección: $dir',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text('Ciudad: $ciudad',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          35,
-                                      child: Text('Teléfono: $tel',
-                                          style: TextStyle(
-                                              color: Colors.deepPurple,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -468,6 +502,16 @@ class _ReceptorPageState extends State<ReceptorPage> {
         }
       },
     );
+  }
+
+  void choiceAction(String choice) {
+    if (choice == Constants.Factura) {
+      Navigator.pushNamed(context, 'FacturaPage');
+    } else if (choice == Constants.FacturaExenta) {
+      Navigator.pushNamed(context, 'FacExePage');
+    } else if (choice == Constants.Boleta) {
+      Navigator.pushNamed(context, 'BoletaPage');
+    }
   }
 
   void _limpiarForm() {

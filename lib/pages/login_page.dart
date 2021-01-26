@@ -6,12 +6,13 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Stack(
-      children: <Widget>[
-        _crearFondo(context),
-        _loginForm(context),
-      ],
-    ));
+          children: <Widget>[
+            _crearFondo(context),
+            _loginForm(context),
+          ],
+        ));
   }
 
   Widget _loginForm(BuildContext context) {
@@ -101,10 +102,6 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _crearBoton(LoginBloc bloc) {
-    // formValidStream
-    // snapshot.hasData
-    //  true ? algo si true : algo si false
-
     return StreamBuilder(
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

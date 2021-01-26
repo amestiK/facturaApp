@@ -29,11 +29,11 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
-            title: new Text('Inicio'),
+            label: 'Inicio',
           ),
           BottomNavigationBarItem(
+            label: 'Receptor',
             icon: new Icon(Icons.location_city),
-            title: new Text('Receptor'),
           ),
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.person), title: Text('Profile'))

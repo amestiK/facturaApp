@@ -23,6 +23,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: Center(child: Text('Factura')),
