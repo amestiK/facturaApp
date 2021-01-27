@@ -16,8 +16,6 @@ class OrgProvider {
 
     OrganizationModel infoOrg = new OrganizationModel.fromJson(decodedData);
 
-    print(infoOrg);
-
     return infoOrg;
   }
 }
