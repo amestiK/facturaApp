@@ -1,4 +1,5 @@
 import 'package:factura/Constants.dart';
+import 'package:factura/pages/factura_page.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/model/InfoModel.dart';
 import 'package:dart_rut_validator/dart_rut_validator.dart';
@@ -36,6 +37,12 @@ class _ReceptorPageState extends State<ReceptorPage> {
   //Var para cambiar la visibilidad del widget que muestra la informacion de la factura.
   bool _visDataFact = false;
 
+  //
+  String rutRec;
+  String razSocRec;
+  String giroRec;
+  String dirRec;
+  String comRec;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +186,11 @@ class _ReceptorPageState extends State<ReceptorPage> {
             }
           }
 
-          codSiiSuc = info.rut;
+          rutRec = info.rut;
+          razSocRec = info.razonSocial.replaceAll(" ", "");
+          giroRec = giro.replaceAll(" ", "").substring(0, 36);
+          dirRec = info.direccion.replaceAll(" ", "");
+          comRec = info.comuna;
 
           return ListView.builder(
               itemCount: 1,
@@ -506,7 +517,15 @@ class _ReceptorPageState extends State<ReceptorPage> {
 
   void choiceAction(String choice) {
     if (choice == Constants.Factura) {
-      Navigator.pushNamed(context, 'FacturaPage');
+      // Navigator.pushNamed(context, 'FacturaPage');
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => FacturaPage(
+                rutRec: rutRec,
+                razSocRec: razSocRec,
+                giroRec: giroRec,
+                dirRec: dirRec,
+                comRec: comRec,
+              )));
     } else if (choice == Constants.FacturaExenta) {
       Navigator.pushNamed(context, 'FacExePage');
     } else if (choice == Constants.Boleta) {

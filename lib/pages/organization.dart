@@ -1,4 +1,5 @@
 import 'package:factura/model/organizationModel.dart';
+import 'package:factura/providers/InfoProvider.dart';
 import 'package:factura/providers/organizationProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ class OrganizationPage extends StatefulWidget {
 }
 
 class _OrganizationPageState extends State<OrganizationPage> {
+  final infoProvider = new InfoProvider();
   final orgProvider = new OrgProvider();
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
   String fechaFormateada = '';
@@ -48,9 +50,12 @@ class _OrganizationPageState extends State<OrganizationPage> {
                   ),
                 )
               ],
-            )
+            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
       ),
     );
   }
@@ -74,7 +79,6 @@ class _OrganizationPageState extends State<OrganizationPage> {
               codActEco = act[i].codigoActividadEconomica;
             }
           }
-
           return ListView.builder(
               itemCount: 1,
               itemBuilder: (context, i) => Column(
@@ -200,3 +204,5 @@ class _OrganizationPageState extends State<OrganizationPage> {
     );
   }
 }
+
+void emisor() {}

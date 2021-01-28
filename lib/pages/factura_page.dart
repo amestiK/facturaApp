@@ -1,13 +1,29 @@
+import 'package:factura/providers/InfoProvider.dart';
 import 'package:flutter/material.dart';
 
 class FacturaPage extends StatefulWidget {
-  const FacturaPage({Key key}) : super(key: key);
+  final String rutRec;
+  final String razSocRec;
+  final String giroRec;
+  final String dirRec;
+  final String comRec;
+
+  const FacturaPage(
+      {Key key,
+      this.rutRec,
+      this.razSocRec,
+      this.giroRec,
+      this.dirRec,
+      this.comRec})
+      : super(key: key);
 
   @override
   _FacturaPageState createState() => _FacturaPageState();
 }
 
 class _FacturaPageState extends State<FacturaPage> {
+  InfoProvider info = InfoProvider();
+
   final List<ItemFactura> rows = <ItemFactura>[];
 
   TextEditingController desCon = TextEditingController();
@@ -61,6 +77,9 @@ class _FacturaPageState extends State<FacturaPage> {
             child: Text('Agregar'),
             onPressed: () {
               addItemToList();
+              print(widget.rutRec);
+              print(widget.giroRec);
+              print(rows.toList());
             },
           ),
           Expanded(
@@ -78,24 +97,6 @@ class _FacturaPageState extends State<FacturaPage> {
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
-                          // Container(
-                          //   height: 20,
-                          //   width: MediaQuery.of(context).size.width - 8,
-                          //   margin: EdgeInsets.all(2),
-                          //   color: Colors.blue[100],
-                          //   child: Text(
-                          //     '${rows[index].index}' +
-                          //         ' - ' +
-                          //         '${rows[index].description}' +
-                          //         ' - ' +
-                          //         '${rows[index].quantity}' +
-                          //         ' - ' +
-                          //         '${rows[index].amount}' +
-                          //         ' - ' +
-                          //         '${rows[index].totalAmount = rows[index].quantity * rows[index].amount}',
-                          //     style: TextStyle(fontSize: 15),
-                          //   ),
-                          // ),
                           Container(
                             height: MediaQuery.of(context).size.height,
                             child: DataTable(columnSpacing: 16, columns: [
@@ -200,84 +201,14 @@ class _FacturaPageState extends State<FacturaPage> {
                   );
                 },
               )),
-          // Expanded(
-          //   child: ListView.builder(
-          //       itemCount: 1,
-          //       itemBuilder: (BuildContext context, int index) {
-          //         return Container(
-          //           color: Colors.red,
-          //           child: Column(
-          //             children: [
-          //               Row(
-          //                 children: [
-          //                   Text('Monto neto total'),
-          //                   Text(rows
-          //                       .fold(
-          //                           0,
-          //                           (previousValue, element) =>
-          //                               previousValue + element.totalAmount)
-          //                       .toString())
-          //                 ],
-          //               ),
-          //               Row(
-          //                 children: [
-          //                   Text('IVA'),
-          //                   Text((rows.fold(
-          //                               0,
-          //                               (previousValue, element) =>
-          //                                   previousValue +
-          //                                   element.totalAmount) *
-          //                           0.19)
-          //                       .toString())
-          //                 ],
-          //               ),
-          //             ],
-          //           ),
-          //         );
-          //       }),
-          // )
+          RaisedButton(onPressed: () {
+            info.postInfo(widget.rutRec, widget.razSocRec, widget.giroRec,
+                widget.dirRec, widget.comRec);
+          })
         ],
       ),
     );
   }
-
-  // Widget _totales() {
-  //   for (var i = 0; i < rows.length; i++) {
-  //     mntNeto = mntNeto + rows[i].amount;
-  //     montoIva = mntNeto * 0.19;
-  //     mntTotal = mntNeto = montoIva;
-  //     montoPeriodo = mntTotal;
-  //     vlrPagar = montoPeriodo;
-  //   }
-
-  //   Expanded(
-  //       child: ListView.builder(
-  //     itemCount: rows.length,
-  //     itemBuilder: (BuildContext context, int index) {
-  //       return Column(
-  //         children: [
-  //           Container(
-  //             child: Text('Item - Descripción - Cantidad - Precio - Total'),
-  //           ),
-  //           Container(
-  //             height: 200,
-  //             margin: EdgeInsets.all(2),
-  //             color: Colors.blue[100],
-  //             child: Column(
-  //               children: [
-  //                 Text('Monto Neto: $mntNeto'),
-  //                 Text('Monto iva: $montoIva'),
-  //                 Text('Monto Total: $mntTotal'),
-  //                 Text('Monto Periodo: $montoPeriodo'),
-  //                 Text('Valor a pagar: $vlrPagar'),
-  //               ],
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   ));
-  // }
 }
 
 class ItemFactura {

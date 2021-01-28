@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//No se esta utilizando esta page, pero contiene validaciones y un formato de diseño simple para los textfield.
+//No se esta utilizando esta page aun, pero contiene validaciones y un formato de diseño simple para los textfield.
 
 class FormInputField extends StatelessWidget {
   const FormInputField({
