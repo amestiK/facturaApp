@@ -87,6 +87,7 @@ class _HomePageState extends State<PdfPage> {
     String dir = (await getApplicationDocumentsDirectory()).path;
     final filename = "default.pdf";
     File file = new File('$dir/$filename');
+    debugPrint(file.path);
     document = await PDFDocument.fromFile(file);
 
     setState(() => _isLoading = false);
