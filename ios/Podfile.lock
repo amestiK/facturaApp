@@ -1,0 +1,43 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_plugin_pdf_viewer (0.0.1):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - path_provider (0.0.1):
+    - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_plugin_pdf_viewer (from `.symlinks/plugins/flutter_plugin_pdf_viewer/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+
+SPEC REPOS:
+  trunk:
+    - FMDB
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_plugin_pdf_viewer:
+    :path: ".symlinks/plugins/flutter_plugin_pdf_viewer/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_plugin_pdf_viewer: a551454a63266d37612d96e3821909890058a52e
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0
