@@ -35,7 +35,7 @@ class InfoProvider {
     final url = '$_url/v2/dte/document';
 
     var data = json.encode({
-      "response": ["PDF", "FOLIO"],
+      "response": ["PDF", "FOLIO", "80MM"],
       "dte": {
         "Encabezado": {
           "IdDoc": {
@@ -78,7 +78,7 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fffffdddd',
+          'Idempotency-Key': 'fffffffdddddd',
         },
         body: data);
     if (resp.statusCode == 200) {
