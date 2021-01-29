@@ -54,9 +54,6 @@ class _OrganizationPageState extends State<OrganizationPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-      ),
     );
   }
 
@@ -204,5 +201,3 @@ class _OrganizationPageState extends State<OrganizationPage> {
     );
   }
 }
-
-void emisor() {}

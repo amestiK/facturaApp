@@ -20,8 +20,18 @@ class InfoProvider {
     return info;
   }
 
-  Future<Pdf> postInfo(String rutRec, String razSocRec, String giroRec,
-      String dirRec, String comRec) async {
+  Future<Pdf> postInfo(
+      String rutRec,
+      String razSocRec,
+      String giroRec,
+      String dirRec,
+      String comRec,
+      int totNeto,
+      int totIva,
+      int totBruto,
+      int mntPer,
+      int vlrPag,
+      List<Map<String, dynamic>> lista) async {
     final url = '$_url/v2/dte/document';
 
     var data = json.encode({
@@ -54,29 +64,21 @@ class InfoProvider {
             "CmnaRecep": comRec
           },
           "Totales": {
-            "MntNeto": 2000,
+            "MntNeto": totNeto,
             "TasaIVA": "19",
-            "IVA": 380,
-            "MntTotal": 2380,
-            "MontoPeriodo": 2380,
-            "VlrPagar": 2380
+            "IVA": totIva,
+            "MntTotal": totBruto,
+            "MontoPeriodo": mntPer,
+            "VlrPagar": vlrPag
           }
         },
-        "Detalle": [
-          {
-            "NroLinDet": 1,
-            "NmbItem": "item",
-            "QtyItem": 1,
-            "PrcItem": 2000,
-            "MontoItem": 2000
-          }
-        ]
+        "Detalle": lista
       }
     });
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fccb60fb512d13df50837790d64c4d5d58',
+          'Idempotency-Key': 'fffffdddd',
         },
         body: data);
     if (resp.statusCode == 200) {
