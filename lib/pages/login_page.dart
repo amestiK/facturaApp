@@ -15,6 +15,7 @@ class LoginPage extends StatelessWidget {
         ));
   }
 
+//Widget que crear el formato y diseño del login, tambien incluye los otros widget(_crearEmail, _crearPassword, _crearBoton)
   Widget _loginForm(BuildContext context) {
     final bloc = Provider.of(context);
     final size = MediaQuery.of(context).size;
@@ -60,6 +61,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+//Widget para crear input, poder registrar y guardar el email
   Widget _crearEmail(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.emailStream,
@@ -81,6 +83,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+//Widget para crear input, poder registrar y guardar el pass
   Widget _crearPassword(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.passwordStream,
@@ -101,6 +104,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+//Widget para crear el boton y poder ingresar y guardar los resultados
   Widget _crearBoton(LoginBloc bloc) {
     return StreamBuilder(
       stream: bloc.formValidStream,
@@ -120,6 +124,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+//Metodo que nos permite navegar a la siguiente pestaña al momento de que el sistema acepta las credenciales de login
   _login(LoginBloc bloc, BuildContext context) {
     print('================');
     print('Email: ${bloc.email}');
@@ -129,6 +134,7 @@ class LoginPage extends StatelessWidget {
     Navigator.pushReplacementNamed(context, 'HomePage');
   }
 
+//Widget que crea el diseño del fondo de la app login
   Widget _crearFondo(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
