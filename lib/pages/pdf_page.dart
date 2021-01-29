@@ -39,15 +39,14 @@ class _HomePageState extends State<PdfPage> {
           items: [
             BottomNavigationBarItem(
               icon: new Icon(Icons.web_asset_sharp),
-              title: new Text('PDF'),
+              label: 'PDF',
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.create),
-              title: new Text('Crear PDF'),
+              label: 'Crear PDF',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.picture_as_pdf),
-                title: Text('Mostrar PDF creado'))
+                icon: Icon(Icons.picture_as_pdf), label: 'Mostrar PDF creado')
           ],
         ),
         body: Column(

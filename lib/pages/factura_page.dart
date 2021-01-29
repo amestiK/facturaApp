@@ -24,7 +24,8 @@ class FacturaPage extends StatefulWidget {
 class _FacturaPageState extends State<FacturaPage> {
   InfoProvider info = InfoProvider();
 
-  final List<ItemFactura> rows = <ItemFactura>[];
+  final List<ItemFactura> rows = [];
+  final List<Map<String, dynamic>> llenarDetalle = [];
 
   TextEditingController desCon = TextEditingController();
   TextEditingController quanCon = TextEditingController();
@@ -32,14 +33,18 @@ class _FacturaPageState extends State<FacturaPage> {
   TextEditingController totCon = TextEditingController();
 
   //Producto
-  double montoTotalPro = 0;
+  int montoTotalPro = 0;
+  int quantity = 0;
+  int amount = 0;
+  int sum = 1;
+  //Totales
 
   void addItemToList() {
     setState(() {
       rows.insert(
           0,
-          ItemFactura(rows.length, desCon.text, int.parse(quanCon.text),
-              double.parse(amouCon.text), montoTotalPro));
+          ItemFactura(sum = rows.length + 2, desCon.text,
+              int.parse(quanCon.text), int.parse(amouCon.text), montoTotalPro));
     });
   }
 
@@ -47,39 +52,71 @@ class _FacturaPageState extends State<FacturaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
         title: Center(child: Text('Detalle factura')),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: desCon,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Descripción',
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              controller: desCon,
+              decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                labelText: 'Descripción',
+              ),
             ),
           ),
-          TextField(
-            controller: quanCon,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Cantidad',
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: quanCon,
+              decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                labelText: 'Cantidad',
+              ),
             ),
           ),
-          TextField(
-            controller: amouCon,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Monto',
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              controller: amouCon,
+              decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                labelText: 'Monto',
+              ),
             ),
           ),
           RaisedButton(
+            textColor: Colors.white,
+            color: Colors.deepPurple,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(200.0)),
             child: Text('Agregar'),
             onPressed: () {
+              String desc = desCon.text.toString();
+              int qty = int.parse(quanCon.text.toString());
+              int amou = int.parse(amouCon.text.toString());
+              int mont = qty * amou;
+
+              llenarDetalle.add({
+                "NroLinDet": sum,
+                "NmbItem": desc,
+                "QtyItem": qty,
+                "PrcItem": amou,
+                "MontoItem": mont
+              });
               addItemToList();
-              print(widget.rutRec);
-              print(widget.giroRec);
-              print(rows.toList());
+              desCon.clear();
+              quanCon.clear();
+              amouCon.clear();
             },
           ),
           Expanded(
@@ -87,124 +124,178 @@ class _FacturaPageState extends State<FacturaPage> {
               child: ListView.builder(
                 itemCount: 1,
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        rows.removeAt(index);
-                      });
-                    },
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height,
-                            child: DataTable(columnSpacing: 16, columns: [
-                              DataColumn(
-                                label: Text('N°Item'),
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height,
+                          child: DataTable(columnSpacing: 16, columns: [
+                            DataColumn(
+                              label: Text('N°Item'),
+                            ),
+                            DataColumn(
+                              label: Text('Descripción'),
+                            ),
+                            DataColumn(
+                              label: Text('Cantidad'),
+                            ),
+                            DataColumn(
+                              label: Text('Precio'),
+                            ),
+                            DataColumn(
+                              label: Text('Precio total'),
+                            ),
+                          ], rows: [
+                            ...rows.map(
+                              (element) => DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text(element.index.toString()),
+                                  ),
+                                  DataCell(
+                                    GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            rows.removeAt(index);
+                                            llenarDetalle.removeAt(index);
+                                          });
+                                        },
+                                        child: Text(
+                                            element.description.toString())),
+                                  ),
+                                  DataCell(
+                                    Text(element.quantity.toString()),
+                                  ),
+                                  DataCell(
+                                    Text(element.amount.toString()),
+                                  ),
+                                  DataCell(
+                                    Text((montoTotalPro = element.totalAmount =
+                                            element.quantity * element.amount)
+                                        .toString()),
+                                  ),
+                                ],
                               ),
-                              DataColumn(
-                                label: Text('Descripción'),
-                              ),
-                              DataColumn(
-                                label: Text('Cantidad'),
-                              ),
-                              DataColumn(
-                                label: Text('Precio'),
-                              ),
-                              DataColumn(
-                                label: Text('Precio total'),
-                              ),
-                            ], rows: [
-                              ...rows.map(
-                                (element) => DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Text(element.index.toString()),
-                                    ),
-                                    DataCell(
-                                      Text(element.description.toString()),
-                                    ),
-                                    DataCell(
-                                      Text(element.quantity.toString()),
-                                    ),
-                                    DataCell(
-                                      Text(element.amount.toString()),
-                                    ),
-                                    DataCell(
-                                      Text((montoTotalPro = element
-                                                  .totalAmount =
-                                              element.quantity * element.amount)
-                                          .toString()),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              DataRow(cells: [
-                                DataCell(Text(
-                                  'Total neto',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(
-                                  ///ToDo: Calculate the total price for all items
-                                  Text(rows
-                                      .fold(
-                                          0,
-                                          (prev, el) =>
-                                              prev + el.amount * el.quantity)
-                                      .toString()),
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text(
-                                  'Iva',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(Text((rows.fold(
-                                            0,
-                                            (prev, el) =>
-                                                prev +
-                                                el.amount * el.quantity) *
-                                        0.19)
-                                    .toString())),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text(
-                                  'Total bruto',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(Text('')),
-                                DataCell(
-                                  ///ToDo: Calculate the total price for all items
-                                  Text((rows.fold(
-                                          0,
-                                          (prev, el) =>
-                                              prev +
-                                              (el.totalAmount +
-                                                  (el.totalAmount * 0.19))))
-                                      .toString()),
-                                )
-                              ]),
+                            ),
+                            DataRow(cells: [
+                              DataCell(Text(
+                                'Total neto',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(
+                                ///ToDo: Calculate the total price for all items
+                                Text(rows
+                                    .fold(
+                                        0,
+                                        (prev, el) =>
+                                            prev + el.amount * el.quantity)
+                                    .toString()),
+                              )
                             ]),
-                          )
-                        ],
-                      ),
+                            DataRow(cells: [
+                              DataCell(Text(
+                                'Iva',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(Text((rows.fold(
+                                          0,
+                                          (prev, el) =>
+                                              prev + el.amount * el.quantity) *
+                                      0.19)
+                                  .toString())),
+                            ]),
+                            DataRow(cells: [
+                              DataCell(Text(
+                                'Total bruto',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(Text('')),
+                              DataCell(
+                                ///ToDo: Calculate the total price for all items
+                                Text((rows.fold(
+                                        0,
+                                        (prev, el) =>
+                                            prev +
+                                            (el.totalAmount +
+                                                (el.totalAmount * 0.19))))
+                                    .toString()),
+                              )
+                            ]),
+                          ]),
+                        )
+                      ],
                     ),
                   );
                 },
               )),
-          RaisedButton(onPressed: () {
-            info.postInfo(widget.rutRec, widget.razSocRec, widget.giroRec,
-                widget.dirRec, widget.comRec);
-          })
+          RaisedButton(
+              child: Text('Enviar'),
+              textColor: Colors.white,
+              color: Colors.deepPurple,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(200.0)),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('Confirmación'),
+                          content: Text(
+                              '¿Estás seguro que deseas emitir esta factura?'),
+                          actions: [
+                            FlatButton(
+                                onPressed: () {
+                                  int totAmou = int.parse(rows
+                                      .fold(
+                                          0,
+                                          (prev, el) =>
+                                              prev + el.amount * el.quantity)
+                                      .toString());
+
+                                  double value = (rows.fold(
+                                          0,
+                                          (prev, el) =>
+                                              prev + el.amount * el.quantity) *
+                                      0.19);
+
+                                  int totIva = value.round();
+
+                                  int totBruto = totAmou + totIva;
+
+                                  int mntPeriodo = totBruto;
+
+                                  int vlrPagar = totBruto;
+
+                                  info.postInfo(
+                                      widget.rutRec,
+                                      widget.razSocRec,
+                                      widget.giroRec,
+                                      widget.dirRec,
+                                      widget.comRec,
+                                      totAmou,
+                                      totIva,
+                                      totBruto,
+                                      mntPeriodo,
+                                      vlrPagar,
+                                      llenarDetalle);
+                                },
+                                child: Text('Confirmar')),
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Cancelar'))
+                          ],
+                        ));
+              })
         ],
       ),
     );
@@ -215,8 +306,8 @@ class ItemFactura {
   int index;
   String description;
   int quantity;
-  double amount;
-  double totalAmount;
+  int amount;
+  int totalAmount;
 
   ItemFactura(this.index, this.description, this.quantity, this.amount,
       this.totalAmount);
