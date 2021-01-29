@@ -8,6 +8,7 @@ import 'package:factura/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/pages/organization.dart';
 import 'package:factura/pages/receptor.dart';
+import 'package:factura/pages/pdf_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           'BoletaPage': (BuildContext context) => BoletaPage(),
           'FacExePage': (BuildContext context) => FacExePage(),
           'FacturaPage': (BuildContext context) => FacturaPage(),
+          'PdfPage': (BuildContext context) => PdfPage(),
         },
       ),
     );

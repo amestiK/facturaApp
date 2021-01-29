@@ -530,6 +530,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
       Navigator.pushNamed(context, 'FacExePage');
     } else if (choice == Constants.Boleta) {
       Navigator.pushNamed(context, 'BoletaPage');
+    } else if (choice == Constants.Pdf) {
+      Navigator.pushNamed(context, 'PdfPage');
     }
   }
 
