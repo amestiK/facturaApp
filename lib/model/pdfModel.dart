@@ -1,11 +1,15 @@
+// To parse this JSON data, do
+//
+//     final pdfModel = pdfModelFromJson(jsonString);
+
 import 'dart:convert';
 
-Pdf pdfFromJson(String str) => Pdf.fromJson(json.decode(str));
+PdfModel pdfModelFromJson(String str) => PdfModel.fromJson(json.decode(str));
 
-String pdfToJson(Pdf data) => json.encode(data.toJson());
+String pdfModelToJson(PdfModel data) => json.encode(data.toJson());
 
-class Pdf {
-  Pdf({
+class PdfModel {
+  PdfModel({
     this.token,
     this.folio,
     this.pdf,
@@ -15,7 +19,7 @@ class Pdf {
   int folio;
   String pdf;
 
-  factory Pdf.fromJson(Map<String, dynamic> json) => Pdf(
+  factory PdfModel.fromJson(Map<String, dynamic> json) => PdfModel(
         token: json["TOKEN"],
         folio: json["FOLIO"],
         pdf: json["PDF"],

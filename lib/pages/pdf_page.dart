@@ -10,7 +10,9 @@ import 'package:path_provider/path_provider.dart';
 /// prueba de atualización de archivo
 ///
 class PdfPage extends StatefulWidget {
-  const PdfPage({Key key}) : super(key: key);
+  final String pdfString;
+
+  const PdfPage({Key key, this.pdfString}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -81,16 +83,16 @@ class _HomePageState extends State<PdfPage> {
   @override
   void initState() {
     super.initState();
-    loadDocument();
+    loadDocument(widget.pdfString);
+    // loadDocument();
   }
 
-  loadDocument() async {
+  loadDocument(pdfString) async {
     String dir = (await getApplicationDocumentsDirectory()).path;
     final filename = "default.pdf";
     File file = new File('$dir/$filename');
     debugPrint(file.path);
-    document = await PDFDocument.fromURL(
-        "http://www.africau.edu/images/default/sample.pdf");
+    document = await PDFDocument.fromFile(await writePDF(pdfString));
 
     setState(() => _isLoading = false);
   }
@@ -103,12 +105,12 @@ class _HomePageState extends State<PdfPage> {
           "http://www.africau.edu/images/default/sample.pdf");
     } else if (value == 1) {
       //document = await PDFDocument.fromAsset('assets/sample2.pdf');
-      writePDF(pdfFileExample);
-      await loadDocument();
+      writePDF(widget.pdfString);
+      await loadDocument(widget.pdfString);
     } else {
       //File file  = File('...');
       //document = await PDFDocument.fromFile(file);
-      document = await PDFDocument.fromFile(await writePDF(pdfFileExample));
+      document = await PDFDocument.fromFile(await writePDF(widget.pdfString));
     }
     setState(() => _isLoading = false);
   }

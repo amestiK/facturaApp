@@ -20,7 +20,7 @@ class InfoProvider {
     return info;
   }
 
-  Future<Pdf> postInfo(
+  Future<PdfModel> postInfo(
       String rutRec,
       String razSocRec,
       String giroRec,
@@ -78,15 +78,14 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fffffffdddddd',
+          'Idempotency-Key': 'fffffffddddddddddddddddd',
         },
         body: data);
     if (resp.statusCode == 200) {
       print(resp.body);
       final Map<String, dynamic> decodedData = json.decode(resp.body);
-      Pdf pdf = new Pdf.fromJson(decodedData);
-      print('-----------------------------------------');
-      print(pdf.pdf);
+
+      PdfModel pdf = new PdfModel.fromJson(decodedData);
 
       return pdf;
     } else {

@@ -26,8 +26,8 @@ dependencies:
   http:
   dart_rut_validator: ^1.1.0
   intl: ^0.16.1
-  rxdart: ^0.25.0
-  flutter_plugin_pdf_viewer: any
+  rxdart: ^0.21.0
+  flutter_plugin_pdf_viewer: 1.0.7
   path_provider:
   # dart.io
   io: ^0.3.4
