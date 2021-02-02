@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:factura/pages/receptor.dart';
-import 'package:factura/pages/organization.dart';
+import 'package:factura/pages/receptor_page.dart';
+import 'package:factura/pages/organization_page.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);

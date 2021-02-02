@@ -5,8 +5,8 @@ import 'package:factura/pages/factura_page.dart';
 import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:factura/pages/organization.dart';
-import 'package:factura/pages/receptor.dart';
+import 'package:factura/pages/organization_page.dart';
+import 'package:factura/pages/receptor_page.dart';
 import 'package:factura/pages/pdf_page.dart';
 
 void main() => runApp(MyApp());

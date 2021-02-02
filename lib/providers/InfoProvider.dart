@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:factura/model/boletaModel.dart';
 import 'package:factura/model/pdfModel.dart';
 import 'package:http/http.dart' as http;
 // import 'dart:io';
@@ -18,6 +19,69 @@ class InfoProvider {
     InfoModel info = new InfoModel.fromJson(decodedData);
 
     return info;
+  }
+
+  Future<BoletaModel> postBoleta() async {
+    final url = '$_url/v2/dte/document';
+
+    var data = json.encode({
+      "response": [
+        "XML",
+        "PDF",
+        "TIMBRE",
+        "LOGO",
+        "FOLIO",
+        "RESOLUCION",
+        "80MM"
+      ],
+      "dte": {
+        "Encabezado": {
+          "IdDoc": {
+            "TipoDTE": 39,
+            "Folio": 0,
+            "FchEmis": "2020-11-25",
+            "IndServicio": "3"
+          },
+          "Emisor": {
+            "RUTEmisor": "76795561-8",
+            "RznSocEmisor": "HAULMERSPA",
+            "GiroEmisor":
+                "VENTA AL POR MENOR EN EMPRESAS DE VENTA A DISTANCIA VÍA INTERNET",
+            "CdgSIISucur": "81303347",
+            "DirOrigen": "ARTURO PRAT 527 CURICO",
+            "CmnaOrigen": "Curicó"
+          },
+          "Receptor": {"RUTRecep": "66666666-6"},
+          "Totales": {
+            "MntNeto": 840,
+            "IVA": 160,
+            "MntTotal": 1000,
+            "TotalPeriodo": 1000,
+            "VlrPagar": 1000
+          }
+        },
+        "Detalle": [
+          {
+            "NroLinDet": 1,
+            "NmbItem": "Item1",
+            "QtyItem": 1,
+            "PrcItem": 1000,
+            "MontoItem": 1000
+          }
+        ]
+      }
+    });
+    final resp = await http.post(url, headers: {'apikey': _apikey}, body: data);
+    print(resp.body);
+    if (resp.statusCode == 200) {
+      final Map<String, dynamic> decodedData = json.decode(resp.body);
+
+      BoletaModel bol = new BoletaModel.fromJson(decodedData);
+      print(bol.pdf);
+      return bol;
+    } else {
+      return null;
+    }
   }
 
   Future<PdfModel> postInfo(
@@ -78,7 +142,7 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fffffffddddddddddddddddd',
+          'Idempotency-Key': 'fffffffdddddddddddddddddd',
         },
         body: data);
     if (resp.statusCode == 200) {
