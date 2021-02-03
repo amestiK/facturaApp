@@ -1,3 +1,4 @@
+import 'package:factura/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:factura/pages/receptor.dart';
@@ -15,6 +16,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     OrganizationPage(),
     ReceptorPage(),
+    SettingsPage()
   ];
 
   @override
@@ -33,6 +35,10 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             label: 'Receptor',
+            icon: new Icon(Icons.location_city),
+          ),
+          BottomNavigationBarItem(
+            label: 'Settings',
             icon: new Icon(Icons.location_city),
           ),
           // BottomNavigationBarItem(

@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'package:factura/model/pdfModel.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 // import 'dart:io';
 import 'package:factura/model/InfoModel.dart';
 
 class InfoProvider {
+  final pref = new PreferenciasUsuario();
   final _url = 'https://dev-api.haulmer.com';
-  final _apikey = '928e15a2d14d4a6292345f04960f4bd3';
+  String _apikey = '928e15a2d14d4a6292345f04960f4bd3';
 
   Future<InfoModel> cargarInfo(String rut) async {
     final url = '$_url/v2/dte/taxpayer/$rut';
 
-    final resp = await http.get(url, headers: {'apikey': _apikey});
+    final resp = await http.get(url, headers: {'apikey': '${pref.apiKey}'});
 
     final Map<String, dynamic> decodedData = json.decode(resp.body);
 
@@ -77,7 +79,7 @@ class InfoProvider {
     });
     final resp = await http.post(url,
         headers: {
-          'apikey': _apikey,
+          'apikey': pref.apiKey,
           'Idempotency-Key': 'fffffdddd',
         },
         body: data);

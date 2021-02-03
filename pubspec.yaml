@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   http:
+  shared_preferences: ^0.5.12+4
   dart_rut_validator: ^1.1.0
   intl: ^0.16.1
   rxdart: ^0.25.0
