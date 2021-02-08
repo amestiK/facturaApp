@@ -4,6 +4,7 @@ import 'package:factura/pages/factura_exenta_page.dart';
 import 'package:factura/pages/factura_page.dart';
 import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
+import 'package:factura/pages/his_page.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/pages/organization_page.dart';
 import 'package:factura/pages/receptor_page.dart';
@@ -17,8 +18,9 @@ class MyApp extends StatelessWidget {
     return Provider(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: 'HomePage',
+        initialRoute: 'FacturaPage',
         routes: {
+          'HistoryPage': (BuildContext context) => HisPage(),
           'LoginPage': (BuildContext context) => LoginPage(),
           'HomePage': (BuildContext context) => Home(),
           'ReceptorPage': (BuildContext context) => ReceptorPage(),

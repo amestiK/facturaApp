@@ -186,11 +186,17 @@ class _ReceptorPageState extends State<ReceptorPage> {
             }
           }
 
-          rutRec = info.rut;
-          razSocRec = info.razonSocial.replaceAll(" ", "");
-          giroRec = giro.replaceAll(" ", "").substring(0, 36);
-          dirRec = info.direccion.replaceAll(" ", "");
-          comRec = info.comuna;
+          rutRec = info.rut == null ? info.rut = "" : info.rut = info.rut;
+          razSocRec = info.razonSocial == null
+              ? info.razonSocial = ""
+              : info.razonSocial.replaceAll(" ", "");
+          giroRec = giro == null
+              ? giro = ""
+              : giro.replaceAll(" ", "").substring(0, 36);
+          dirRec = info.direccion == null
+              ? info.direccion = ""
+              : info.direccion.replaceAll(" ", "");
+          comRec = info.comuna == null ? "" : info.comuna.replaceAll(" ", "");
 
           return ListView.builder(
               itemCount: 1,
@@ -530,8 +536,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
       Navigator.pushNamed(context, 'FacExePage');
     } else if (choice == Constants.Boleta) {
       Navigator.pushNamed(context, 'BoletaPage');
-    } else if (choice == Constants.Pdf) {
-      Navigator.pushNamed(context, 'PdfPage');
+    } else if (choice == Constants.HistoryPage) {
+      Navigator.pushNamed(context, 'HistoryPage');
     }
   }
 

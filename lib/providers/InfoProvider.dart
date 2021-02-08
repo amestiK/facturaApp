@@ -21,7 +21,8 @@ class InfoProvider {
     return info;
   }
 
-  Future<BoletaModel> postBoleta() async {
+  Future<BoletaModel> postBoleta(
+      String descripcion, int totNeto, int totIva, int totBruto) async {
     final url = '$_url/v2/dte/document';
 
     var data = json.encode({
@@ -53,20 +54,20 @@ class InfoProvider {
           },
           "Receptor": {"RUTRecep": "66666666-6"},
           "Totales": {
-            "MntNeto": 840,
-            "IVA": 160,
-            "MntTotal": 1000,
-            "TotalPeriodo": 1000,
-            "VlrPagar": 1000
+            "MntNeto": totNeto,
+            "IVA": totIva,
+            "MntTotal": totBruto,
+            "TotalPeriodo": totBruto,
+            "VlrPagar": totBruto
           }
         },
         "Detalle": [
           {
             "NroLinDet": 1,
-            "NmbItem": "Item1",
+            "NmbItem": descripcion,
             "QtyItem": 1,
-            "PrcItem": 1000,
-            "MontoItem": 1000
+            "PrcItem": totBruto,
+            "MontoItem": totBruto
           }
         ]
       }
@@ -142,7 +143,7 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fffffffdddddddddddddddddd',
+          'Idempotency-Key': 'fffffffddddddddddddddddddd',
         },
         body: data);
     if (resp.statusCode == 200) {
@@ -150,6 +151,7 @@ class InfoProvider {
       final Map<String, dynamic> decodedData = json.decode(resp.body);
 
       PdfModel pdf = new PdfModel.fromJson(decodedData);
+      print(pdf.pdf);
 
       return pdf;
     } else {
