@@ -62,7 +62,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
       future: orgProvider.cargarOrg(),
       builder:
           (BuildContext context, AsyncSnapshot<OrganizationModel> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
           final infoOrg = snapshot.data;
 
           act = infoOrg.actividades;
@@ -194,8 +194,12 @@ class _OrganizationPageState extends State<OrganizationPage> {
                       )
                     ],
                   ));
-        } else {
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(
+              child: Text(
+                  'No se encuentran datos del receptor o intentelo luego'));
         }
       },
     );

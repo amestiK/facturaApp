@@ -32,7 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
           children: <Widget>[
             RaisedButton(
               onPressed: () {
-                infoReg.cargarReg();
+                // infoReg.cargarReg();
               },
               child: Text('Cargar'),
             ),

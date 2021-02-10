@@ -1,6 +1,5 @@
 import 'package:factura/bloc/provider.dart';
 import 'package:factura/pages/boleta_page.dart';
-import 'package:factura/pages/factura_exenta_page.dart';
 import 'package:factura/pages/factura_page.dart';
 import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
     return Provider(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: 'FacturaPage',
+        initialRoute: 'HomePage',
         routes: {
           'HistoryPage': (BuildContext context) => HisPage(),
           'LoginPage': (BuildContext context) => LoginPage(),
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
           'ReceptorPage': (BuildContext context) => ReceptorPage(),
           'OrganizationPage': (BuildContext context) => OrganizationPage(),
           'BoletaPage': (BuildContext context) => BoletaPage(),
-          'FacExePage': (BuildContext context) => FacExePage(),
           'FacturaPage': (BuildContext context) => FacturaPage(),
           'PdfPage': (BuildContext context) => PdfPage(),
         },

@@ -142,7 +142,6 @@ class _FacturaPageState extends State<FacturaPage> {
                     "MontoItem": mont
                   });
                   addItemToList();
-                  print(llenarDetalle.toList());
                   desCon.clear();
                   quanCon.clear();
                   amouCon.clear();

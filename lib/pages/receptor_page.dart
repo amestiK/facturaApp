@@ -513,9 +513,13 @@ class _ReceptorPageState extends State<ReceptorPage> {
                       ),
                     ],
                   ));
-        } else {
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           _visDataFact = false;
           return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(
+              child: Text(
+                  'No se encontraron datos del receptor, inténtalo mas tarde'));
         }
       },
     );
@@ -532,8 +536,6 @@ class _ReceptorPageState extends State<ReceptorPage> {
                 dirRec: dirRec,
                 comRec: comRec,
               )));
-    } else if (choice == Constants.FacturaExenta) {
-      Navigator.pushNamed(context, 'FacExePage');
     } else if (choice == Constants.Boleta) {
       Navigator.pushNamed(context, 'BoletaPage');
     } else if (choice == Constants.HistoryPage) {

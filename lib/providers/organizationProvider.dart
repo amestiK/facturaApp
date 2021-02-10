@@ -21,13 +21,13 @@ class OrgProvider {
     return infoOrg;
   }
 
-  Future<RegistryModel> cargarReg() async {
+  Future<RegistryModel> cargarReg(String fechaLte, String fechaGte) async {
     final url = '$_url/v2/dte/document/issued';
 
     var data = json.encode({
-      "Page": "5",
+      "Page": "1",
       "TipoDTE": {"eq": "33"},
-      "FchEmis": {"lte": "2019-01-31", "gte": "2018-12-01"}
+      "FchEmis": {"lte": fechaLte, "gte": fechaGte}
     });
 
     final resp = await http.post(url,
@@ -39,7 +39,6 @@ class OrgProvider {
       final Map<String, dynamic> decodedData = json.decode(resp.body);
       print(resp.body);
       RegistryModel regModel = new RegistryModel.fromJson(decodedData);
-      print(regModel);
 
       return regModel;
     } else {
