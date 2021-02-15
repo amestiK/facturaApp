@@ -15,6 +15,10 @@ class HisPage extends StatefulWidget {
 class _HisPageState extends State<HisPage> {
   OrgProvider orgInfo = OrgProvider();
 
+  bool desplegar = true;
+
+  TextEditingController rutt = TextEditingController();
+
   DateTime _dateTime1 = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day - 30);
   DateTime _dateTime2 =
@@ -22,9 +26,17 @@ class _HisPageState extends State<HisPage> {
 
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
+
+  List _dteList = ['Factura', 'Boleta'];
+  String _dteVal;
+
+  String tipoDteVal = "33";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Center(child: Text('Historial')),
         backgroundColor: Colors.deepPurple,
@@ -33,6 +45,7 @@ class _HisPageState extends State<HisPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
+            flex: 2,
             child: Column(
               children: [
                 Padding(
@@ -53,7 +66,7 @@ class _HisPageState extends State<HisPage> {
                             var newDateThirtyDaysLess = new DateTime(
                                 date.year, date.month, date.day - 30);
 
-                            var dateYearFiveLess = new DateTime(date.year - 6);
+                            var dateYearFiveLess = new DateTime(date.year - 1);
                             var dateYearActually = new DateTime(date.year + 1);
 
                             showDatePicker(
@@ -69,28 +82,23 @@ class _HisPageState extends State<HisPage> {
                                           _dateTime1 = date == null
                                               ? newDateThirtyDaysLess
                                               : date;
+                                          desplegar = false;
                                         })
                                     });
                           }),
-                      Text(
-                          _dateTime1 == null
-                              ? formatter.format(
-                                  DateTime(now.year, now.month, now.day - 30))
-                              : formatter.format(_dateTime1),
-                          style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                        child: Text(
+                            _dateTime1 == null
+                                ? formatter.format(
+                                    DateTime(now.year, now.month, now.day - 30))
+                                : formatter.format(_dateTime1),
+                            style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic)),
+                      ),
                       RaisedButton(
                           child: Text('Hasta'),
                           textColor: Colors.white,
@@ -99,7 +107,7 @@ class _HisPageState extends State<HisPage> {
                               borderRadius: BorderRadius.circular(8)),
                           onPressed: () {
                             var date = new DateTime.now();
-                            var dateYearFiveLess = new DateTime(date.year - 6);
+                            var dateYearFiveLess = new DateTime(date.year - 1);
                             var dateYearActually = new DateTime(date.year + 1);
                             showDatePicker(
                                     context: context,
@@ -113,44 +121,165 @@ class _HisPageState extends State<HisPage> {
                                         _dateTime2 = date == null
                                             ? DateTime.now()
                                             : date;
+                                        desplegar = false;
                                       })
                                     });
                           }),
-                      Text(
-                          _dateTime2 == null
-                              ? formatter.format(DateTime.now())
-                              : formatter.format(_dateTime2),
-                          style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic)),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                        child: Text(
+                            _dateTime2 == null
+                                ? formatter.format(DateTime.now())
+                                : formatter.format(_dateTime2),
+                            style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic)),
+                      )
                     ],
                   ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        padding: EdgeInsets.all(15),
+                        child: TextFormField(
+                          maxLength: 8,
+                          controller: rutt,
+                          keyboardType: TextInputType.number,
+                          cursorColor: Colors.deepPurple,
+                          style: TextStyle(color: Colors.deepPurple),
+                          decoration: InputDecoration(
+                            counterText: "",
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: -100),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.deepPurple),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.deepPurple),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            prefixText: 'Rut : ',
+                            prefixStyle: TextStyle(
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold),
+                            labelText: 'Ej: 70657324',
+                            labelStyle: TextStyle(
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold),
+                            prefixIcon: Icon(
+                              Icons.domain,
+                              color: Colors.deepPurple,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              desplegar = false;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 16, right: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.deepPurple, width: 2.0),
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Center(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text(_dteList[0].toString()),
+                                value: _dteVal,
+                                style: TextStyle(
+                                    color: Colors.deepPurple, fontSize: 18),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dteVal = value;
+                                    if (_dteVal.toString() == 'Factura') {
+                                      tipoDteVal = "33";
+                                    } else if (_dteVal.toString() == 'Boleta') {
+                                      tipoDteVal = "39";
+                                    }
+                                    desplegar = false;
+                                  });
+                                },
+                                items: _dteList.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RaisedButton(
+                        child: Text('Buscar'),
+                        textColor: Colors.white,
+                        color: Colors.deepPurple,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        onPressed: () {
+                          setState(() {
+                            desplegar = true;
+                          });
+                        })
+                  ],
                 ),
               ],
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: FutureBuilder(
-              future: orgInfo.cargarReg(
-                  formatter.format(_dateTime2), formatter.format(_dateTime1)),
-              builder: (BuildContext context,
-                  AsyncSnapshot<RegistryModel> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.data == null) {
-                  return Center(
-                      child: Text(
-                          'No se encontraron datos de los DTE, inténtalo mas tarde'));
-                } else {
-                  return _ListaRegistros(snapshot.data.data);
-                }
-              },
-            ),
-          ),
+          desplegar == false
+              ? Text('')
+              : returnInfo(
+                  _dateTime1,
+                  _dateTime2,
+                  tipoDteVal,
+                  rutt.text == "" || rutt.text == null
+                      ? null
+                      : int.parse(rutt.text))
         ],
+      ),
+    );
+  }
+
+  Widget returnInfo(
+      DateTime fechaDesde, DateTime fechaHasta, String tipoDte, int rutRec) {
+    return Expanded(
+      flex: 4,
+      child: FutureBuilder(
+        future: orgInfo.cargarReg(formatter.format(_dateTime2),
+            formatter.format(_dateTime1), tipoDte, rutRec),
+        builder: (BuildContext context, AsyncSnapshot<RegistryModel> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.data == null) {
+            return Center(
+                child: Text(
+                    'No se encontraron datos de los DTE, inténtalo mas tarde'));
+          } else {
+            return _ListaRegistros(snapshot.data.data);
+          }
+        },
       ),
     );
   }
@@ -170,7 +299,7 @@ class _ListaRegistros extends StatelessWidget {
 
         return ListTile(
           title: Text(
-              '${registro.rznSocRecep} ${registro.rutRecep}-${registro.dv}'),
+              '${registro.tipoDte == 33 ? registro.rznSocRecep : "Boleta"} ${registro.tipoDte == 33 ? registro.rutRecep : ""} ${registro.tipoDte == 33 ? registro.dv : ""}'),
           subtitle: Text(
               'FOLIO: ${registro.folio} DTE: ${registro.tipoDte} Total: ${registro.mntTotal}'),
           trailing: IconButton(

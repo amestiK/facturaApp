@@ -34,10 +34,9 @@ class _ReceptorPageState extends State<ReceptorPage> {
   String dir = "";
   String ciudad = "";
   String tel = "";
-  //Var para cambiar la visibilidad del widget que muestra la informacion de la factura.
-  bool _visDataFact = false;
 
-  //
+  bool desplegar = false;
+
   String rutRec;
   String razSocRec;
   String giroRec;
@@ -119,8 +118,9 @@ class _ReceptorPageState extends State<ReceptorPage> {
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 setState(() {
-                                  rut = RUTValidator.formatFromText(rutt.text);
-                                  _visDataFact = true;
+                                  RUTValidator.formatFromText(rutt.text);
+                                  _limpiarForm();
+                                  desplegar = true;
                                 });
                               }
                             },
@@ -132,8 +132,9 @@ class _ReceptorPageState extends State<ReceptorPage> {
                           textColor: Colors.white,
                           onPressed: () {
                             setState(() {
-                              _visDataFact = false;
                               _limpiarForm();
+                              rutt.clear();
+                              desplegar = false;
                             });
                           },
                           child: Text('Limpiar'),
@@ -146,20 +147,14 @@ class _ReceptorPageState extends State<ReceptorPage> {
             )),
             Expanded(
                 flex: 3,
-                child: Visibility(
-                  visible: _visDataFact,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                    child: _crearListado(rut),
-                  ),
-                ))
+                child: desplegar == false ? Text('') : _crearListado(rutt.text))
           ],
         ));
   }
 
-  Widget _crearListado(String ruttt) {
+  Widget _crearListado(String rut) {
     return FutureBuilder(
-      future: infoProvider.cargarInfo(ruttt),
+      future: infoProvider.cargarInfo(rut),
       builder: (BuildContext context, AsyncSnapshot<InfoModel> snapshot) {
         if (snapshot.hasData) {
           final info = snapshot.data;
@@ -514,7 +509,6 @@ class _ReceptorPageState extends State<ReceptorPage> {
                     ],
                   ));
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          _visDataFact = false;
           return Center(child: CircularProgressIndicator());
         } else {
           return Center(
