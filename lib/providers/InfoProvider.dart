@@ -143,7 +143,7 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'fffffffddddddddddddddddddd',
+          'Idempotency-Key': 'fffffffdddddddddddddddddddd',
         },
         body: data);
     if (resp.statusCode == 200) {

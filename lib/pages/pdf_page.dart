@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 // PDF
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// prueba de atualización de archivo
@@ -25,6 +26,7 @@ class _HomePageState extends State<PdfPage> {
   // PDF
   bool _isLoading = true;
   PDFDocument document;
+  final DateFormat formatter = DateFormat('ddMMyyyyHHmmss');
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +41,8 @@ class _HomePageState extends State<PdfPage> {
           currentIndex: _currentIndex, // Indice de botón clicado
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.web_asset_sharp),
-              label: 'PDF',
+              icon: new Icon(Icons.share),
+              label: 'Compartir',
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.create),
@@ -98,8 +100,13 @@ class _HomePageState extends State<PdfPage> {
   changePDF(value) async {
     setState(() => _isLoading = true);
     if (value == 0) {
-      document = await PDFDocument.fromURL(
-          "http://www.africau.edu/images/default/sample.pdf");
+      var sharePdf = await writePDF(widget.pdfString);
+
+      String nameFile = formatter.format(DateTime.now());
+      print(nameFile);
+
+      await Share.file(
+          'Documento PDF', '$nameFile.pdf', sharePdf.readAsBytesSync(), '*/*');
     } else if (value == 1) {
       //document = await PDFDocument.fromAsset('assets/sample2.pdf');
       writePDF(widget.pdfString);
