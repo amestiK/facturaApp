@@ -226,7 +226,6 @@ class _BoletaPageState extends State<BoletaPage> {
                               double value =
                                   double.parse(userAnswer.replaceAll(',', '')) /
                                       1.19;
-                              print(value);
                               totNeto = value.round();
                               double value2 = totNeto * 0.19;
                               totIva = value2.floor();

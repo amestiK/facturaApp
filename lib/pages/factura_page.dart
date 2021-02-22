@@ -38,6 +38,10 @@ class _FacturaPageState extends State<FacturaPage> {
   TextEditingController amouCon = TextEditingController();
   TextEditingController totCon = TextEditingController();
 
+  int indexOfItem;
+  bool descState = true;
+  bool exeArrayJson = true;
+
   //Producto
   int montoTotalPro = 0;
   int quantity = 0;
@@ -70,6 +74,7 @@ class _FacturaPageState extends State<FacturaPage> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextFormField(
+                enabled: descState,
                 keyboardType: TextInputType.text,
                 controller: desCon,
                 decoration: InputDecoration(
@@ -128,23 +133,38 @@ class _FacturaPageState extends State<FacturaPage> {
                   borderRadius: BorderRadius.circular(200.0)),
               child: Text('Agregar'),
               onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  String desc = desCon.text.toString();
-                  int qty = int.parse(quanCon.text.toString());
-                  int amou = int.parse(amouCon.text.toString());
-                  int mont = qty * amou;
+                if (_formKey.currentState.validate() && descState == true) {
+                  // String desc = desCon.text.toString();
+                  // int qty = int.parse(quanCon.text.toString());
+                  // int amou = int.parse(amouCon.text.toString());
+                  // int mont = qty * amou;
 
-                  llenarDetalle.add({
-                    "NroLinDet": sum == sum ? sum = sum + 1 : sum = sum,
-                    "NmbItem": desc,
-                    "QtyItem": qty,
-                    "PrcItem": amou,
-                    "MontoItem": mont
-                  });
+                  // llenarDetalle.add({
+                  //   "NroLinDet": sum == sum ? sum = sum + 1 : sum = sum,
+                  //   "NmbItem": desc,
+                  //   "QtyItem": qty,
+                  //   "PrcItem": amou,
+                  //   "MontoItem": mont
+                  // });
+                  exeArrayJson = true;
                   addItemToList();
                   desCon.clear();
                   quanCon.clear();
                   amouCon.clear();
+                } else {
+                  for (var i = 0; i < rows.length; i++) {
+                    if (indexOfItem == rows[i].index) {
+                      rows[i].quantity = int.parse(quanCon.text);
+                      rows[i].amount = int.parse(amouCon.text);
+                    }
+                  }
+                  setState(() {
+                    print(rows.toList());
+                    descState = true;
+                    desCon.clear();
+                    quanCon.clear();
+                    amouCon.clear();
+                  });
                 }
               },
             ),
@@ -180,14 +200,32 @@ class _FacturaPageState extends State<FacturaPage> {
                                 (element) => DataRow(
                                   cells: [
                                     DataCell(
-                                      Text(element.index.toString()),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              icon: Icon(Icons.delete),
+                                              onPressed: () {
+                                                setState(() {
+                                                  rows.removeAt(index);
+                                                  // llenarDetalle.removeAt(index);item
+                                                });
+                                              }),
+                                          Text(element.index.toString()),
+                                        ],
+                                      ),
                                     ),
                                     DataCell(
                                       GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              rows.removeAt(index);
-                                              llenarDetalle.removeAt(index);
+                                              desCon.text = element.description
+                                                  .toString();
+                                              quanCon.text =
+                                                  element.quantity.toString();
+                                              amouCon.text =
+                                                  element.amount.toString();
+                                              indexOfItem = element.index;
+                                              descState = false;
                                             });
                                           },
                                           child: Text(
@@ -305,6 +343,38 @@ class _FacturaPageState extends State<FacturaPage> {
                                     int mntPeriodo = totBruto;
 
                                     int vlrPagar = totBruto;
+
+                                    // for (var i = 0; i < rows.length; i++) {
+                                    //   llenarDetalle.add({
+                                    //     "NroLinDet": rows[i].index ==
+                                    //             rows[i].index
+                                    //         ? rows[i].index = rows[i].index + 1
+                                    //         : rows[i].index = rows[i].index,
+                                    //     "NmbItem": rows[i].description,
+                                    //     "QtyItem": rows[i].quantity,
+                                    //     "PrcItem": rows[i].amount,
+                                    //     "MontoItem": rows[i].totalAmount
+                                    //   });
+                                    // }
+
+                                    if (exeArrayJson = true) {
+                                      for (var i = 0; i < rows.length; i++) {
+                                        llenarDetalle.add({
+                                          "NroLinDet": sum == sum
+                                              ? sum = sum + 1
+                                              : sum = sum,
+                                          "NmbItem": rows[i].description,
+                                          "QtyItem": rows[i].quantity,
+                                          "PrcItem": rows[i].amount,
+                                          "MontoItem": rows[i].totalAmount
+                                        });
+                                      }
+                                    }
+
+                                    exeArrayJson = false;
+
+                                    print(rows.toList());
+                                    print(llenarDetalle.toList());
 
                                     await info
                                         .postInfo(
