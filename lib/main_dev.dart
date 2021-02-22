@@ -1,8 +1,8 @@
+import 'package:factura/main.dart';
+import 'package:factura/my_app.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-
-import 'my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +10,7 @@ void main() async {
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
   FlavorConfig(
+    name: "DEVELOP",
     color: Colors.red,
     location: BannerLocation.topStart,
     variables: {

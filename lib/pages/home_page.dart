@@ -1,8 +1,10 @@
 import 'package:factura/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:factura/pages/receptor.dart';
-import 'package:factura/pages/organization.dart';
+import 'package:factura/pages/receptor_page.dart';
+import 'package:factura/pages/organization_page.dart';
+
+import 'boleta_page.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -16,7 +18,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     OrganizationPage(),
     ReceptorPage(),
-    SettingsPage()
+    SettingsPage(),
   ];
 
   @override
@@ -38,7 +40,7 @@ class _HomeState extends State<Home> {
             icon: new Icon(Icons.location_city),
           ),
           BottomNavigationBarItem(
-            label: 'Settings',
+            label: 'settibgs',
             icon: new Icon(Icons.location_city),
           ),
           // BottomNavigationBarItem(

@@ -4,10 +4,19 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Dart & Flutter",
+            "name": "PROD-Flavor",
+            "program": "/lib/main.dart",
             "request": "launch",
             "type": "dart"
-        }
+          },
+          {
+            "name": "DEV-Flavor",
+            "program": "/lib/main_dev.dart",
+            "request": "launch",
+            "type": "dart"
+          }
+          
     ]
 }
