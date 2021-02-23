@@ -1,3 +1,4 @@
+import 'package:factura/pages/receptor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 // PDF
@@ -34,6 +35,15 @@ class _HomePageState extends State<PdfPage> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
+          leading: IconButton(
+              alignment: Alignment.centerLeft,
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ReceptorPage()));
+              }),
           title: Center(child: Text('PDF')),
         ),
         bottomNavigationBar: BottomNavigationBar(

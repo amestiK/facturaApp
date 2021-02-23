@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:factura/model/boletaModel.dart';
 import 'package:factura/model/pdfModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:random_string/random_string.dart';
 // import 'dart:io';
 import 'package:factura/model/InfoModel.dart';
 
@@ -99,6 +100,8 @@ class InfoProvider {
       List<Map<String, dynamic>> lista) async {
     final url = '$_url/v2/dte/document';
 
+    var idemKey = randomAlphaNumeric(20);
+
     var data = json.encode({
       "response": ["PDF", "FOLIO", "80MM"],
       "dte": {
@@ -143,7 +146,7 @@ class InfoProvider {
     final resp = await http.post(url,
         headers: {
           'apikey': _apikey,
-          'Idempotency-Key': 'lkmmmm',
+          'Idempotency-Key': idemKey,
         },
         body: data);
     if (resp.statusCode == 200) {

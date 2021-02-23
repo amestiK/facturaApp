@@ -79,11 +79,13 @@ class _ReceptorPageState extends State<ReceptorPage> {
                         child: TextFormField(
                           cursorColor: Colors.white,
                           style: TextStyle(color: Colors.white),
+                          maxLength: 10,
                           controller: rutt,
                           validator: RUTValidator().validator,
                           // validator: (value) =>
                           //     value.isEmpty ? "Ingrese un Rut" : null,
                           decoration: InputDecoration(
+                              counterText: "",
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white),
                                   borderRadius:
@@ -533,7 +535,14 @@ class _ReceptorPageState extends State<ReceptorPage> {
 
   void choiceAction(String choice) {
     if (choice == Constants.Factura) {
-      if (rutRec != "" &&
+      if (rutt.text != "" &&
+          rutRec != null &&
+          razSocRec != null &&
+          giroRec != null &&
+          giroRec != null &&
+          dirRec != null &&
+          comRec != null &&
+          rutRec != "" &&
           razSocRec != "" &&
           giroRec != "" &&
           giroRec != "" &&

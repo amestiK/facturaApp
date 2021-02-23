@@ -50,7 +50,7 @@ class _FacturaPageState extends State<FacturaPage> {
   int quantity = 0;
   int amount = 0;
   int sum = 0;
-  //
+
   String pdfString;
 
   void addItemToList() {
@@ -390,11 +390,13 @@ class _FacturaPageState extends State<FacturaPage> {
                                         });
                                       });
 
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
                                               builder: (context) => PdfPage(
                                                     pdfString: pdfString,
-                                                  )));
+                                                  )),
+                                          (Route<dynamic> route) => false);
                                     },
                                     child: Text('Confirmar')),
                                 FlatButton(
