@@ -142,18 +142,6 @@ class _FacturaPageState extends State<FacturaPage> {
               child: Text('Agregar'),
               onPressed: () {
                 if (_formKey.currentState.validate() && descState == true) {
-                  // String desc = desCon.text.toString();
-                  // int qty = int.parse(quanCon.text.toString());
-                  // int amou = int.parse(amouCon.text.toString());
-                  // int mont = qty * amou;
-
-                  // llenarDetalle.add({
-                  //   "NroLinDet": sum == sum ? sum = sum + 1 : sum = sum,
-                  //   "NmbItem": desc,
-                  //   "QtyItem": qty,
-                  //   "PrcItem": amou,
-                  //   "MontoItem": mont
-                  // });
                   addItemToList();
                   desCon.clear();
                   quanCon.clear();
@@ -263,7 +251,6 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(Text('')),
                                 DataCell(
-                                  ///ToDo: Calculate the total price for all items
                                   Text(rows
                                       .fold(
                                           0,
@@ -297,7 +284,6 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(Text('')),
                                 DataCell(
-                                  ///ToDo: Calculate the total price for all items
                                   Text((rows.fold(
                                           0,
                                           (prev, el) =>

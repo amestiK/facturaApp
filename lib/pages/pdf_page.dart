@@ -69,22 +69,6 @@ class _HomePageState extends State<PdfPage> {
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
                     : PDFViewer(document: document)),
-            /*
-            Expanded(
-              flex: 0,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 5),
-                  ListTile(
-                    title: Text('Cargar pdf desde url'),
-                    onTap: () {
-                      changePDF(0);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            */
           ],
         ));
   }
@@ -93,7 +77,6 @@ class _HomePageState extends State<PdfPage> {
   void initState() {
     super.initState();
     loadDocument(widget.pdfString);
-    // loadDocument();
   }
 
   loadDocument(pdfString) async {
@@ -118,12 +101,9 @@ class _HomePageState extends State<PdfPage> {
       await Share.file(
           'Documento PDF', '$nameFile.pdf', sharePdf.readAsBytesSync(), '*/*');
     } else if (value == 1) {
-      //document = await PDFDocument.fromAsset('assets/sample2.pdf');
       writePDF(widget.pdfString);
       await loadDocument(widget.pdfString);
     } else {
-      //File file  = File('...');
-      //document = await PDFDocument.fromFile(file);
       document = await PDFDocument.fromFile(await writePDF(widget.pdfString));
     }
     setState(() => _isLoading = false);
