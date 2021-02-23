@@ -97,26 +97,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<ListItem> _dropdownItems = [];
 
-  List<DropdownMenuItem<ListItem>> _dropdownMenuItems;
-  ListItem _selectedItem;
-  /*final List<String> names = <String>[
-    'Aby',
-    'Aish',
-  ];*/
-
   void addItemToList() {
     setState(() {
       _dropdownItems.insert(
           0, ListItem(_dropdownItems.length, _textControllerdata.text));
     });
   }
-
-  /*_read() async {
-    prefs = await PreferenciasUsuario.getInstance();
-    setState(() {
-      dropdownValue = prefs.getString(_key) ?? "one"; // get the value
-    });
-  }*/
 
   @override
   void initState() {
@@ -126,7 +112,6 @@ class _SettingsPageState extends State<SettingsPage> {
     //_genero = prefs.genero;
     //_colorSecundario = prefs.colorSecundario;
     //dropdownValue = prefs.combo;
-    _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
     // _selectedItem = _dropdownMenuItems[0].value;
     _textControllernomb = new TextEditingController(text: prefs.nombre);
     _textController = new TextEditingController(text: prefs.apiKey);
@@ -172,35 +157,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void _openFileExplorer2() async {
-    if (_pickingType2 != FileType.custom || _hasValidMime) {
-      try {
-        if (_multiPick2) {
-          _path2 = null;
-          _paths2 = await FilePicker.getMultiFilePath(
-            type: _pickingType2,
-          );
-        } else {
-          _paths2 = null;
-          _path2 = await FilePicker.getFilePath(
-            type: _pickingType2,
-          );
-        }
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
-      }
-      if (!mounted) return;
-
-      setState(() {
-        _fileName = _path2 != null
-            ? _path2.split('/').last
-            : _paths2 != null
-                ? _paths2.keys.toString()
-                : '...';
-      });
-    }
-  }
-
   List<DropdownMenuItem<ListItem>> buildDropDownMenuItems(List listItems) {
     List<DropdownMenuItem<ListItem>> items = List();
     for (ListItem listItem in listItems) {
@@ -213,33 +169,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
     return items;
   }
-
-  /*_setSelectedRadio(int valor) async{
-
-    prefs.genero = valor;
-    _genero = valor;
-    setState(() {
-      
-    });
-
-  }*/
-
-  /*DateTime _dateTime = DateTime.now();
-
-  _selectedTodoDate(BuildContext context) async {
-    var _pickedDate = await showDatePicker(
-        context: context,
-        initialDate: _dateTime,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100));
-
-    if (_pickedDate != null) {
-      setState(() {
-        _dateTime = _pickedDate;
-        _textControllerdate = DateFormat('yyyy-MM-dd').format(_pickedDate);
-      });
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -517,35 +446,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _saveImage() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      // 0 permission is PERMISSION_GRANTED
-      // 1 permission is PERMISSION_DENIED
-      // 2 permission is PERMISSION_DENIED wuth (don't ask again)
-      final resultPermission = await FolderFileSaver.requestPermission();
-
-      if (resultPermission == 2) {
-        // Do Something Info Here To User
-        // await FolderFileSaver.openSetting;
-      }
-
-      // Permission Granted
-      if (resultPermission == 0) {
-        await _doSaveImage();
-      }
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
   void _saveFolderFileExt() async {
     try {
       setState(() {
@@ -581,44 +481,6 @@ class _SettingsPageState extends State<SettingsPage> {
       });
     }
   }
-
-  Future<void> _doSaveImage() async {
-    final dir = await p.getTemporaryDirectory();
-    final pathImage = dir.path + ('example_image.png');
-    await dio.download(urlImage, pathImage, onReceiveProgress: (rec, total) {
-      setState(() {
-        progress = ((rec / total) * 100).toStringAsFixed(0) + "%";
-      });
-    });
-    // if you want to get original of Image
-    // don't give a value of width or height
-    // cause default is return width = 0, height = 0
-    // which will make it to get the original image
-    // just write like this
-    final result = await FolderFileSaver.saveImage(pathImage: pathImage);
-    print(result);
-  }
-
-  // Don't forget to check
-  // device permission
-
-  /*void copyFileToNewFolder(String path) async {
-    setState(() {
-      _isLoading = true;
-    });
-    // get your path from your device your device
-    //'/storage/emulated/0/Download/CertificadoSII.pfx'
-    final fileToCopy = path;
-    try {
-      await FolderFileSaver.saveFileToFolderExt(fileToCopy);
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }*/
 
   //Widget que nos despliega la opcion de elegir entre tomar una foto o seleccionar una foto de la galeria
   Widget bottomSheet() {
