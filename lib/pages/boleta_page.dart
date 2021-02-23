@@ -1,6 +1,14 @@
 import 'package:factura/pages/buttons.dart';
 import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
+import 'package:factura/Constants.dart';
+import 'package:factura/Constantsboleta.dart';
+import 'package:factura/pages/buttons.dart';
+import 'package:factura/pages/pdf_page.dart';
+import 'package:factura/pages/settings_page.dart';
+import 'package:factura/providers/InfoProvider.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
+
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +19,12 @@ class BoletaPage extends StatefulWidget {
 }
 
 class _BoletaPageState extends State<BoletaPage> {
+  @override
+  void initState() {
+    super.initState();
+    //pref.descripcion = desCon.text;
+  }
+
   InfoProvider infoPro = new InfoProvider();
 
   final _formKey = GlobalKey<FormState>();
@@ -18,6 +32,7 @@ class _BoletaPageState extends State<BoletaPage> {
   TextEditingController desCon = TextEditingController();
 
   bool isLoading = false;
+  final pref = new PreferenciasUsuario();
 
   String desc;
   int totNeto;
@@ -62,6 +77,19 @@ class _BoletaPageState extends State<BoletaPage> {
           title: Center(child: Text('Boleta')),
           backgroundColor: Colors.deepPurple,
           elevation: 4.0,
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context) {
+                return ConstantsBoleta.choices.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            )
+          ],
         ),
         body: Column(
           //Cuerpo de la app
@@ -191,7 +219,13 @@ class _BoletaPageState extends State<BoletaPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TextFormField(
+                      Text(
+                        "Descripción boleta: ${pref.descripcion}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25.0),
+                      ),
+                      //COMENTAR EL BOTON Y SOLO ASIGNAR LA VARIABLE DEL SETTINGS
+                      /*TextFormField(
                         cursorColor: Colors.deepPurple,
                         style: TextStyle(color: Colors.deepPurple),
                         keyboardType: TextInputType.text,
@@ -216,65 +250,54 @@ class _BoletaPageState extends State<BoletaPage> {
                           }
                           return null;
                         },
-                      ),
-                      isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : RaisedButton(
-                              child: Text('Enviar'),
-                              textColor: Colors.white,
-                              color: Colors.deepPurple,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(200.0)),
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-
-                                  double value = double.parse(
-                                          userAnswer.replaceAll(',', '')) /
+            
+                      ),*/
+                      RaisedButton(
+                          child: Text('Enviar'),
+                          textColor: Colors.white,
+                          color: Colors.deepPurple,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(200.0)),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              double value =
+                                  double.parse(userAnswer.replaceAll(',', '')) /
                                       1.19;
-                                  totNeto = value.round();
-                                  double value2 = totNeto * 0.19;
-                                  totIva = value2.floor();
-                                  totBruto = totNeto + totIva;
-                                  desc = desCon.text.toString();
+                              print(value);
+                              totNeto = value.round();
+                              double value2 = totNeto * 0.19;
+                              totIva = value2.floor();
+                              totBruto = totNeto + totIva;
+                              pref.descripcion = pref.descripcion.toString();
+                              await infoPro
+                                  .postBoleta(pref.descripcion, totNeto, totIva,
+                                      totBruto)
+                                  .then((value) => pdfString = value.pdf);
 
-                                  await infoPro
-                                      .postBoleta(
-                                          desc, totNeto, totIva, totBruto)
-                                      .then((value) => pdfString = value.pdf);
-
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PdfPage(
-                                            pdfString: pdfString,
-                                          )));
-                                  desCon.clear();
-                                  userQuestion = '';
-                                  userAnswer = '';
-                                } else if (userAnswer == '') {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text('Alerta'),
-                                            content: Text(
-                                                'Debe ingresar un monto para la boleta'),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Ok'))
-                                            ],
-                                          ));
-                                }
-                              }),
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PdfPage(
+                                        pdfString: pdfString,
+                                      )));
+                              desCon.clear();
+                              userQuestion = '';
+                              userAnswer = '';
+                            } else if (userAnswer == '') {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: Text('Alerta'),
+                                        content: Text(
+                                            'Debe ingresar un monto para la boleta'),
+                                        actions: [
+                                          FlatButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('Ok'))
+                                        ],
+                                      ));
+                            }
+                          }),
                     ],
                   ),
                 ),
@@ -301,5 +324,12 @@ class _BoletaPageState extends State<BoletaPage> {
     double eval = exp.evaluate(EvaluationType.REAL, cm);
 
     userAnswer = eval.toString();
+  }
+
+  void choiceAction(String choice) {
+    if (choice == ConstantsBoleta.SettingsPage) {
+      // Navigator.pushNamed(context, 'FacturaPage');
+      Navigator.pushNamed(context, 'Preferencias');
+    }
   }
 }

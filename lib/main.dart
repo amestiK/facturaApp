@@ -4,12 +4,17 @@ import 'package:factura/pages/factura_page.dart';
 import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
 import 'package:factura/pages/his_page.dart';
+import 'package:factura/pages/receptor_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:factura/pages/organization_page.dart';
-import 'package:factura/pages/receptor_page.dart';
-import 'package:factura/pages/pdf_page.dart';
 
-void main() => runApp(MyApp());
+import 'package:factura/pages/pdf_page.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
+
+import 'my_app.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -30,5 +35,21 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final prefs = new PreferenciasUsuario();
+    await prefs.initPrefs();
+    FlavorConfig(
+      color: Colors.red,
+      location: BannerLocation.topStart,
+      variables: {
+        "baseUrl": "https://dev-api.haulmer.com",
+        "apiKey": "928e15a2d14d4a6292345f04960f4bd3"
+      },
+    );
+    return runApp(MyApp());
   }
 }
