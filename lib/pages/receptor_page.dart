@@ -230,7 +230,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width /
                                               2.5,
-                                          child: Text('${info.rut}',
+                                          child: Text(
+                                              '${info.rut == null ? "" : info.rut}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -246,7 +247,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width /
                                               2.5,
-                                          child: Text('${info.razonSocial}',
+                                          child: Text(
+                                              '${info.razonSocial == null ? "" : info.razonSocial}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -271,7 +273,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .width /
                                               2.5,
                                           child: Text(
-                                              '${info.email == null ? 'No tiene email' : info.email}',
+                                              '${info.email == null ? "" : info.email}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -287,7 +289,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width /
                                               2.5,
-                                          child: Text('${info.telefono}',
+                                          child: Text(
+                                              '${info.telefono == null ? "" : info.telefono}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -310,7 +313,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width /
                                               2.5,
-                                          child: Text('${info.direccion}',
+                                          child: Text(
+                                              '${info.direccion == null ? "" : info.direccion}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -326,7 +330,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width /
                                               2.5,
-                                          child: Text('${info.comuna}',
+                                          child: Text(
+                                              '${info.comuna == null ? "" : info.comuna}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -348,7 +353,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width -
                                               35,
-                                          child: Text('$giro',
+                                          child: Text(
+                                              '${giro == null ? "" : giro}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -370,7 +376,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                                   .size
                                                   .width -
                                               35,
-                                          child: Text('$actEconomica',
+                                          child: Text(
+                                              '${actEconomica == null ? "" : actEconomica}',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -390,7 +397,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                             MediaQuery.of(context).size.width -
                                                 35,
                                         child: Text(
-                                            'Actividad economica: $codActEco',
+                                            'Actividad economica: ${codActEco == null ? "" : codActEco}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -419,7 +426,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('Sucursal: $codSiiSuc',
+                                        child: Text(
+                                            'Sucursal: ${codSiiSuc == null ? "" : codSiiSuc}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -437,7 +445,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('Comuna: $comuna',
+                                        child: Text(
+                                            'Comuna: ${comuna == null ? "" : comuna}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -455,7 +464,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('Dirección: $dir',
+                                        child: Text(
+                                            'Dirección: ${dir == null ? "" : dir}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -473,7 +483,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('Ciudad: $ciudad',
+                                        child: Text(
+                                            'Ciudad: ${ciudad == null ? "" : dir}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -491,7 +502,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 35,
-                                        child: Text('Teléfono: $tel',
+                                        child: Text(
+                                            'Teléfono: ${tel == null ? "" : tel}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
@@ -521,15 +533,36 @@ class _ReceptorPageState extends State<ReceptorPage> {
 
   void choiceAction(String choice) {
     if (choice == Constants.Factura) {
-      // Navigator.pushNamed(context, 'FacturaPage');
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FacturaPage(
-                rutRec: rutRec,
-                razSocRec: razSocRec,
-                giroRec: giroRec,
-                dirRec: dirRec,
-                comRec: comRec,
-              )));
+      if (rutRec != "" &&
+          razSocRec != "" &&
+          giroRec != "" &&
+          giroRec != "" &&
+          dirRec != "" &&
+          comRec != "") {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => FacturaPage(
+                  rutRec: rutRec,
+                  razSocRec: razSocRec,
+                  giroRec: giroRec,
+                  dirRec: dirRec,
+                  comRec: comRec,
+                )));
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Alerta'),
+                  content: Text(
+                      'Debe ingresar un receptor o los datos del receptor encontrados no son suficientes para navegar a Factura'),
+                  actions: [
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Aceptar'))
+                  ],
+                ));
+      }
     } else if (choice == Constants.Boleta) {
       Navigator.pushNamed(context, 'BoletaPage');
     } else if (choice == Constants.HistoryPage) {

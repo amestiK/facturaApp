@@ -33,6 +33,7 @@ dependencies:
   io: ^0.3.4
   math_expressions: ^2.0.1
   esys_flutter_share: ^1.0.2
+  ars_progress_dialog: ^0.1.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0

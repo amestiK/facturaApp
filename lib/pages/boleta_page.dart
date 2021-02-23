@@ -17,6 +17,8 @@ class _BoletaPageState extends State<BoletaPage> {
 
   TextEditingController desCon = TextEditingController();
 
+  bool isLoading = false;
+
   String desc;
   int totNeto;
   int totIva;
@@ -215,50 +217,64 @@ class _BoletaPageState extends State<BoletaPage> {
                           return null;
                         },
                       ),
-                      RaisedButton(
-                          child: Text('Enviar'),
-                          textColor: Colors.white,
-                          color: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200.0)),
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              double value =
-                                  double.parse(userAnswer.replaceAll(',', '')) /
-                                      1.19;
-                              totNeto = value.round();
-                              double value2 = totNeto * 0.19;
-                              totIva = value2.floor();
-                              totBruto = totNeto + totIva;
-                              desc = desCon.text.toString();
-                              await infoPro
-                                  .postBoleta(desc, totNeto, totIva, totBruto)
-                                  .then((value) => pdfString = value.pdf);
+                      isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : RaisedButton(
+                              child: Text('Enviar'),
+                              textColor: Colors.white,
+                              color: Colors.deepPurple,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(200.0)),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PdfPage(
-                                        pdfString: pdfString,
-                                      )));
-                              desCon.clear();
-                              userQuestion = '';
-                              userAnswer = '';
-                            } else if (userAnswer == '') {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text('Alerta'),
-                                        content: Text(
-                                            'Debe ingresar un monto para la boleta'),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Ok'))
-                                        ],
-                                      ));
-                            }
-                          }),
+                                  double value = double.parse(
+                                          userAnswer.replaceAll(',', '')) /
+                                      1.19;
+                                  totNeto = value.round();
+                                  double value2 = totNeto * 0.19;
+                                  totIva = value2.floor();
+                                  totBruto = totNeto + totIva;
+                                  desc = desCon.text.toString();
+
+                                  await infoPro
+                                      .postBoleta(
+                                          desc, totNeto, totIva, totBruto)
+                                      .then((value) => pdfString = value.pdf);
+
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PdfPage(
+                                            pdfString: pdfString,
+                                          )));
+                                  desCon.clear();
+                                  userQuestion = '';
+                                  userAnswer = '';
+                                } else if (userAnswer == '') {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                'Debe ingresar un monto para la boleta'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Ok'))
+                                            ],
+                                          ));
+                                }
+                              }),
                     ],
                   ),
                 ),

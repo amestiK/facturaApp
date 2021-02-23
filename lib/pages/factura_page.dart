@@ -2,6 +2,7 @@ import 'package:factura/model/pdfModel.dart';
 import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 
 class FacturaPage extends StatefulWidget {
   final String rutRec;
@@ -24,6 +25,8 @@ class FacturaPage extends StatefulWidget {
 }
 
 class _FacturaPageState extends State<FacturaPage> {
+  ArsProgressDialog _progressDialog;
+
   PdfModel pdfModel = new PdfModel();
 
   InfoProvider info = InfoProvider();
@@ -53,7 +56,7 @@ class _FacturaPageState extends State<FacturaPage> {
   void addItemToList() {
     setState(() {
       rows.insert(
-          0,
+          rows.length,
           ItemFactura(rows.length, desCon.text, int.parse(quanCon.text),
               int.parse(amouCon.text), montoTotalPro));
     });
@@ -61,6 +64,11 @@ class _FacturaPageState extends State<FacturaPage> {
 
   @override
   Widget build(BuildContext context) {
+    _progressDialog = ArsProgressDialog(context,
+        blur: 2,
+        backgroundColor: Color(0x33000000),
+        animationDuration: Duration(milliseconds: 500));
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
@@ -146,7 +154,6 @@ class _FacturaPageState extends State<FacturaPage> {
                   //   "PrcItem": amou,
                   //   "MontoItem": mont
                   // });
-                  exeArrayJson = true;
                   addItemToList();
                   desCon.clear();
                   quanCon.clear();
@@ -179,6 +186,7 @@ class _FacturaPageState extends State<FacturaPage> {
                         children: [
                           Container(
                             height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
                             child: DataTable(columnSpacing: 16, columns: [
                               DataColumn(
                                 label: Text('N°Item'),
@@ -205,9 +213,9 @@ class _FacturaPageState extends State<FacturaPage> {
                                           IconButton(
                                               icon: Icon(Icons.delete),
                                               onPressed: () {
+                                                print(rows.toList());
                                                 setState(() {
                                                   rows.removeAt(index);
-                                                  // llenarDetalle.removeAt(index);item
                                                 });
                                               }),
                                           Text(element.index.toString()),
@@ -313,51 +321,40 @@ class _FacturaPageState extends State<FacturaPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(200.0)),
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Confirmación'),
-                            content: Text(
-                                '¿Estás seguro que deseas emitir esta factura?'),
-                            actions: [
-                              FlatButton(
-                                  onPressed: () async {
-                                    int totAmou = int.parse(rows
-                                        .fold(
-                                            0,
-                                            (prev, el) =>
-                                                prev + el.amount * el.quantity)
-                                        .toString());
+                  if (rows.length != 0) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Confirmación'),
+                              content: Text(
+                                  '¿Estás seguro que deseas emitir esta factura?'),
+                              actions: [
+                                FlatButton(
+                                    onPressed: () async {
+                                      _progressDialog.show();
+                                      int totAmou = int.parse(rows
+                                          .fold(
+                                              0,
+                                              (prev, el) =>
+                                                  prev +
+                                                  el.amount * el.quantity)
+                                          .toString());
 
-                                    double value = (rows.fold(
-                                            0,
-                                            (prev, el) =>
-                                                prev +
-                                                el.amount * el.quantity) *
-                                        0.19);
+                                      double value = (rows.fold(
+                                              0,
+                                              (prev, el) =>
+                                                  prev +
+                                                  el.amount * el.quantity) *
+                                          0.19);
 
-                                    int totIva = value.round();
+                                      int totIva = value.round();
 
-                                    int totBruto = totAmou + totIva;
+                                      int totBruto = totAmou + totIva;
 
-                                    int mntPeriodo = totBruto;
+                                      int mntPeriodo = totBruto;
 
-                                    int vlrPagar = totBruto;
+                                      int vlrPagar = totBruto;
 
-                                    // for (var i = 0; i < rows.length; i++) {
-                                    //   llenarDetalle.add({
-                                    //     "NroLinDet": rows[i].index ==
-                                    //             rows[i].index
-                                    //         ? rows[i].index = rows[i].index + 1
-                                    //         : rows[i].index = rows[i].index,
-                                    //     "NmbItem": rows[i].description,
-                                    //     "QtyItem": rows[i].quantity,
-                                    //     "PrcItem": rows[i].amount,
-                                    //     "MontoItem": rows[i].totalAmount
-                                    //   });
-                                    // }
-
-                                    if (exeArrayJson = true) {
                                       for (var i = 0; i < rows.length; i++) {
                                         llenarDetalle.add({
                                           "NroLinDet": sum == sum
@@ -369,47 +366,60 @@ class _FacturaPageState extends State<FacturaPage> {
                                           "MontoItem": rows[i].totalAmount
                                         });
                                       }
-                                    }
 
-                                    exeArrayJson = false;
+                                      print(rows.toList());
+                                      print(llenarDetalle.toList());
 
-                                    print(rows.toList());
-                                    print(llenarDetalle.toList());
-
-                                    await info
-                                        .postInfo(
-                                            widget.rutRec,
-                                            widget.razSocRec,
-                                            widget.giroRec,
-                                            widget.dirRec,
-                                            widget.comRec,
-                                            totAmou,
-                                            totIva,
-                                            totBruto,
-                                            mntPeriodo,
-                                            vlrPagar,
-                                            llenarDetalle)
-                                        .then((value) {
-                                      print(value.pdf);
-                                      setState(() {
-                                        pdfString = value.pdf;
+                                      await info
+                                          .postInfo(
+                                              widget.rutRec,
+                                              widget.razSocRec,
+                                              widget.giroRec,
+                                              widget.dirRec,
+                                              widget.comRec,
+                                              totAmou,
+                                              totIva,
+                                              totBruto,
+                                              mntPeriodo,
+                                              vlrPagar,
+                                              llenarDetalle)
+                                          .then((value) {
+                                        print(value.pdf);
+                                        setState(() {
+                                          pdfString = value.pdf;
+                                        });
                                       });
-                                    });
 
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => PdfPage(
-                                                  pdfString: pdfString,
-                                                )));
-                                  },
-                                  child: Text('Confirmar')),
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cancelar'))
-                            ],
-                          ));
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => PdfPage(
+                                                    pdfString: pdfString,
+                                                  )));
+                                    },
+                                    child: Text('Confirmar')),
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancelar'))
+                              ],
+                            ));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Alerta'),
+                              content: Text(
+                                  'No puede hacer una factura sin productos'),
+                              actions: [
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Ok'))
+                              ],
+                            ));
+                  }
                 })
           ],
         ),
