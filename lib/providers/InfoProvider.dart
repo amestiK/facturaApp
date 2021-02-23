@@ -4,6 +4,7 @@ import 'package:factura/model/boletaModel.dart';
 import 'package:factura/model/pdfModel.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 // import 'dart:io';
 import 'package:factura/model/InfoModel.dart';
@@ -30,6 +31,9 @@ class InfoProvider {
       String descripcion, int totNeto, int totIva, int totBruto) async {
     final url = '$_url/v2/dte/document';
 
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+
     var data = json.encode({
       "response": [
         "XML",
@@ -45,7 +49,7 @@ class InfoProvider {
           "IdDoc": {
             "TipoDTE": 39,
             "Folio": 0,
-            "FchEmis": "2020-11-25",
+            "FchEmis": formatter.format(now),
             "IndServicio": "3"
           },
           "Emisor": {
@@ -105,6 +109,8 @@ class InfoProvider {
     final url = '$_url/v2/dte/document';
 
     var idemKey = randomAlphaNumeric(20);
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
 
     var data = json.encode({
       "response": ["PDF", "FOLIO", "80MM"],
@@ -113,7 +119,7 @@ class InfoProvider {
           "IdDoc": {
             "TipoDTE": 33,
             "Folio": 0,
-            "FchEmis": "2019-04-08",
+            "FchEmis": formatter.format(now),
             "TpoTranCompra": "1",
             "TpoTranVenta": "1",
             "FmaPago": "2"

@@ -1,14 +1,8 @@
 import 'package:factura/pages/buttons.dart';
 import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
-import 'package:factura/Constants.dart';
 import 'package:factura/Constantsboleta.dart';
-import 'package:factura/pages/buttons.dart';
-import 'package:factura/pages/pdf_page.dart';
-import 'package:factura/pages/settings_page.dart';
-import 'package:factura/providers/InfoProvider.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
-
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:intl/intl.dart';
@@ -252,52 +246,65 @@ class _BoletaPageState extends State<BoletaPage> {
                         },
             
                       ),*/
-                      RaisedButton(
-                          child: Text('Enviar'),
-                          textColor: Colors.white,
-                          color: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200.0)),
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              double value =
-                                  double.parse(userAnswer.replaceAll(',', '')) /
-                                      1.19;
-                              print(value);
-                              totNeto = value.round();
-                              double value2 = totNeto * 0.19;
-                              totIva = value2.floor();
-                              totBruto = totNeto + totIva;
-                              pref.descripcion = pref.descripcion.toString();
-                              await infoPro
-                                  .postBoleta(pref.descripcion, totNeto, totIva,
-                                      totBruto)
-                                  .then((value) => pdfString = value.pdf);
+                      isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : RaisedButton(
+                              child: Text('Enviar'),
+                              textColor: Colors.white,
+                              color: Colors.deepPurple,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(200.0)),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PdfPage(
-                                        pdfString: pdfString,
-                                      )));
-                              desCon.clear();
-                              userQuestion = '';
-                              userAnswer = '';
-                            } else if (userAnswer == '') {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text('Alerta'),
-                                        content: Text(
-                                            'Debe ingresar un monto para la boleta'),
-                                        actions: [
-                                          FlatButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Ok'))
-                                        ],
-                                      ));
-                            }
-                          }),
+                                  double value = double.parse(
+                                          userAnswer.replaceAll(',', '')) /
+                                      1.19;
+                                  print(value);
+                                  totNeto = value.round();
+                                  double value2 = totNeto * 0.19;
+                                  totIva = value2.floor();
+                                  totBruto = totNeto + totIva;
+                                  pref.descripcion =
+                                      pref.descripcion.toString();
+                                  await infoPro
+                                      .postBoleta(pref.descripcion, totNeto,
+                                          totIva, totBruto)
+                                      .then((value) => pdfString = value.pdf);
+
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PdfPage(
+                                            pdfString: pdfString,
+                                          )));
+                                  desCon.clear();
+                                  userQuestion = '';
+                                  userAnswer = '';
+                                } else if (userAnswer == '') {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                'Debe ingresar un monto para la boleta'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Ok'))
+                                            ],
+                                          ));
+                                }
+                              }),
                     ],
                   ),
                 ),

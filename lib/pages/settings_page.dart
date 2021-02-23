@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:factura/model/itemModel.dart';
 
 import 'package:factura/share_prefs/preferencias_usuario.dart';
-import 'package:path_provider/path_provider.dart' as p;
 import 'package:dio/dio.dart';
 import 'package:factura/folder_file_saver.dart';
 import 'package:factura/providers/InfoProvider.dart';
@@ -18,8 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String routeName = 'settings';
@@ -40,25 +36,18 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isLoading = false;
   //FILE PICKER
   String _fileName;
-  String _fileName2;
+
   String _path;
-  String _path2;
   Map<String, String> _paths;
-  Map<String, String> _paths2;
   String _extension;
   bool _multiPick = false;
-  bool _multiPick2 = false;
   bool _hasValidMime = false;
   FileType _pickingType;
-  FileType _pickingType2;
   TextEditingController _controller = new TextEditingController();
-  TextEditingController _controller2 = new TextEditingController();
 
   //Item ite = new Item();
   //List<Item> _ite = [];
-  bool _colorSecundario;
-  int _genero;
-  String _nombre = "Pedro";
+
   String dropdownValue;
   TextEditingController _textController = TextEditingController();
   TextEditingController _textControllerEm = TextEditingController();
@@ -68,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController _textControllerDesc = TextEditingController();
   //TextEditingController _textControllerdate;
   TextEditingController _textControllerdata = TextEditingController();
-  var _selectedValue;
+
   DateTime birthday;
   var selectedCurrency, selectedType;
 
@@ -97,8 +86,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<ListItem> _dropdownItems = [];
 
-  List<DropdownMenuItem<ListItem>> _dropdownMenuItems;
-  ListItem _selectedItem;
   /*final List<String> names = <String>[
     'Aby',
     'Aish',
@@ -126,7 +113,6 @@ class _SettingsPageState extends State<SettingsPage> {
     //_genero = prefs.genero;
     //_colorSecundario = prefs.colorSecundario;
     //dropdownValue = prefs.combo;
-    _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
     // _selectedItem = _dropdownMenuItems[0].value;
     _textControllernomb = new TextEditingController(text: prefs.nombre);
     _textController = new TextEditingController(text: prefs.apiKey);
@@ -167,35 +153,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ? _path.split('/').last
             : _paths != null
                 ? _paths.keys.toString()
-                : '...';
-      });
-    }
-  }
-
-  void _openFileExplorer2() async {
-    if (_pickingType2 != FileType.custom || _hasValidMime) {
-      try {
-        if (_multiPick2) {
-          _path2 = null;
-          _paths2 = await FilePicker.getMultiFilePath(
-            type: _pickingType2,
-          );
-        } else {
-          _paths2 = null;
-          _path2 = await FilePicker.getFilePath(
-            type: _pickingType2,
-          );
-        }
-      } on PlatformException catch (e) {
-        print("Unsupported operation" + e.toString());
-      }
-      if (!mounted) return;
-
-      setState(() {
-        _fileName = _path2 != null
-            ? _path2.split('/').last
-            : _paths2 != null
-                ? _paths2.keys.toString()
                 : '...';
       });
     }
@@ -517,35 +474,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _saveImage() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      // 0 permission is PERMISSION_GRANTED
-      // 1 permission is PERMISSION_DENIED
-      // 2 permission is PERMISSION_DENIED wuth (don't ask again)
-      final resultPermission = await FolderFileSaver.requestPermission();
-
-      if (resultPermission == 2) {
-        // Do Something Info Here To User
-        // await FolderFileSaver.openSetting;
-      }
-
-      // Permission Granted
-      if (resultPermission == 0) {
-        await _doSaveImage();
-      }
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
   void _saveFolderFileExt() async {
     try {
       setState(() {
@@ -580,23 +508,6 @@ class _SettingsPageState extends State<SettingsPage> {
         _isLoading = false;
       });
     }
-  }
-
-  Future<void> _doSaveImage() async {
-    final dir = await p.getTemporaryDirectory();
-    final pathImage = dir.path + ('example_image.png');
-    await dio.download(urlImage, pathImage, onReceiveProgress: (rec, total) {
-      setState(() {
-        progress = ((rec / total) * 100).toStringAsFixed(0) + "%";
-      });
-    });
-    // if you want to get original of Image
-    // don't give a value of width or height
-    // cause default is return width = 0, height = 0
-    // which will make it to get the original image
-    // just write like this
-    final result = await FolderFileSaver.saveImage(pathImage: pathImage);
-    print(result);
   }
 
   // Don't forget to check

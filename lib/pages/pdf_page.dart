@@ -1,4 +1,4 @@
-import 'package:factura/pages/receptor_page.dart';
+import 'package:factura/pages/home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
@@ -43,7 +43,7 @@ class _HomePageState extends State<PdfPage> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => ReceptorPage()));
+                        builder: (BuildContext context) => Home()));
               }),
           title: Center(child: Text('PDF')),
         ),

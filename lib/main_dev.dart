@@ -1,4 +1,4 @@
-import 'package:factura/main.dart';
+import 'package:factura/my_app.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';

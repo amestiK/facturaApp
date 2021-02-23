@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:factura/pages/organization_page.dart';
 
-import 'boleta_page.dart';
-
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
 
