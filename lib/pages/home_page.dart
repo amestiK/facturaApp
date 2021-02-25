@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
             icon: new Icon(Icons.location_city),
           ),
           BottomNavigationBarItem(
-            label: 'settibgs',
+            label: 'Settings',
             icon: new Icon(Icons.location_city),
           ),
           // BottomNavigationBarItem(

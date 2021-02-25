@@ -257,7 +257,8 @@ class _BoletaPageState extends State<BoletaPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(200.0)),
                               onPressed: () async {
-                                if (_formKey.currentState.validate()) {
+                                if (userAnswer != '' &&
+                                    pref.descripcion != '') {
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -295,6 +296,21 @@ class _BoletaPageState extends State<BoletaPage> {
                                             title: Text('Alerta'),
                                             content: Text(
                                                 'Debe ingresar un monto para la boleta'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Ok'))
+                                            ],
+                                          ));
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                'Debe ingresar una descripción a la boleta, dirigirse a Settings para establecer un valor'),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {
