@@ -1,4 +1,4 @@
-package com.example.factura
+package com.kis.facturaapp
 
 import io.flutter.embedding.android.FlutterActivity
 
