@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
             icon: new Icon(Icons.location_city),
           ),
           BottomNavigationBarItem(
-            label: 'Settings',
-            icon: new Icon(Icons.location_city),
+            label: 'Configuración',
+            icon: new Icon(Icons.settings),
           ),
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.person), title: Text('Profile'))
