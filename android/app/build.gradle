@@ -49,8 +49,8 @@ if (keystorePropertiesFile.exists()) {
         minSdkVersion 16
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 1 //Cada vez que se realice un cambio debe ser distinto 1 - 10000000000 no hay limite
-        versionName "1.0.0" //Primer dato version mayor , segundo dato actualizacion de una version, tercero correccion de errores
+        versionCode 2 //Cada vez que se realice un cambio debe ser distinto 1 - 10000000000 no hay limite
+        versionName "1.1.0" //Primer dato version mayor , segundo dato actualizacion de una version, tercero correccion de errores
     }
 
     signingConfigs {

@@ -1,0 +1,40 @@
+{
+    "project_info": {
+      "project_number": "1041247197969",
+      "firebase_url": "https://itemsboleta-default-rtdb.firebaseio.com",
+      "project_id": "itemsboleta",
+      "storage_bucket": "itemsboleta.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:1041247197969:android:8c5e14d2bd5bf3f3ba0ab0",
+          "android_client_info": {
+            "package_name": "com.kis.facturaapp"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "1041247197969-ehptnkdd31id204jj3eece6ikcda9v7s.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDPM46mefdApHONi9wyAFuaAOmUnsxFQOQ"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "1041247197969-ehptnkdd31id204jj3eece6ikcda9v7s.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
