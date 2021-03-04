@@ -87,14 +87,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<ListItem> _dropdownItems = [];
 
-<<<<<<< HEAD
-=======
-  /*final List<String> names = <String>[
-    'Aby',
-    'Aish',
-  ];*/
-
->>>>>>> cee15825181107bd0cecc2fd54a654d5826052c3
   void addItemToList() {
     setState(() {
       _dropdownItems.insert(
@@ -501,30 +493,6 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-<<<<<<< HEAD
-=======
-  // Don't forget to check
-  // device permission
-
-  /*void copyFileToNewFolder(String path) async {
-    setState(() {
-      _isLoading = true;
-    });
-    // get your path from your device your device
-    //'/storage/emulated/0/Download/CertificadoSII.pfx'
-    final fileToCopy = path;
-    try {
-      await FolderFileSaver.saveFileToFolderExt(fileToCopy);
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }*/
-
->>>>>>> cee15825181107bd0cecc2fd54a654d5826052c3
   //Widget que nos despliega la opcion de elegir entre tomar una foto o seleccionar una foto de la galeria
   Widget bottomSheet() {
     return Container(
