@@ -175,33 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return items;
   }
 
-  /*_setSelectedRadio(int valor) async{
-
-    prefs.genero = valor;
-    _genero = valor;
-    setState(() {
-      
-    });
-
-  }*/
-
-  /*DateTime _dateTime = DateTime.now();
-
-  _selectedTodoDate(BuildContext context) async {
-    var _pickedDate = await showDatePicker(
-        context: context,
-        initialDate: _dateTime,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100));
-
-    if (_pickedDate != null) {
-      setState(() {
-        _dateTime = _pickedDate;
-        _textControllerdate = DateFormat('yyyy-MM-dd').format(_pickedDate);
-      });
-    }
-  }*/
-
+//Widget
   @override
   Widget build(BuildContext context) {
     /*var json = JsonDecoder().convert(data.toString());

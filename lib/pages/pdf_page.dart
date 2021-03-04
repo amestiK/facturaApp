@@ -46,7 +46,7 @@ class _HomePageState extends State<PdfPage> {
                         builder: (BuildContext context) => Home()));
               }),
           title: Center(child: Text('PDF')),
-        ),
+        ), //Boton flotante
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.purple,

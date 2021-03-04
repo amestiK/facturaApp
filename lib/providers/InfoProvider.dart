@@ -19,7 +19,7 @@ class InfoProvider {
 
   Future<InfoModel> cargarInfo(String rut) async {
     final url = '$_url1/v2/dte/taxpayer/$rut';
-
+    //prefs.apikey viene de las variables de preferencias de usuario
     final resp = await http.get(url, headers: {'apikey': prefs.apiKey});
 
     final Map<String, dynamic> decodedData = json.decode(resp.body);
