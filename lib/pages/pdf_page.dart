@@ -40,20 +40,22 @@ class _HomePageState extends State<PdfPage> {
             alignment: Alignment.centerLeft,
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (BuildContext context) => Home()));
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                  (Route<dynamic> route) => false);
             }),
         title: Center(child: Text('PDF')),
-      ),
+      ), //Boton flotante
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        heroTag: btn2,
         backgroundColor: Colors.purple,
-        child: const Icon(Icons.share),
+        heroTag: btn2,
+        child: Icon(Icons.share),
         onPressed: () {
           onTabTapped(0);
         },
-      ), //Boton flotante
+      ),
       /*bottomNavigationBar: BottomNavigationBar(
           onTap: onTabTapped, // Botón clicado
           currentIndex: 1, // Indice de botón clicado

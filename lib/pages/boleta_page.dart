@@ -237,9 +237,11 @@ class _BoletaPageState extends State<BoletaPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(200.0)),
                               onPressed: () async {
-                                double value = double.parse(
-                                        userAnswer.replaceAll(',', '')) /
-                                    1.19;
+                                double value = userAnswer == ''
+                                    ? 0
+                                    : double.parse(
+                                            userAnswer.replaceAll(',', '')) /
+                                        1.19;
                                 print(value);
                                 totNeto = value.round();
                                 double value2 = totNeto * 0.19;
@@ -270,7 +272,8 @@ class _BoletaPageState extends State<BoletaPage> {
                                   desCon.clear();
                                   userQuestion = '';
                                   userAnswer = '';
-                                } else if (userAnswer == '') {
+                                } else if (userAnswer == '' ||
+                                    userAnswer == null) {
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
