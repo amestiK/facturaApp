@@ -58,8 +58,14 @@ class _FacturaPageState extends State<FacturaPage> {
     setState(() {
       rows.insert(
           rows.length,
-          ItemFactura(rows.length, desCon.text.substring(0, 20),
-              int.parse(quanCon.text), int.parse(amouCon.text), montoTotalPro));
+          ItemFactura(
+              rows.length,
+              desCon.text.length >= 20
+                  ? desCon.text.substring(0, 20)
+                  : desCon.text,
+              int.parse(quanCon.text),
+              int.parse(amouCon.text),
+              montoTotalPro));
     });
   }
 
@@ -246,6 +252,12 @@ class _FacturaPageState extends State<FacturaPage> {
                                               onPressed: () {
                                                 print(rows.toList());
                                                 setState(() {
+                                                  //Elimina siempre la posicion 0.
+                                                  //Puede funcionar, pero con errores.
+                                                  // rows.removeAt(index);
+
+                                                  //Elimina el index de la grilla, pero a medida que se van eliminando (En el caso de tener varios elementos), los index van corriendo su valor y posicion.
+                                                  //Funciona, pero ya que los index van cambiando su valor,llega un punto que no encuentra el elemento para ser borrado.
                                                   rows.removeAt(element.index);
                                                 });
                                               }),
