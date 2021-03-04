@@ -24,6 +24,7 @@ class PdfPage extends StatefulWidget {
 class _HomePageState extends State<PdfPage> {
   //Variables para el uso del BottomBar
   int _currentIndex = 0;
+  String btn2;
 
   // PDF
   bool _isLoading = true;
@@ -40,17 +41,18 @@ class _HomePageState extends State<PdfPage> {
               alignment: Alignment.centerLeft,
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Home()));
+                    MaterialPageRoute(builder: (context) => Home()),
+                    (Route<dynamic> route) => false);
               }),
           title: Center(child: Text('PDF')),
         ), //Boton flotante
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.purple,
-          child: const Icon(Icons.share),
+          heroTag: btn2,
+          child: Icon(Icons.share),
           onPressed: () {
             onTabTapped(0);
           },
