@@ -5,6 +5,7 @@ import 'package:factura/model/InfoModel.dart';
 import 'package:dart_rut_validator/dart_rut_validator.dart';
 
 import 'package:factura/providers/InfoProvider.dart';
+import 'package:flutter/services.dart';
 
 class ReceptorPage extends StatefulWidget {
   const ReceptorPage({Key key}) : super(key: key);
@@ -48,7 +49,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple[500],
-          title: Center(child: Text('Receptor')),
+          title: Center(child: Text('Documentos')),
           actions: [
             PopupMenuButton<String>(
               onSelected: choiceAction,
@@ -82,8 +83,9 @@ class _ReceptorPageState extends State<ReceptorPage> {
                           maxLength: 10,
                           controller: rutt,
                           validator: RUTValidator().validator,
-                          // validator: (value) =>
-                          //     value.isEmpty ? "Ingrese un Rut" : null,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
+                          ],
                           decoration: InputDecoration(
                               counterText: "",
                               enabledBorder: OutlineInputBorder(

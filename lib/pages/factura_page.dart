@@ -3,6 +3,7 @@ import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
+import 'package:flutter/services.dart';
 
 class FacturaPage extends StatefulWidget {
   final String rutRec;
@@ -44,6 +45,7 @@ class _FacturaPageState extends State<FacturaPage> {
   int indexOfItem;
   bool descState = true;
   bool exeArrayJson = true;
+  bool sameDesc = false;
 
   //Producto
   int montoTotalPro = 0;
@@ -56,8 +58,8 @@ class _FacturaPageState extends State<FacturaPage> {
     setState(() {
       rows.insert(
           rows.length,
-          ItemFactura(rows.length, desCon.text, int.parse(quanCon.text),
-              int.parse(amouCon.text), montoTotalPro));
+          ItemFactura(rows.length, desCon.text.substring(0, 20),
+              int.parse(quanCon.text), int.parse(amouCon.text), montoTotalPro));
     });
   }
 
@@ -81,10 +83,15 @@ class _FacturaPageState extends State<FacturaPage> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextFormField(
+                maxLength: 20,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[A-Z a-z0-9]')),
+                ],
                 enabled: descState,
                 keyboardType: TextInputType.text,
                 controller: desCon,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8)),
                   labelText: 'Descripción',
@@ -100,9 +107,14 @@ class _FacturaPageState extends State<FacturaPage> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextFormField(
+                maxLength: 4,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                ],
                 keyboardType: TextInputType.number,
                 controller: quanCon,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8)),
                   labelText: 'Cantidad',
@@ -118,9 +130,14 @@ class _FacturaPageState extends State<FacturaPage> {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: TextFormField(
+                maxLength: 6,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                ],
                 keyboardType: TextInputType.number,
                 controller: amouCon,
                 decoration: InputDecoration(
+                  counterText: "",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8)),
                   labelText: 'Monto',
@@ -140,11 +157,38 @@ class _FacturaPageState extends State<FacturaPage> {
                   borderRadius: BorderRadius.circular(200.0)),
               child: Text('Agregar'),
               onPressed: () {
-                if (_formKey.currentState.validate() && descState == true) {
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].description == desCon.text) {
+                    setState(() {
+                      sameDesc = true;
+                    });
+                  }
+                }
+                if (_formKey.currentState.validate() &&
+                    descState == true &&
+                    sameDesc == false) {
                   addItemToList();
                   desCon.clear();
                   quanCon.clear();
                   amouCon.clear();
+                } else if (sameDesc == true) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Alerta'),
+                            content: Text(
+                                'No puede agregar 2 productos con la misma descripción'),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      sameDesc = false;
+                                    });
+                                  },
+                                  child: Text('Ok'))
+                            ],
+                          ));
                 } else {
                   for (var i = 0; i < rows.length; i++) {
                     if (indexOfItem == rows[i].index) {
@@ -165,7 +209,7 @@ class _FacturaPageState extends State<FacturaPage> {
             Expanded(
                 flex: 1,
                 child: ListView.builder(
-                  itemCount: 1,
+                  itemCount: rows.length,
                   itemBuilder: (BuildContext context, int index) {
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -202,7 +246,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                               onPressed: () {
                                                 print(rows.toList());
                                                 setState(() {
-                                                  rows.removeAt(index);
+                                                  rows.removeAt(element.index);
                                                 });
                                               }),
                                           Text(element.index.toString()),
@@ -412,6 +456,12 @@ class _FacturaPageState extends State<FacturaPage> {
         ),
       ),
     );
+  }
+
+  void deletePro(int index) {
+    setState(() {
+      rows.removeAt(index);
+    });
   }
 }
 

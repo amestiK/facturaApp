@@ -1,8 +1,10 @@
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 
 import 'package:factura/bloc/provider.dart';
 
 class LoginPage extends StatelessWidget {
+  PreferenciasUsuario prefs = PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,8 +127,11 @@ class LoginPage extends StatelessWidget {
     print('Email: ${bloc.email}');
     print('Password: ${bloc.password}');
     print('================');
-
-    Navigator.pushReplacementNamed(context, 'HomePage');
+    if (prefs.apiKey == "") {
+      Navigator.pushReplacementNamed(context, 'Preferencias');
+    } else {
+      Navigator.pushReplacementNamed(context, 'HomePage');
+    }
   }
 
   Widget _crearFondo(BuildContext context) {

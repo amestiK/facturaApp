@@ -34,12 +34,12 @@ class _HomeState extends State<Home> {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            label: 'Receptor',
+            label: 'Documentos',
             icon: new Icon(Icons.location_city),
           ),
           BottomNavigationBarItem(
-            label: 'settibgs',
-            icon: new Icon(Icons.location_city),
+            label: 'Configuración',
+            icon: new Icon(Icons.settings),
           ),
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.person), title: Text('Profile'))

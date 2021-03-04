@@ -1,3 +1,4 @@
+import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:factura/pages/buttons.dart';
 import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
@@ -18,6 +19,8 @@ class _BoletaPageState extends State<BoletaPage> {
     super.initState();
     //pref.descripcion = desCon.text;
   }
+
+  ArsProgressDialog _progressDialog;
 
   InfoProvider infoPro = new InfoProvider();
 
@@ -63,6 +66,11 @@ class _BoletaPageState extends State<BoletaPage> {
 
   @override
   Widget build(BuildContext context) {
+    _progressDialog = ArsProgressDialog(context,
+        blur: 2,
+        backgroundColor: Color(0x33000000),
+        animationDuration: Duration(milliseconds: 500));
+
     return Scaffold(
         resizeToAvoidBottomInset: true,
         //Fondo(plantilla) de la aplicación
@@ -218,34 +226,6 @@ class _BoletaPageState extends State<BoletaPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25.0),
                       ),
-                      //COMENTAR EL BOTON Y SOLO ASIGNAR LA VARIABLE DEL SETTINGS
-                      /*TextFormField(
-                        cursorColor: Colors.deepPurple,
-                        style: TextStyle(color: Colors.deepPurple),
-                        keyboardType: TextInputType.text,
-                        controller: desCon,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.deepPurple),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.deepPurple),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
-                          labelStyle: TextStyle(
-                              color: Colors.deepPurple,
-                              fontWeight: FontWeight.bold),
-                          labelText: 'Descripción',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Por favor ingresa una descripción';
-                          }
-                          return null;
-                        },
-            
-                      ),*/
                       isLoading
                           ? Center(
                               child: CircularProgressIndicator(),
@@ -257,21 +237,25 @@ class _BoletaPageState extends State<BoletaPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(200.0)),
                               onPressed: () async {
-                                if (_formKey.currentState.validate()) {
+                                double value = userAnswer == ''
+                                    ? 0
+                                    : double.parse(
+                                            userAnswer.replaceAll(',', '')) /
+                                        1.19;
+                                print(value);
+                                totNeto = value.round();
+                                double value2 = totNeto * 0.19;
+                                totIva = value2.floor();
+                                totBruto = totNeto + totIva;
+                                pref.descripcion = pref.descripcion.toString();
+
+                                if (userAnswer != '' &&
+                                    pref.descripcion != '' &&
+                                    totBruto <= 1000000) {
                                   setState(() {
                                     isLoading = true;
                                   });
 
-                                  double value = double.parse(
-                                          userAnswer.replaceAll(',', '')) /
-                                      1.19;
-                                  print(value);
-                                  totNeto = value.round();
-                                  double value2 = totNeto * 0.19;
-                                  totIva = value2.floor();
-                                  totBruto = totNeto + totIva;
-                                  pref.descripcion =
-                                      pref.descripcion.toString();
                                   await infoPro
                                       .postBoleta(pref.descripcion, totNeto,
                                           totIva, totBruto)
@@ -288,13 +272,87 @@ class _BoletaPageState extends State<BoletaPage> {
                                   desCon.clear();
                                   userQuestion = '';
                                   userAnswer = '';
-                                } else if (userAnswer == '') {
+                                } else if (userAnswer == '' ||
+                                    userAnswer == null) {
                                   showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
                                             title: Text('Alerta'),
                                             content: Text(
                                                 'Debe ingresar un monto para la boleta'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Ok'))
+                                            ],
+                                          ));
+                                } else if (totBruto >= 1000000 &&
+                                    totBruto < 10000000) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                '¿Estas seguro que deseas emitir una boleta de $totBruto ?'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () async {
+                                                    _progressDialog.show();
+
+                                                    await infoPro
+                                                        .postBoleta(
+                                                            pref.descripcion,
+                                                            totNeto,
+                                                            totIva,
+                                                            totBruto)
+                                                        .then((value) =>
+                                                            pdfString =
+                                                                value.pdf);
+
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    PdfPage(
+                                                                      pdfString:
+                                                                          pdfString,
+                                                                    )));
+                                                    desCon.clear();
+                                                    userQuestion = '';
+                                                    userAnswer = '';
+                                                  },
+                                                  child: Text('Confirmar')),
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Cancelar'))
+                                            ],
+                                          ));
+                                } else if (totBruto >= 10000000) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                'El monto de una Boleta no puede exceder a 10.000.000'),
+                                            actions: [
+                                              FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('Ok'))
+                                            ],
+                                          ));
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text('Alerta'),
+                                            content: Text(
+                                                'Debe ingresar una descripción a la boleta, dirigirse a Settings para establecer un valor'),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {
