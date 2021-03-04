@@ -70,7 +70,7 @@ class PreferenciasUsuario {
   }
 
   get fecha {
-    return _prefs.getString('fecha') ?? '';
+    return _prefs.getString('fecha') ?? '01/01/2021';
   }
 
   set fecha(String value) {

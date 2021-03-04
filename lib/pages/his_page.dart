@@ -1,3 +1,4 @@
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +14,7 @@ class HisPage extends StatefulWidget {
 }
 
 class _HisPageState extends State<HisPage> {
+  PreferenciasUsuario prefs = PreferenciasUsuario();
   OrgProvider orgInfo = OrgProvider();
 
   bool desplegar = true;

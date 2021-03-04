@@ -47,9 +47,17 @@ class _HomePageState extends State<PdfPage> {
               }),
           title: Center(child: Text('PDF')),
         ),
-        bottomNavigationBar: BottomNavigationBar(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.purple,
+          child: const Icon(Icons.share),
+          onPressed: () {
+            onTabTapped(0);
+          },
+        ),
+        /*bottomNavigationBar: BottomNavigationBar(
           onTap: onTabTapped, // Botón clicado
-          currentIndex: _currentIndex, // Indice de botón clicado
+          currentIndex: 1, // Indice de botón clicado
           items: [
             BottomNavigationBarItem(
               icon: new Icon(Icons.share),
@@ -62,7 +70,7 @@ class _HomePageState extends State<PdfPage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.picture_as_pdf), label: 'Mostrar PDF creado')
           ],
-        ),
+        ),*/
         body: Column(
           children: [
             Expanded(
