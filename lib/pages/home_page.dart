@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            label: 'Receptor',
+            label: 'Documentos',
             icon: new Icon(Icons.location_city),
           ),
           BottomNavigationBarItem(

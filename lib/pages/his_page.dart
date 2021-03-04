@@ -1,4 +1,6 @@
+import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'package:factura/model/registryModel.dart';
@@ -149,6 +151,9 @@ class _HisPageState extends State<HisPage> {
                         padding: EdgeInsets.all(15),
                         child: TextFormField(
                           maxLength: 8,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                          ],
                           controller: rutt,
                           keyboardType: TextInputType.number,
                           cursorColor: Colors.deepPurple,
@@ -285,17 +290,28 @@ class _HisPageState extends State<HisPage> {
   }
 }
 
-class _ListaRegistros extends StatelessWidget {
+class _ListaRegistros extends StatefulWidget {
   final List<Datum> registros;
 
   _ListaRegistros(this.registros);
 
   @override
+  __ListaRegistrosState createState() => __ListaRegistrosState();
+}
+
+class __ListaRegistrosState extends State<_ListaRegistros> {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: registros.length,
+      itemCount: widget.registros.length,
       itemBuilder: (BuildContext context, int i) {
-        final registro = registros[i];
+        final registro = widget.registros[i];
+        ArsProgressDialog _progressDialog;
+
+        _progressDialog = ArsProgressDialog(context,
+            blur: 2,
+            backgroundColor: Color(0x33000000),
+            animationDuration: Duration(milliseconds: 500));
 
         return ListTile(
           title: Text(
@@ -305,6 +321,7 @@ class _ListaRegistros extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.picture_as_pdf),
             onPressed: () async {
+              _progressDialog.show();
               String codDte = registro.tipoDte.toString();
               String folio = registro.folio.toString();
               String pdfString;

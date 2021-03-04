@@ -49,7 +49,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple[500],
-          title: Center(child: Text('Receptor')),
+          title: Center(child: Text('Documentos')),
           actions: [
             PopupMenuButton<String>(
               onSelected: choiceAction,
@@ -84,10 +84,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                           controller: rutt,
                           validator: RUTValidator().validator,
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('[0-9-]'))
+                            FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
                           ],
-                          // validator: (value) =>
-                          //     value.isEmpty ? "Ingrese un Rut" : null,
                           decoration: InputDecoration(
                               counterText: "",
                               enabledBorder: OutlineInputBorder(
