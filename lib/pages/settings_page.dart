@@ -163,10 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return items;
   }
 
-<<<<<<< HEAD
-=======
-//Widget
->>>>>>> 4205beb02d2735003267ffa573c30ea6ddfb73a4
+  //Widget
   @override
   Widget build(BuildContext context) {
     /*var json = JsonDecoder().convert(data.toString());
