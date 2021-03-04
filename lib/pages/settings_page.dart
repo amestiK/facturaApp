@@ -5,6 +5,7 @@ import 'dart:io';
 //import 'package:factura/model/itemModel.dart';
 
 import 'package:dart_rut_validator/dart_rut_validator.dart';
+import 'package:factura/Constantsset.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:dio/dio.dart';
 import 'package:factura/folder_file_saver.dart';
@@ -75,12 +76,13 @@ class _SettingsPageState extends State<SettingsPage> {
     DateTime _datePicker = await showDatePicker(
         context: context,
         initialDate: _date,
+        currentDate: prefs.fecha,
         firstDate: DateTime(1947),
         lastDate: DateTime(2100));
     if (_datePicker != null && _datePicker != _date) {
       setState(() {
         _date = _datePicker;
-        prefs.fecha = (_date).toString();
+        prefs.fecha = _datePicker.toString();
       });
     }
   }
@@ -111,7 +113,8 @@ class _SettingsPageState extends State<SettingsPage> {
     _textControllerDesc = new TextEditingController(text: prefs.descripcion);
     _imagepath = prefs.image;
     //prefs.image = _imagepath;
-    prefs.fecha = (_date).toString();
+    prefs.fecha;
+    //prefs.fecha = (_date).toString();
     _controller.addListener(() => _extension = _controller.text);
     prefs.pathsii;
     //_imageFile = prefs.image;
@@ -160,6 +163,10 @@ class _SettingsPageState extends State<SettingsPage> {
     return items;
   }
 
+<<<<<<< HEAD
+=======
+//Widget
+>>>>>>> 4205beb02d2735003267ffa573c30ea6ddfb73a4
   @override
   Widget build(BuildContext context) {
     /*var json = JsonDecoder().convert(data.toString());
@@ -170,18 +177,33 @@ class _SettingsPageState extends State<SettingsPage> {
     var df = new DateFormat.yMMMd().format(_date);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajustes'),
+        title: Center(child: Text('Ajustes')),
         backgroundColor: Colors.deepPurple,
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context) {
+              return ConstantsSett.choices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(5.0),
+            Center(
+              //padding: EdgeInsets.all(10.0),
               child: Text('Configuración',
-                  style:
-                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
             Center(
               child: Stack(
@@ -274,7 +296,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextFormField(
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9-]'))
+                  FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
                 ],
                 controller: _textControllerrut,
                 //obscureText: true,
@@ -315,7 +337,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       prefs.fecha = (_date).toString();
                     });
                   },
-                  decoration: InputDecoration(hintText: (df.toString())),
+                  decoration: InputDecoration(
+                      hintText: (df.toString()),
+                      helperText: 'Ingrese Fecha Nacimiento'),
                 )),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -391,6 +415,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     //     value: _multiPick,
                     //   ),
                     // ),
+
                     new Padding(
                       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                       child: new RaisedButton(
@@ -539,6 +564,13 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _imageFile = pickedFile;
     });
+  }
+
+  void choiceAction(String choice) {
+    if (choice == ConstantsSett.HomePage) {
+      // Navigator.pushNamed(context, 'FacturaPage');
+      Navigator.pushNamed(context, 'HomePage');
+    }
   }
 }
 

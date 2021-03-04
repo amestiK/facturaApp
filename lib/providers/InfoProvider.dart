@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:factura/model/boletaModel.dart';
 import 'package:factura/model/pdfModel.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -14,11 +15,12 @@ class InfoProvider {
   final _apikey = '928e15a2d14d4a6292345f04960f4bd3';
   String _api = FlavorConfig.instance.variables["apiKey"];
   String _url1 = FlavorConfig.instance.variables["baseUrl"];
+  PreferenciasUsuario prefs = PreferenciasUsuario();
 
   Future<InfoModel> cargarInfo(String rut) async {
     final url = '$_url1/v2/dte/taxpayer/$rut';
-
-    final resp = await http.get(url, headers: {'apikey': _api});
+    //prefs.apikey viene de las variables de preferencias de usuario
+    final resp = await http.get(url, headers: {'apikey': prefs.apiKey});
 
     final Map<String, dynamic> decodedData = json.decode(resp.body);
 

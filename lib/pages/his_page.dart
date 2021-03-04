@@ -1,3 +1,4 @@
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,7 @@ class HisPage extends StatefulWidget {
 }
 
 class _HisPageState extends State<HisPage> {
+  PreferenciasUsuario prefs = PreferenciasUsuario();
   OrgProvider orgInfo = OrgProvider();
 
   bool desplegar = true;
