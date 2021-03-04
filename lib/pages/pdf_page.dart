@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:factura/pages/home_page.dart';
 
+import 'package:flutter/material.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 // PDF
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// prueba de atualización de archivo
@@ -25,6 +28,7 @@ class _HomePageState extends State<PdfPage> {
   // PDF
   bool _isLoading = true;
   PDFDocument document;
+  final DateFormat formatter = DateFormat('ddMMyyyyHHmmss');
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,15 @@ class _HomePageState extends State<PdfPage> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
+          leading: IconButton(
+              alignment: Alignment.centerLeft,
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Home()));
+              }),
           title: Center(child: Text('PDF')),
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -39,8 +52,8 @@ class _HomePageState extends State<PdfPage> {
           currentIndex: _currentIndex, // Indice de botón clicado
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.web_asset_sharp),
-              label: 'PDF',
+              icon: new Icon(Icons.share),
+              label: 'Compartir',
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.create),
@@ -57,22 +70,6 @@ class _HomePageState extends State<PdfPage> {
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
                     : PDFViewer(document: document)),
-            /*
-            Expanded(
-              flex: 0,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 5),
-                  ListTile(
-                    title: Text('Cargar pdf desde url'),
-                    onTap: () {
-                      changePDF(0);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            */
           ],
         ));
   }
@@ -81,7 +78,6 @@ class _HomePageState extends State<PdfPage> {
   void initState() {
     super.initState();
     loadDocument(widget.pdfString);
-    // loadDocument();
   }
 
   loadDocument(pdfString) async {
@@ -98,15 +94,17 @@ class _HomePageState extends State<PdfPage> {
   changePDF(value) async {
     setState(() => _isLoading = true);
     if (value == 0) {
-      document = await PDFDocument.fromURL(
-          "http://www.africau.edu/images/default/sample.pdf");
+      var sharePdf = await writePDF(widget.pdfString);
+
+      String nameFile = formatter.format(DateTime.now());
+      print(nameFile);
+
+      await Share.file(
+          'Documento PDF', '$nameFile.pdf', sharePdf.readAsBytesSync(), '*/*');
     } else if (value == 1) {
-      //document = await PDFDocument.fromAsset('assets/sample2.pdf');
       writePDF(widget.pdfString);
       await loadDocument(widget.pdfString);
     } else {
-      //File file  = File('...');
-      //document = await PDFDocument.fromFile(file);
       document = await PDFDocument.fromFile(await writePDF(widget.pdfString));
     }
     setState(() => _isLoading = false);

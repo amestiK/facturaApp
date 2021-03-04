@@ -1,11 +1,13 @@
-import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
-
 import 'my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();

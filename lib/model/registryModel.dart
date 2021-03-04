@@ -56,7 +56,7 @@ class Datum {
 
   int rutRecep;
   String dv;
-  RznSocRecep rznSocRecep;
+  String rznSocRecep;
   int tipoDte;
   int folio;
   DateTime fchEmis;
@@ -71,7 +71,7 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         rutRecep: json["RUTRecep"],
         dv: json["DV"],
-        rznSocRecep: rznSocRecepValues.map[json["RznSocRecep"]],
+        rznSocRecep: json["RznSocRecep"],
         tipoDte: json["TipoDTE"],
         folio: json["Folio"],
         fchEmis: DateTime.parse(json["FchEmis"]),
@@ -87,7 +87,7 @@ class Datum {
   Map<String, dynamic> toJson() => {
         "RUTRecep": rutRecep,
         "DV": dv,
-        "RznSocRecep": rznSocRecepValues.reverse[rznSocRecep],
+        "RznSocRecep": rznSocRecep,
         "TipoDTE": tipoDte,
         "Folio": folio,
         "FchEmis":

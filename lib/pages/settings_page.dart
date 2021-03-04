@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:factura/model/itemModel.dart';
 
+import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
-import 'package:path_provider/path_provider.dart' as p;
 import 'package:dio/dio.dart';
 import 'package:factura/folder_file_saver.dart';
 import 'package:factura/providers/InfoProvider.dart';
@@ -18,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String routeName = 'settings';
@@ -40,25 +37,18 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isLoading = false;
   //FILE PICKER
   String _fileName;
-  String _fileName2;
+
   String _path;
-  String _path2;
   Map<String, String> _paths;
-  Map<String, String> _paths2;
   String _extension;
   bool _multiPick = false;
-  bool _multiPick2 = false;
   bool _hasValidMime = false;
   FileType _pickingType;
-  FileType _pickingType2;
   TextEditingController _controller = new TextEditingController();
-  TextEditingController _controller2 = new TextEditingController();
 
   //Item ite = new Item();
   //List<Item> _ite = [];
-  bool _colorSecundario;
-  int _genero;
-  String _nombre = "Pedro";
+
   String dropdownValue;
   TextEditingController _textController = TextEditingController();
   TextEditingController _textControllerEm = TextEditingController();
@@ -68,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController _textControllerDesc = TextEditingController();
   //TextEditingController _textControllerdate;
   TextEditingController _textControllerdata = TextEditingController();
-  var _selectedValue;
+
   DateTime birthday;
   var selectedCurrency, selectedType;
 
@@ -97,6 +87,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<ListItem> _dropdownItems = [];
 
+<<<<<<< HEAD
+=======
+  /*final List<String> names = <String>[
+    'Aby',
+    'Aish',
+  ];*/
+
+>>>>>>> cee15825181107bd0cecc2fd54a654d5826052c3
   void addItemToList() {
     setState(() {
       _dropdownItems.insert(
@@ -189,7 +187,7 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(5.0),
-              child: Text('Settings',
+              child: Text('Configuración',
                   style:
                       TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)),
             ),
@@ -229,6 +227,10 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp('[a-z A-Z á-ú Á-Ú 0-9]'))
+                ],
                 controller: _textController,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -243,6 +245,10 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp('[a-z A-Z á-ú Á-Ú 0-9 @ .]'))
+                ],
                 keyboardType: TextInputType.emailAddress,
                 controller: _textControllerEm,
                 //obscureText: true,
@@ -258,6 +264,9 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z á-ú Á-Ú]'))
+                ],
                 controller: _textControllernomb,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -271,7 +280,10 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
+              child: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9-]'))
+                ],
                 controller: _textControllerrut,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -286,6 +298,9 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[+0-9]'))
+                ],
                 controller: _textControllertelef,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -313,6 +328,9 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z á-ú Á-Ú]'))
+                ],
                 controller: _textControllerDesc,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -334,11 +352,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     new Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: new DropdownButton(
-                          hint: new Text('LOAD PATH FROM'),
+                          hint: new Text('Cargar desde'),
                           value: _pickingType,
                           items: <DropdownMenuItem>[
                             new DropdownMenuItem(
-                              child: new Text('FROM ANY'),
+                              child: new Text('Desde cualquier archivo'),
                               value: FileType.any,
                             ),
                           ],
@@ -371,22 +389,22 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                           : new Container(),
                     ),
-                    new ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(width: 200.0),
-                      child: new SwitchListTile.adaptive(
-                        title: new Text('Pick multiple files',
-                            textAlign: TextAlign.right),
-                        onChanged: (bool value) =>
-                            setState(() => _multiPick = value),
-                        value: _multiPick,
-                      ),
-                    ),
+                    // new ConstrainedBox(
+                    //   constraints: BoxConstraints.tightFor(width: 200.0),
+                    //   child: new SwitchListTile.adaptive(
+                    //     title: new Text('Pick multiple files',
+                    //         textAlign: TextAlign.right),
+                    //     onChanged: (bool value) =>
+                    //         setState(() => _multiPick = value),
+                    //     value: _multiPick,
+                    //   ),
+                    // ),
                     new Padding(
-                      padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                       child: new RaisedButton(
                         onPressed: () => //_openFileExplorer(),
                             _saveFolderFileExt(),
-                        child: new Text("Open file picker"),
+                        child: new Text("Abrir archivos"),
                       ),
                     ),
                     new Builder(
@@ -403,16 +421,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                 itemBuilder: (BuildContext context, int index) {
                                   final bool isMultiPath =
                                       _paths != null && _paths.isNotEmpty;
-                                  final String name = 'File $index: ' +
+                                  final String name = 'Archivo $index: ' +
                                       (isMultiPath
                                           ? _paths.keys.toList()[index]
                                           : _fileName ?? '...');
                                   final path = isMultiPath
                                       ? _paths.values.toList()[index].toString()
                                       : _path;
-                                  final fileToCopy = path;
+                                  final valor = path;
                                   //copyFileToNewFolder(fileToCopy);
-                                  if (fileToCopy == null) {
+                                  /*if (fileToCopy == null) {
                                     print('no');
                                   } else if (fileToCopy.isEmpty) {
                                     print('ya existe');
@@ -420,13 +438,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                     FolderFileSaver.saveFileToFolderExt(
                                             fileToCopy)
                                         .toString();
-                                  }
+                                  }*/
 
                                   return new ListTile(
                                     title: new Text(
                                       name,
                                     ),
-                                    subtitle: new Text(prefs.pathsii = path),
+                                    subtitle: new Text(prefs.pathsii = valor),
                                   );
                                 },
                                 separatorBuilder:
@@ -472,6 +490,7 @@ class _SettingsPageState extends State<SettingsPage> {
       // 0 permission is PERMISSION_GRANTED
       if (resultPermission == 0) {
         _openFileExplorer();
+        FolderFileSaver.saveFileToFolderExt(prefs.pathsii);
       }
     } catch (e) {
       print(e.toString());
@@ -482,6 +501,30 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+<<<<<<< HEAD
+=======
+  // Don't forget to check
+  // device permission
+
+  /*void copyFileToNewFolder(String path) async {
+    setState(() {
+      _isLoading = true;
+    });
+    // get your path from your device your device
+    //'/storage/emulated/0/Download/CertificadoSII.pfx'
+    final fileToCopy = path;
+    try {
+      await FolderFileSaver.saveFileToFolderExt(fileToCopy);
+    } catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }*/
+
+>>>>>>> cee15825181107bd0cecc2fd54a654d5826052c3
   //Widget que nos despliega la opcion de elegir entre tomar una foto o seleccionar una foto de la galeria
   Widget bottomSheet() {
     return Container(

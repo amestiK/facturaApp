@@ -62,7 +62,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
       future: orgProvider.cargarOrg(),
       builder:
           (BuildContext context, AsyncSnapshot<OrganizationModel> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
           final infoOrg = snapshot.data;
 
           act = infoOrg.actividades;
@@ -89,7 +89,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                                 padding: EdgeInsets.fromLTRB(0, 8, 0, 20),
                                 width: MediaQuery.of(context).size.width - 8,
                                 child: Text(
-                                  'Bienvenido ${infoOrg.razonSocial}',
+                                  'Bienvenido ${infoOrg.razonSocial == null ? "" : infoOrg.razonSocial}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                   textAlign: TextAlign.center,
@@ -104,13 +104,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${infoOrg.rut}',
+                            child: Text(
+                                '${infoOrg.rut == null ? "" : infoOrg.rut}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.nombreFantasia}',
+                            child: Text(
+                                '${infoOrg.nombreFantasia == null ? "" : infoOrg.nombreFantasia}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -120,13 +122,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${infoOrg.email}',
+                            child: Text(
+                                '${infoOrg.email == null ? "" : infoOrg.email}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.telefono}',
+                            child: Text(
+                                '${infoOrg.telefono == null ? "" : infoOrg.telefono}',
                                 style: TextStyle(color: Colors.white)),
                           )
                         ],
@@ -136,47 +140,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${infoOrg.direccion}',
+                            child: Text(
+                                '${infoOrg.direccion == null ? "" : infoOrg.direccion}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                'Codigo Sucursal: ${infoOrg.cdgSiiSucur}',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${infoOrg.glosaDescriptiva}',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.direccionRegional}',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${actEco == null ? '' : actEco}',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text(
-                                '${infoOrg.web == null ? 'Web : No especificada' : infoOrg.web}',
+                                'Codigo Sucursal: ${infoOrg.cdgSiiSucur == null ? "" : infoOrg.cdgSiiSucur}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -187,15 +159,54 @@ class _OrganizationPageState extends State<OrganizationPage> {
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
                             child: Text(
-                                'Resolución\nFecha : ${fechaFormateada == null ? 'Fecha : ' : fechaFormateada}\nNumero: ${infoOrg.resolucion.numero} ',
+                                '${infoOrg.glosaDescriptiva == null ? "" : infoOrg.glosaDescriptiva}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            width: MediaQuery.of(context).size.width / 2.2,
+                            child: Text(
+                                '${infoOrg.direccionRegional == null ? "" : infoOrg.direccionRegional}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text('${actEco == null ? "" : actEco}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            width: MediaQuery.of(context).size.width / 2.2,
+                            child: Text(
+                                '${infoOrg.web == null ? "" : infoOrg.web}',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                                'Resolución\nFecha : ${fechaFormateada == null ? 'Fecha : ' : fechaFormateada}\nNumero: ${infoOrg.resolucion.numero == null ? "" : infoOrg.resolucion.numero}',
                                 style: TextStyle(color: Colors.white)),
                           )
                         ],
                       )
                     ],
                   ));
-        } else {
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
+        } else {
+          return Center(
+              child: Text(
+                  'No se encuentran datos del receptor o intentelo luego'));
         }
       },
     );
