@@ -59,7 +59,6 @@ class _FacturaPageState extends State<FacturaPage> {
       rows.insert(
           rows.length,
           ItemFactura(
-              rows.length,
               desCon.text.length >= 20
                   ? desCon.text.substring(0, 20)
                   : desCon.text,
@@ -197,7 +196,7 @@ class _FacturaPageState extends State<FacturaPage> {
                           ));
                 } else {
                   for (var i = 0; i < rows.length; i++) {
-                    if (indexOfItem == rows[i].index) {
+                    if (indexOfItem == rows.length) {
                       rows[i].quantity = int.parse(quanCon.text);
                       rows[i].amount = int.parse(amouCon.text);
                     }
@@ -258,10 +257,12 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                                   //Elimina el index de la grilla, pero a medida que se van eliminando (En el caso de tener varios elementos), los index van corriendo su valor y posicion.
                                                   //Funciona, pero ya que los index van cambiando su valor,llega un punto que no encuentra el elemento para ser borrado.
-                                                  rows.removeAt(element.index);
+                                                  rows.removeAt(
+                                                      rows.indexOf(element));
                                                 });
                                               }),
-                                          Text(element.index.toString()),
+                                          Text(
+                                              rows.indexOf(element).toString()),
                                         ],
                                       ),
                                     ),
@@ -275,7 +276,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                                   element.quantity.toString();
                                               amouCon.text =
                                                   element.amount.toString();
-                                              indexOfItem = element.index;
+                                              indexOfItem = index;
                                               descState = false;
                                             });
                                           },
@@ -398,9 +399,10 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                       for (var i = 0; i < rows.length; i++) {
                                         llenarDetalle.add({
-                                          "NroLinDet": sum == sum
-                                              ? sum = sum + 1
-                                              : sum = sum,
+                                          // "NroLinDet": sum == sum
+                                          //     ? sum = sum + 1
+                                          //     : sum = sum,
+                                          "NroLinDet": i + 1,
                                           "NmbItem": rows[i].description,
                                           "QtyItem": rows[i].quantity,
                                           "PrcItem": rows[i].amount,
@@ -478,17 +480,16 @@ class _FacturaPageState extends State<FacturaPage> {
 }
 
 class ItemFactura {
-  int index;
+  //int index;
   String description;
   int quantity;
   int amount;
   int totalAmount;
 
-  ItemFactura(this.index, this.description, this.quantity, this.amount,
-      this.totalAmount);
+  ItemFactura(this.description, this.quantity, this.amount, this.totalAmount);
 
   @override
   String toString() {
-    return '{ ${this.index}, ${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
+    return '{ ${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
   }
 }
