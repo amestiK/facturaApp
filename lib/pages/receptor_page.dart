@@ -84,7 +84,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                           controller: rutt,
                           validator: RUTValidator().validator,
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
+                            FilteringTextInputFormatter.allow(RegExp('[0-9-]'))
                           ],
                           decoration: InputDecoration(
                               counterText: "",

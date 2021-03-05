@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           debugShowCheckedModeBanner: false,
-          initialRoute: 'HomePage',
+          initialRoute: 'LoginPage',
           routes: {
             'HistoryPage': (BuildContext context) => HisPage(),
             'LoginPage': (BuildContext context) => LoginPage(),

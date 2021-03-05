@@ -19,6 +19,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import 'home_page.dart';
+
 class SettingsPage extends StatefulWidget {
   static final String routeName = 'settings';
 
@@ -565,8 +567,26 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void choiceAction(String choice) {
     if (choice == ConstantsSett.HomePage) {
-      // Navigator.pushNamed(context, 'FacturaPage');
-      Navigator.pushNamed(context, 'HomePage');
+      if (prefs.apiKey == null || prefs.apiKey == "") {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Alerta'),
+                  content: Text('No puede navegar a Inicio sin una apiKey'),
+                  actions: [
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Ok'))
+                  ],
+                ));
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+            (Route<dynamic> route) => false);
+      }
     }
   }
 }
