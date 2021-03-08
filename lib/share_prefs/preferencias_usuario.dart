@@ -130,6 +130,14 @@ class PreferenciasUsuario {
     _prefs.setString('email', value);
   }
 
+  get token {
+    return _prefs.getString('token') ?? '';
+  }
+
+  set token(String value) {
+    _prefs.setString('token', value);
+  }
+
   //GET Y SET de la ultima pagina
   /*get ultimaPagina {
     return _prefs.getString('ultimaPagina') ?? 'LoginPage';
