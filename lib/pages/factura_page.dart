@@ -59,7 +59,6 @@ class _FacturaPageState extends State<FacturaPage> {
       rows.insert(
           rows.length,
           ItemFactura(
-              rows.length,
               desCon.text.length >= 20
                   ? desCon.text.substring(0, 20)
                   : desCon.text,
@@ -156,61 +155,91 @@ class _FacturaPageState extends State<FacturaPage> {
                 },
               ),
             ),
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.deepPurple,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(200.0)),
-              child: Text('Agregar'),
-              onPressed: () {
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].description == desCon.text) {
-                    setState(() {
-                      sameDesc = true;
-                    });
-                  }
-                }
-                if (_formKey.currentState.validate() &&
-                    descState == true &&
-                    sameDesc == false) {
-                  addItemToList();
-                  desCon.clear();
-                  quanCon.clear();
-                  amouCon.clear();
-                } else if (sameDesc == true) {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Alerta'),
-                            content: Text(
-                                'No puede agregar 2 productos con la misma descripción'),
-                            actions: [
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    setState(() {
-                                      sameDesc = false;
-                                    });
-                                  },
-                                  child: Text('Ok'))
-                            ],
-                          ));
-                } else {
-                  for (var i = 0; i < rows.length; i++) {
-                    if (indexOfItem == rows[i].index) {
-                      rows[i].quantity = int.parse(quanCon.text);
-                      rows[i].amount = int.parse(amouCon.text);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(200.0)),
+                  child: Text('Agregar'),
+                  onPressed: () {
+                    for (var i = 0; i < rows.length; i++) {
+                      if (rows[i].description == desCon.text) {
+                        setState(() {
+                          sameDesc = true;
+                        });
+                      }
                     }
-                  }
-                  setState(() {
-                    print(rows.toList());
-                    descState = true;
-                    desCon.clear();
-                    quanCon.clear();
-                    amouCon.clear();
-                  });
-                }
-              },
+                    if (_formKey.currentState.validate() &&
+                        descState == true &&
+                        sameDesc == false) {
+                      addItemToList();
+                      desCon.clear();
+                      quanCon.clear();
+                      amouCon.clear();
+                    } else if (sameDesc == true) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text('Alerta'),
+                                content: Text(
+                                    'No puede agregar 2 productos con la misma descripción'),
+                                actions: [
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        setState(() {
+                                          sameDesc = false;
+                                        });
+                                      },
+                                      child: Text('Ok'))
+                                ],
+                              ));
+                    } else {
+                      for (var i = 0; i < rows.length; i++) {
+                        if (indexOfItem == i) {
+                          rows[i].description = desCon.text;
+                          rows[i].quantity = int.parse(quanCon.text);
+                          rows[i].amount = int.parse(amouCon.text);
+                        }
+                      }
+                      setState(() {
+                        print(rows.toList());
+                        descState = true;
+                        desCon.clear();
+                        quanCon.clear();
+                        amouCon.clear();
+                      });
+                    }
+                  },
+                ),
+                RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(200.0)),
+                  child: Text('Modificar'),
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      for (var i = 0; i < rows.length; i++) {
+                        if (indexOfItem == i) {
+                          rows[i].description = desCon.text;
+                          rows[i].quantity = int.parse(quanCon.text);
+                          rows[i].amount = int.parse(amouCon.text);
+                        }
+                      }
+
+                      setState(() {
+                        desCon.clear();
+                        quanCon.clear();
+                        amouCon.clear();
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
             Expanded(
                 flex: 1,
@@ -226,19 +255,19 @@ class _FacturaPageState extends State<FacturaPage> {
                             width: MediaQuery.of(context).size.width,
                             child: DataTable(columnSpacing: 16, columns: [
                               DataColumn(
-                                label: Text('N°Item'),
+                                label: Text('N°'),
                               ),
                               DataColumn(
-                                label: Text('Descripción'),
+                                label: Text('Item'),
                               ),
                               DataColumn(
-                                label: Text('Cantidad'),
+                                label: Text('Cant.'),
                               ),
                               DataColumn(
-                                label: Text('Precio'),
+                                label: Text('Neto'),
                               ),
                               DataColumn(
-                                label: Text('Precio total'),
+                                label: Text('Total'),
                               ),
                             ], rows: [
                               ...rows.map(
@@ -258,10 +287,12 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                                   //Elimina el index de la grilla, pero a medida que se van eliminando (En el caso de tener varios elementos), los index van corriendo su valor y posicion.
                                                   //Funciona, pero ya que los index van cambiando su valor,llega un punto que no encuentra el elemento para ser borrado.
-                                                  rows.removeAt(element.index);
+                                                  rows.removeAt(
+                                                      rows.indexOf(element));
                                                 });
                                               }),
-                                          Text(element.index.toString()),
+                                          Text(
+                                              rows.indexOf(element).toString()),
                                         ],
                                       ),
                                     ),
@@ -275,8 +306,8 @@ class _FacturaPageState extends State<FacturaPage> {
                                                   element.quantity.toString();
                                               amouCon.text =
                                                   element.amount.toString();
-                                              indexOfItem = element.index;
-                                              descState = false;
+                                              indexOfItem =
+                                                  rows.indexOf(element);
                                             });
                                           },
                                           child: Text(
@@ -328,6 +359,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                                 prev +
                                                 el.amount * el.quantity) *
                                         0.19)
+                                    .round()
                                     .toString())),
                               ]),
                               DataRow(cells: [
@@ -340,12 +372,12 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(
                                   Text((rows.fold(
-                                          0,
-                                          (prev, el) =>
-                                              prev +
-                                              (el.totalAmount +
-                                                  (el.totalAmount * 0.19))))
-                                      .toString()),
+                                      0,
+                                      (prev, el) =>
+                                          prev +
+                                          (el.totalAmount +
+                                                  (el.totalAmount * 0.19))
+                                              .round())).toString()),
                                 )
                               ]),
                             ]),
@@ -469,26 +501,18 @@ class _FacturaPageState extends State<FacturaPage> {
       ),
     );
   }
-
-  void deletePro(int index) {
-    setState(() {
-      rows.removeAt(index);
-    });
-  }
 }
 
 class ItemFactura {
-  int index;
   String description;
   int quantity;
   int amount;
   int totalAmount;
 
-  ItemFactura(this.index, this.description, this.quantity, this.amount,
-      this.totalAmount);
+  ItemFactura(this.description, this.quantity, this.amount, this.totalAmount);
 
   @override
   String toString() {
-    return '{ ${this.index}, ${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
+    return '{${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
   }
 }
