@@ -196,8 +196,8 @@ class RegistroPage extends StatelessWidget {
                   size: 100.0,
                 ),
                 SizedBox(height: 10.0, width: double.infinity),
-                Text('Nombre',
-                    style: TextStyle(color: Colors.white, fontSize: 25.0))
+                // Text('Login',
+                //     style: TextStyle(color: Colors.white, fontSize: 25.0))
               ],
             ))
       ],

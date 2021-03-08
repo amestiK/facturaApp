@@ -44,9 +44,10 @@ class RecuperarPage extends StatelessWidget {
                   )
                 ]),
             child: Column(children: <Widget>[
-              Text('Ingreso', style: TextStyle(fontSize: 20.0)),
-              SizedBox(height: 60.0),
+              Text('Recuperación clave', style: TextStyle(fontSize: 20.0)),
+              SizedBox(height: 70.0),
               _crearEmail(bloc),
+              Divider(),
               _crearBoton2(bloc),
             ]),
           ),
@@ -171,8 +172,8 @@ class RecuperarPage extends StatelessWidget {
                   size: 100.0,
                 ),
                 SizedBox(height: 10.0, width: double.infinity),
-                Text('Nombre',
-                    style: TextStyle(color: Colors.white, fontSize: 25.0))
+                // Text('Login',
+                //     style: TextStyle(color: Colors.white, fontSize: 25.0))
               ],
             ))
       ],
