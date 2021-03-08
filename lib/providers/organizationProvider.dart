@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:factura/model/docModel.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 // import 'dart:io';
 import 'package:factura/model/organizationModel.dart';
@@ -8,11 +9,12 @@ import 'package:factura/model/registryModel.dart';
 class OrgProvider {
   final _url = 'https://dev-api.haulmer.com';
   final _apikey = '928e15a2d14d4a6292345f04960f4bd3';
+  PreferenciasUsuario prefs = PreferenciasUsuario();
 
   Future<OrganizationModel> cargarOrg() async {
     final url = '$_url/v2/dte/organization';
 
-    final resp = await http.get(url, headers: {'apikey': _apikey});
+    final resp = await http.get(url, headers: {'apikey': prefs.apiKey});
 
     final Map<String, dynamic> decodedData = json.decode(resp.body);
 
@@ -44,7 +46,7 @@ class OrgProvider {
 
     final resp = await http.post(url,
         headers: {
-          'apikey': _apikey,
+          'apikey': prefs.apiKey,
         },
         body: data);
     if (resp.statusCode == 200) {
@@ -61,7 +63,7 @@ class OrgProvider {
   Future<DocModel> cargarDte(String dte, String folio) async {
     final url = '$_url/v2/dte/document/76795561-8/$dte/$folio/pdf';
 
-    final resp = await http.get(url, headers: {'apikey': _apikey});
+    final resp = await http.get(url, headers: {'apikey': prefs.apiKey});
 
     if (resp.statusCode == 200) {
       final Map<String, dynamic> decodedData = json.decode(resp.body);

@@ -83,7 +83,8 @@ class InfoProvider {
         ]
       }
     });
-    final resp = await http.post(url, headers: {'apikey': _apikey}, body: data);
+    final resp =
+        await http.post(url, headers: {'apikey': prefs.apiKey}, body: data);
     print(resp.body);
     if (resp.statusCode == 200) {
       final Map<String, dynamic> decodedData = json.decode(resp.body);
@@ -157,7 +158,7 @@ class InfoProvider {
     });
     final resp = await http.post(url,
         headers: {
-          'apikey': _apikey,
+          'apikey': prefs.apiKey,
           'Idempotency-Key': idemKey,
         },
         body: data);
