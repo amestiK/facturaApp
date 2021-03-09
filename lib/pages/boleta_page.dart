@@ -245,25 +245,19 @@ class _BoletaPageState extends State<BoletaPage> {
                                 print(value);
                                 totNeto = value.round();
                                 double value2 = totNeto * 0.19;
-                                totIva = value2.floor();
+                                totIva = value2.round();
                                 totBruto = totNeto + totIva;
                                 pref.descripcion = pref.descripcion.toString();
 
                                 if (userAnswer != '' &&
                                     pref.descripcion != '' &&
-                                    totBruto <= 1000000) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
+                                    totBruto < 1000000) {
+                                  _progressDialog.show();
 
                                   await infoPro
                                       .postBoleta(pref.descripcion, totNeto,
                                           totIva, totBruto)
                                       .then((value) => pdfString = value.pdf);
-
-                                  setState(() {
-                                    isLoading = false;
-                                  });
 
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => PdfPage(
@@ -352,7 +346,7 @@ class _BoletaPageState extends State<BoletaPage> {
                                       builder: (context) => AlertDialog(
                                             title: Text('Alerta'),
                                             content: Text(
-                                                'Debe ingresar una descripción a la boleta, dirigirse a Settings para establecer un valor'),
+                                                'Debe ingresar una descripción a la boleta, dirigirse a Configuración para establecer un valor'),
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {

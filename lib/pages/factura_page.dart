@@ -155,6 +155,7 @@ class _FacturaPageState extends State<FacturaPage> {
                 },
               ),
             ),
+<<<<<<< HEAD
             RaisedButton(
               textColor: Colors.white,
               color: Colors.deepPurple,
@@ -199,17 +200,93 @@ class _FacturaPageState extends State<FacturaPage> {
                     if (indexOfItem == rows.length) {
                       rows[i].quantity = int.parse(quanCon.text);
                       rows[i].amount = int.parse(amouCon.text);
+=======
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(200.0)),
+                  child: Text('Agregar'),
+                  onPressed: () {
+                    for (var i = 0; i < rows.length; i++) {
+                      if (rows[i].description == desCon.text) {
+                        setState(() {
+                          sameDesc = true;
+                        });
+                      }
+>>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
                     }
-                  }
-                  setState(() {
-                    print(rows.toList());
-                    descState = true;
-                    desCon.clear();
-                    quanCon.clear();
-                    amouCon.clear();
-                  });
-                }
-              },
+                    if (_formKey.currentState.validate() &&
+                        descState == true &&
+                        sameDesc == false) {
+                      addItemToList();
+                      desCon.clear();
+                      quanCon.clear();
+                      amouCon.clear();
+                    } else if (sameDesc == true) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text('Alerta'),
+                                content: Text(
+                                    'No puede agregar 2 productos con la misma descripción'),
+                                actions: [
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        setState(() {
+                                          sameDesc = false;
+                                        });
+                                      },
+                                      child: Text('Ok'))
+                                ],
+                              ));
+                    } else {
+                      for (var i = 0; i < rows.length; i++) {
+                        if (indexOfItem == i) {
+                          rows[i].description = desCon.text;
+                          rows[i].quantity = int.parse(quanCon.text);
+                          rows[i].amount = int.parse(amouCon.text);
+                        }
+                      }
+                      setState(() {
+                        print(rows.toList());
+                        descState = true;
+                        desCon.clear();
+                        quanCon.clear();
+                        amouCon.clear();
+                      });
+                    }
+                  },
+                ),
+                RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(200.0)),
+                  child: Text('Modificar'),
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      for (var i = 0; i < rows.length; i++) {
+                        if (indexOfItem == i) {
+                          rows[i].description = desCon.text;
+                          rows[i].quantity = int.parse(quanCon.text);
+                          rows[i].amount = int.parse(amouCon.text);
+                        }
+                      }
+
+                      setState(() {
+                        desCon.clear();
+                        quanCon.clear();
+                        amouCon.clear();
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
             Expanded(
                 flex: 1,
@@ -225,19 +302,19 @@ class _FacturaPageState extends State<FacturaPage> {
                             width: MediaQuery.of(context).size.width,
                             child: DataTable(columnSpacing: 16, columns: [
                               DataColumn(
-                                label: Text('N°Item'),
+                                label: Text('N°'),
                               ),
                               DataColumn(
-                                label: Text('Descripción'),
+                                label: Text('Item'),
                               ),
                               DataColumn(
-                                label: Text('Cantidad'),
+                                label: Text('Cant.'),
                               ),
                               DataColumn(
-                                label: Text('Precio'),
+                                label: Text('Neto'),
                               ),
                               DataColumn(
-                                label: Text('Precio total'),
+                                label: Text('Total'),
                               ),
                             ], rows: [
                               ...rows.map(
@@ -276,8 +353,13 @@ class _FacturaPageState extends State<FacturaPage> {
                                                   element.quantity.toString();
                                               amouCon.text =
                                                   element.amount.toString();
+<<<<<<< HEAD
                                               indexOfItem = index;
                                               descState = false;
+=======
+                                              indexOfItem =
+                                                  rows.indexOf(element);
+>>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
                                             });
                                           },
                                           child: Text(
@@ -329,6 +411,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                                 prev +
                                                 el.amount * el.quantity) *
                                         0.19)
+                                    .round()
                                     .toString())),
                               ]),
                               DataRow(cells: [
@@ -341,12 +424,12 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(
                                   Text((rows.fold(
-                                          0,
-                                          (prev, el) =>
-                                              prev +
-                                              (el.totalAmount +
-                                                  (el.totalAmount * 0.19))))
-                                      .toString()),
+                                      0,
+                                      (prev, el) =>
+                                          prev +
+                                          (el.totalAmount +
+                                                  (el.totalAmount * 0.19))
+                                              .round())).toString()),
                                 )
                               ]),
                             ]),
@@ -471,16 +554,13 @@ class _FacturaPageState extends State<FacturaPage> {
       ),
     );
   }
-
-  void deletePro(int index) {
-    setState(() {
-      rows.removeAt(index);
-    });
-  }
 }
 
 class ItemFactura {
+<<<<<<< HEAD
   //int index;
+=======
+>>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
   String description;
   int quantity;
   int amount;
@@ -490,6 +570,10 @@ class ItemFactura {
 
   @override
   String toString() {
+<<<<<<< HEAD
     return '{ ${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
+=======
+    return '{${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
+>>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
   }
 }
