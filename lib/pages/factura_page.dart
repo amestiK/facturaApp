@@ -155,52 +155,6 @@ class _FacturaPageState extends State<FacturaPage> {
                 },
               ),
             ),
-<<<<<<< HEAD
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.deepPurple,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(200.0)),
-              child: Text('Agregar'),
-              onPressed: () {
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].description == desCon.text) {
-                    setState(() {
-                      sameDesc = true;
-                    });
-                  }
-                }
-                if (_formKey.currentState.validate() &&
-                    descState == true &&
-                    sameDesc == false) {
-                  addItemToList();
-                  desCon.clear();
-                  quanCon.clear();
-                  amouCon.clear();
-                } else if (sameDesc == true) {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Alerta'),
-                            content: Text(
-                                'No puede agregar 2 productos con la misma descripción'),
-                            actions: [
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    setState(() {
-                                      sameDesc = false;
-                                    });
-                                  },
-                                  child: Text('Ok'))
-                            ],
-                          ));
-                } else {
-                  for (var i = 0; i < rows.length; i++) {
-                    if (indexOfItem == rows.length) {
-                      rows[i].quantity = int.parse(quanCon.text);
-                      rows[i].amount = int.parse(amouCon.text);
-=======
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -217,7 +171,6 @@ class _FacturaPageState extends State<FacturaPage> {
                           sameDesc = true;
                         });
                       }
->>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
                     }
                     if (_formKey.currentState.validate() &&
                         descState == true &&
@@ -353,13 +306,8 @@ class _FacturaPageState extends State<FacturaPage> {
                                                   element.quantity.toString();
                                               amouCon.text =
                                                   element.amount.toString();
-<<<<<<< HEAD
-                                              indexOfItem = index;
-                                              descState = false;
-=======
                                               indexOfItem =
                                                   rows.indexOf(element);
->>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
                                             });
                                           },
                                           child: Text(
@@ -557,10 +505,6 @@ class _FacturaPageState extends State<FacturaPage> {
 }
 
 class ItemFactura {
-<<<<<<< HEAD
-  //int index;
-=======
->>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
   String description;
   int quantity;
   int amount;
@@ -570,10 +514,6 @@ class ItemFactura {
 
   @override
   String toString() {
-<<<<<<< HEAD
-    return '{ ${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
-=======
     return '{${this.description}, ${this.quantity}, ${this.amount}, ${this.totalAmount}}';
->>>>>>> 5c8f8cdc79833cf958b33005682ef2a9ccd0ce70
   }
 }
