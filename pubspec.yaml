@@ -31,7 +31,8 @@ dependencies:
   path_provider:
   shared_preferences: ^0.5.12+4
   image_picker: ^0.6.7+22
-  file_picker: ^1.3.4+1
+  #file_picker: ^1.3.4+1
+  file_picker: ^2.0.0
   folder_file_saver: ^1.0.0+2
   dio:
   easy_folder_picker: ^0.0.3

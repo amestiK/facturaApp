@@ -25,7 +25,6 @@ class _HomePageState extends State<PdfPage> {
   //Variables para el uso del BottomBar
   int _currentIndex = 0;
   String btn2;
-
   // PDF
   bool _isLoading = true;
   PDFDocument document;
@@ -34,6 +33,7 @@ class _HomePageState extends State<PdfPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
@@ -82,6 +82,32 @@ class _HomePageState extends State<PdfPage> {
         ),
 
         /*bottomNavigationBar: BottomNavigationBar(
+=======
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        leading: IconButton(
+            alignment: Alignment.centerLeft,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                  (Route<dynamic> route) => false);
+            }),
+        title: Center(child: Text('PDF')),
+      ), //Boton flotante
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purple,
+        heroTag: btn2,
+        child: Icon(Icons.share),
+        onPressed: () {
+          onTabTapped(0);
+        },
+      ),
+      /*bottomNavigationBar: BottomNavigationBar(
+>>>>>>> ramaBenja
           onTap: onTabTapped, // Botón clicado
           currentIndex: 1, // Indice de botón clicado
           items: [
@@ -97,15 +123,16 @@ class _HomePageState extends State<PdfPage> {
                 icon: Icon(Icons.picture_as_pdf), label: 'Mostrar PDF creado')
           ],
         ),*/
-        body: Column(
-          children: [
-            Expanded(
-                flex: 6,
-                child: _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : PDFViewer(document: document)),
-          ],
-        ));
+      body: Column(
+        children: [
+          Expanded(
+              flex: 6,
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : PDFViewer(document: document)),
+        ],
+      ),
+    );
   }
 
   @override

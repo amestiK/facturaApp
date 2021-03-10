@@ -4,6 +4,8 @@ import 'package:factura/pages/factura_page.dart';
 import 'package:factura/pages/login_page.dart';
 import 'package:factura/pages/home_page.dart';
 import 'package:factura/pages/his_page.dart';
+import 'package:factura/pages/recuperar_clave.dart';
+import 'package:factura/pages/registro_page.dart';
 import 'package:factura/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/pages/organization_page.dart';
@@ -35,6 +37,11 @@ class MyApp extends StatelessWidget {
             'FacturaPage': (BuildContext context) => FacturaPage(),
             'PdfPage': (BuildContext context) => PdfPage(),
             'Preferencias': (BuildContext context) => SettingsPage(),
+<<<<<<< HEAD
+=======
+            'registro': (BuildContext context) => RegistroPage(),
+            'recuperar': (BuildContext context) => RecuperarPage()
+>>>>>>> ramaBenja
           },
         ),
       ),

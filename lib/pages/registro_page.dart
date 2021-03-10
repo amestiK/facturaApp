@@ -1,27 +1,23 @@
+import 'package:factura/bloc/provider.dart';
+import 'package:factura/pages/utils.dart';
 import 'package:factura/providers/usuario_provider.dart';
-import 'package:factura/share_prefs/preferencias_usuario.dart';
-import 'package:factura/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:factura/bloc/provider.dart';
-
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
   final usuarioProvider = new UsuarioProvider();
-  PreferenciasUsuario prefs = PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Stack(
-          children: <Widget>[
-            _crearFondo(context),
-            _loginForm(context),
-          ],
-        ));
+        body: Stack(children: <Widget>[
+      _crearFondo(context),
+      _loginForm(context),
+    ]));
   }
 
   Widget _loginForm(BuildContext context) {
     final bloc = Provider.of(context);
+
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -41,32 +37,26 @@ class LoginPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 3.0,
-                      offset: Offset(0.0, 5.0),
-                      spreadRadius: 3.0)
+                    color: Colors.black26,
+                    blurRadius: 3.0,
+                    offset: Offset(0.0, 5.0),
+                    spreadRadius: 3.0,
+                  )
                 ]),
-            child: Column(
-              children: <Widget>[
-                Text('Ingreso', style: TextStyle(fontSize: 20.0)),
-                SizedBox(height: 60.0),
-                _crearEmail(bloc),
-                SizedBox(height: 30.0),
-                _crearPassword(bloc),
-                SizedBox(height: 30.0),
-                _crearBoton(bloc)
-              ],
-            ),
+            child: Column(children: <Widget>[
+              Text('Crear cuenta', style: TextStyle(fontSize: 20.0)),
+              SizedBox(height: 60.0),
+              _crearEmail(bloc),
+              SizedBox(height: 30.0),
+              _crearPassword(bloc),
+              SizedBox(height: 30.0),
+              _crearBoton(bloc),
+            ]),
           ),
           FlatButton(
-            child: Text('Crear una nueva cuenta'),
+            child: Text('¿Ya tienes cuenta?'),
             onPressed: () =>
-                Navigator.pushReplacementNamed(context, 'registro'),
-          ),
-          FlatButton(
-            child: Text('Olvidaste tu clave?'),
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, 'recuperar'),
+                Navigator.pushReplacementNamed(context, 'LoginPage'),
           ),
           SizedBox(
             height: 100.0,
@@ -87,7 +77,7 @@ class LoginPage extends StatelessWidget {
             decoration: InputDecoration(
                 icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
                 hintText: 'ejemplo@correo.com',
-                labelText: 'Correo electrónico',
+                labelText: 'Correo electronico',
                 counterText: snapshot.data,
                 errorText: snapshot.error),
             onChanged: bloc.changeEmail,
@@ -107,7 +97,7 @@ class LoginPage extends StatelessWidget {
             obscureText: true,
             decoration: InputDecoration(
                 icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-                labelText: 'Contraseña',
+                labelText: 'Contrasena',
                 counterText: snapshot.data,
                 errorText: snapshot.error),
             onChanged: bloc.changePassword,
@@ -123,44 +113,40 @@ class LoginPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return RaisedButton(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-              child: Text('Ingresar'),
-            ),
+                padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+                child: Text('Ingresar')),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
             elevation: 0.0,
             color: Colors.deepPurple,
             textColor: Colors.white,
-            onPressed: snapshot.hasData ? () => _login(bloc, context) : null);
+            onPressed:
+                snapshot.hasData ? () => _register(bloc, context) : null);
       },
     );
   }
 
-  _login(LoginBloc bloc, BuildContext context) async {
-    Map info = await usuarioProvider.login(bloc.email, bloc.password);
-
+  _register(LoginBloc bloc, BuildContext context) async {
+    //metodo que nos permite crear un nuevo usuario
+    final info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
     if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'HomePage');
+      Navigator.pushReplacementNamed(context, 'home');
     } else {
       mostrarAlerta(context, info['mensaje']);
-    }
-    if (prefs.apiKey == "") {
-      Navigator.pushReplacementNamed(context, 'Preferencias');
-    } else {
-      Navigator.pushReplacementNamed(context, 'HomePage');
     }
   }
 
   Widget _crearFondo(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final fondoModaro = Container(
+    final fondoMorado = Container(
       height: size.height * 0.4,
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: <Color>[
         Color.fromRGBO(63, 63, 156, 1.0),
-        Color.fromRGBO(90, 70, 178, 1.0)
+        Color.fromRGBO(90, 70, 178, 1.0),
       ])),
     );
 
@@ -174,23 +160,46 @@ class LoginPage extends StatelessWidget {
 
     return Stack(
       children: <Widget>[
-        fondoModaro,
-        Positioned(top: 90.0, left: 30.0, child: circulo),
-        Positioned(top: -40.0, right: -30.0, child: circulo),
-        Positioned(bottom: -50.0, right: -10.0, child: circulo),
-        Positioned(bottom: 120.0, right: 20.0, child: circulo),
-        Positioned(bottom: -50.0, left: -20.0, child: circulo),
+        fondoMorado,
+        Positioned(
+          top: 90.0,
+          left: 30.0,
+          child: circulo,
+        ),
+        Positioned(
+          top: -40.0,
+          right: -30.0,
+          child: circulo,
+        ),
+        Positioned(
+          bottom: -50.0,
+          right: -10.0,
+          child: circulo,
+        ),
+        Positioned(
+          bottom: 120.0,
+          right: 20.0,
+          child: circulo,
+        ),
+        Positioned(
+          top: 210.0,
+          left: -20.0,
+          child: circulo,
+        ),
         Container(
-          padding: EdgeInsets.only(top: 80.0),
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.person_pin_circle, color: Colors.white, size: 100.0),
-              SizedBox(height: 10.0, width: double.infinity),
-              // Text('Kis Spa',
-              //     style: TextStyle(color: Colors.white, fontSize: 25.0))
-            ],
-          ),
-        )
+            padding: EdgeInsets.only(top: 80.0),
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.person_pin_circle,
+                  color: Colors.white,
+                  size: 100.0,
+                ),
+                SizedBox(height: 10.0, width: double.infinity),
+                // Text('Login',
+                //     style: TextStyle(color: Colors.white, fontSize: 25.0))
+              ],
+            ))
       ],
     );
   }

@@ -430,9 +430,10 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                       for (var i = 0; i < rows.length; i++) {
                                         llenarDetalle.add({
-                                          "NroLinDet": sum == sum
-                                              ? sum = sum + 1
-                                              : sum = sum,
+                                          // "NroLinDet": sum == sum
+                                          //     ? sum = sum + 1
+                                          //     : sum = sum,
+                                          "NroLinDet": i + 1,
                                           "NmbItem": rows[i].description,
                                           "QtyItem": rows[i].quantity,
                                           "PrcItem": rows[i].amount,
