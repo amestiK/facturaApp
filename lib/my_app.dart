@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
             'BoletaPage': (BuildContext context) => BoletaPage(),
             'FacturaPage': (BuildContext context) => FacturaPage(),
             'PdfPage': (BuildContext context) => PdfPage(),
-            'Preferencias': (BuildContext context) => SettingsPage()
+            'Preferencias': (BuildContext context) => SettingsPage(),
           },
         ),
       ),

@@ -36,7 +36,8 @@ dependencies:
   dio:
   easy_folder_picker: ^0.0.3
   flutter_flavor: ^1.1.3
-  
+  printing: ^3.0.0
+
   # dart.io
   io: ^0.3.4
   math_expressions: ^2.0.1

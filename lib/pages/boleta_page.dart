@@ -350,9 +350,16 @@ class _BoletaPageState extends State<BoletaPage> {
                                             actions: [
                                               FlatButton(
                                                   onPressed: () {
+                                                    Navigator.pushNamed(context,
+                                                        'Preferencias');
+                                                  },
+                                                  child: Text(
+                                                      'Ir a Configuración')),
+                                              FlatButton(
+                                                  onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text('Ok'))
+                                                  child: Text('Listo'))
                                             ],
                                           ));
                                 }
