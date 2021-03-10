@@ -131,7 +131,7 @@ class RegistroPage extends StatelessWidget {
     //metodo que nos permite crear un nuevo usuario
     final info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
     if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'HomePage');
     } else {
       mostrarAlerta(context, info['mensaje']);
     }
