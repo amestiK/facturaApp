@@ -33,56 +33,6 @@ class _HomePageState extends State<PdfPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          backgroundColor: Colors.deepPurple,
-          leading: IconButton(
-              alignment: Alignment.centerLeft,
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                    (Route<dynamic> route) => false);
-              }),
-          title: Center(child: Text('PDF')),
-        ), //Boton flotante
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 550),
-              child: FloatingActionButton(
-                backgroundColor: Colors.purple,
-                heroTag: btn2,
-                child: Icon(Icons.print),
-                onPressed: () async {
-                  // var printPdf = await writePDF(widget.pdfString);
-                  // await FlutterPdfPrinter.printFileFromBytes(
-                  //     printPdf.readAsStringSync());
-
-                  var printPdf = await writePDF(widget.pdfString);
-
-                  await Printing.layoutPdf(
-                      onLayout: (_) => printPdf.readAsBytesSync());
-                },
-              ),
-            ),
-            FloatingActionButton(
-              backgroundColor: Colors.purple,
-              heroTag: btn2,
-              child: Icon(Icons.share),
-              onPressed: () {
-                onTabTapped(0);
-              },
-            ),
-          ],
-        ),
-
-        /*bottomNavigationBar: BottomNavigationBar(
-=======
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
@@ -98,16 +48,39 @@ class _HomePageState extends State<PdfPage> {
         title: Center(child: Text('PDF')),
       ), //Boton flotante
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
-        heroTag: btn2,
-        child: Icon(Icons.share),
-        onPressed: () {
-          onTabTapped(0);
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 550),
+            child: FloatingActionButton(
+              backgroundColor: Colors.purple,
+              heroTag: btn2,
+              child: Icon(Icons.print),
+              onPressed: () async {
+                // var printPdf = await writePDF(widget.pdfString);
+                // await FlutterPdfPrinter.printFileFromBytes(
+                //     printPdf.readAsStringSync());
+
+                var printPdf = await writePDF(widget.pdfString);
+
+                await Printing.layoutPdf(
+                    onLayout: (_) => printPdf.readAsBytesSync());
+              },
+            ),
+          ),
+          FloatingActionButton(
+            backgroundColor: Colors.purple,
+            heroTag: btn2,
+            child: Icon(Icons.share),
+            onPressed: () {
+              onTabTapped(0);
+            },
+          ),
+        ],
       ),
+
       /*bottomNavigationBar: BottomNavigationBar(
->>>>>>> ramaBenja
           onTap: onTabTapped, // Botón clicado
           currentIndex: 1, // Indice de botón clicado
           items: [

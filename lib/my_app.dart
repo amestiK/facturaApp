@@ -37,11 +37,8 @@ class MyApp extends StatelessWidget {
             'FacturaPage': (BuildContext context) => FacturaPage(),
             'PdfPage': (BuildContext context) => PdfPage(),
             'Preferencias': (BuildContext context) => SettingsPage(),
-<<<<<<< HEAD
-=======
             'registro': (BuildContext context) => RegistroPage(),
             'recuperar': (BuildContext context) => RecuperarPage()
->>>>>>> ramaBenja
           },
         ),
       ),
