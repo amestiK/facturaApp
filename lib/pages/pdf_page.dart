@@ -2,7 +2,7 @@ import 'package:factura/pages/home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
-// PDF
+import 'package:printing/printing.dart';
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -49,14 +49,38 @@ class _HomePageState extends State<PdfPage> {
           title: Center(child: Text('PDF')),
         ), //Boton flotante
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.purple,
-          heroTag: btn2,
-          child: Icon(Icons.share),
-          onPressed: () {
-            onTabTapped(0);
-          },
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 550),
+              child: FloatingActionButton(
+                backgroundColor: Colors.purple,
+                heroTag: btn2,
+                child: Icon(Icons.print),
+                onPressed: () async {
+                  // var printPdf = await writePDF(widget.pdfString);
+                  // await FlutterPdfPrinter.printFileFromBytes(
+                  //     printPdf.readAsStringSync());
+
+                  var printPdf = await writePDF(widget.pdfString);
+
+                  await Printing.layoutPdf(
+                      onLayout: (_) => printPdf.readAsBytesSync());
+                },
+              ),
+            ),
+            FloatingActionButton(
+              backgroundColor: Colors.purple,
+              heroTag: btn2,
+              child: Icon(Icons.share),
+              onPressed: () {
+                onTabTapped(0);
+              },
+            ),
+          ],
         ),
+
         /*bottomNavigationBar: BottomNavigationBar(
           onTap: onTabTapped, // Botón clicado
           currentIndex: 1, // Indice de botón clicado
