@@ -1,13 +1,64 @@
+import 'dart:async';
+
+import 'package:factura/bloc/login_bloc.dart';
+import 'package:factura/bloc/provider.dart';
+import 'package:factura/pages/home_page.dart';
 import 'package:factura/providers/usuario_provider.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:factura/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:factura/bloc/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    Firebase.initializeApp();
+
+    super.initState();
+  }
+
+  Future<void> _googleSignUp() async {
+    try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn(
+        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
+      );
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final user = (await _auth.signInWithCredential(credential)).user;
+      print("signed in " + user.displayName);
+
+      if (prefs.apiKey.toString().isNotEmpty) {
+        return Navigator.pushReplacementNamed(context, 'HomePage');
+      } else {
+        return Navigator.pushReplacementNamed(context, 'Preferencias');
+      }
+    } catch (e) {
+      print(e.message);
+    }
+  }
+
   final usuarioProvider = new UsuarioProvider();
+
   PreferenciasUsuario prefs = PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +105,8 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 30.0),
                 _crearPassword(bloc),
                 SizedBox(height: 30.0),
-                _crearBoton(bloc)
+                _crearBoton(bloc),
+                _crearBotonGoogle()
               ],
             ),
           ),
@@ -136,19 +188,45 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  Widget _crearBotonGoogle() {
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return RaisedButton(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+              child: Text('Ingresar'),
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            elevation: 0.0,
+            color: Colors.deepPurple,
+            textColor: Colors.white,
+            onPressed: () {
+              _googleSignUp();
+            });
+      },
+    );
+  }
+
   _login(LoginBloc bloc, BuildContext context) async {
     Map info = await usuarioProvider.login(bloc.email, bloc.password);
 
-    if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'HomePage');
-    } else {
-      mostrarAlerta(context, info['mensaje']);
-    }
-    if (prefs.apiKey == "") {
+    if (info['ok'] == true && prefs.apiKey.toString().isEmpty) {
       Navigator.pushReplacementNamed(context, 'Preferencias');
-    } else {
+    } else if (info['ok'] == true && prefs.apiKey.toString().isNotEmpty) {
       Navigator.pushReplacementNamed(context, 'HomePage');
+    } else {
+      mostrarAlerta(context, 'Datos incorrectos, ingreselos nuevamente');
     }
+    // if (prefs.apiKey == "") {
+
+    // } else {
+    //   Navigator.pushReplacementNamed(context, 'HomePage');
+    // }
+    // if (info['ok'] && false) {
+    //   Navigator.pushReplacementNamed(context, 'Registro');
+    //   mostrarAlerta(context, info['mensaje']);
+    // } else {}
   }
 
   Widget _crearFondo(BuildContext context) {

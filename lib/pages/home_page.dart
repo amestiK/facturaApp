@@ -1,5 +1,6 @@
 import 'package:factura/pages/receptor_page.dart';
 import 'package:factura/pages/settings_page.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 
 import 'package:factura/pages/organization_page.dart';
@@ -12,6 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  PreferenciasUsuario prefs = PreferenciasUsuario();
+
   int _currentIndex = 0;
   final List<Widget> _children = [
     OrganizationPage(),
