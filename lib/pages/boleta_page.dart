@@ -176,7 +176,8 @@ class _BoletaPageState extends State<BoletaPage> {
                               equalPressed();
                               var f = NumberFormat('###,###');
                               int numerInt = double.parse(userAnswer).floor();
-                              String numFor = f.format(numerInt);
+                              String numFor =
+                                  f.format(numerInt).replaceAll(",", ".");
                               userAnswer = numFor;
                               print(userAnswer);
                               userQuestion = userAnswer;
@@ -230,140 +231,158 @@ class _BoletaPageState extends State<BoletaPage> {
                           ? Center(
                               child: CircularProgressIndicator(),
                             )
-                          : RaisedButton(
-                              child: Text('Enviar'),
-                              textColor: Colors.white,
-                              color: Colors.deepPurple,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(200.0)),
-                              onPressed: () async {
-                                double value = userAnswer == ''
-                                    ? 0
-                                    : double.parse(
-                                            userAnswer.replaceAll(',', '')) /
-                                        1.19;
-                                print(value);
-                                totNeto = value.round();
-                                double value2 = totNeto * 0.19;
-                                totIva = value2.round();
-                                totBruto = totNeto + totIva;
-                                pref.descripcion = pref.descripcion.toString();
+                          : ButtonTheme(
+                              minWidth: 150,
+                              height: 60,
+                              child: RaisedButton(
+                                  child: Text(
+                                    'Enviar',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  textColor: Colors.white,
+                                  color: Colors.deepPurple,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(200.0)),
+                                  onPressed: () async {
+                                    double value = userAnswer == ''
+                                        ? 0
+                                        : double.parse(userAnswer.replaceAll(
+                                                '.', '')) /
+                                            1.19;
+                                    print(value);
+                                    totNeto = value.round();
+                                    double value2 = totNeto * 0.19;
+                                    totIva = value2.round();
+                                    totBruto = totNeto + totIva;
+                                    pref.descripcion =
+                                        pref.descripcion.toString();
 
-                                if (userAnswer != '' &&
-                                    pref.descripcion != '' &&
-                                    totBruto < 1000000) {
-                                  _progressDialog.show();
+                                    if (userAnswer != '' &&
+                                        pref.descripcion != '' &&
+                                        totBruto < 1000000) {
+                                      _progressDialog.show();
 
-                                  await infoPro
-                                      .postBoleta(pref.descripcion, totNeto,
-                                          totIva, totBruto)
-                                      .then((value) => pdfString = value.pdf);
+                                      await infoPro
+                                          .postBoleta(pref.descripcion, totNeto,
+                                              totIva, totBruto)
+                                          .then(
+                                              (value) => pdfString = value.pdf);
 
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PdfPage(
-                                            pdfString: pdfString,
-                                          )));
-                                  desCon.clear();
-                                  userQuestion = '';
-                                  userAnswer = '';
-                                } else if (userAnswer == '' ||
-                                    userAnswer == null) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text('Alerta'),
-                                            content: Text(
-                                                'Debe ingresar un monto para la boleta'),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Ok'))
-                                            ],
-                                          ));
-                                } else if (totBruto >= 1000000 &&
-                                    totBruto < 10000000) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text('Alerta'),
-                                            content: Text(
-                                                '¿Estas seguro que deseas emitir una boleta de $totBruto ?'),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () async {
-                                                    _progressDialog.show();
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => PdfPage(
+                                                    pdfString: pdfString,
+                                                  )));
+                                      desCon.clear();
+                                      userQuestion = '';
+                                      userAnswer = '';
+                                    } else if (userAnswer == '' ||
+                                        userAnswer == null) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                title: Text('Alerta'),
+                                                content: Text(
+                                                    'Debe ingresar un monto para la boleta'),
+                                                actions: [
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Ok'))
+                                                ],
+                                              ));
+                                    } else if (totBruto >= 1000000 &&
+                                        totBruto < 10000000) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                title: Text('Alerta'),
+                                                content: Text(
+                                                    '¿Estas seguro que deseas emitir una boleta de $totBruto ?'),
+                                                actions: [
+                                                  FlatButton(
+                                                      onPressed: () async {
+                                                        _progressDialog.show();
 
-                                                    await infoPro
-                                                        .postBoleta(
-                                                            pref.descripcion,
-                                                            totNeto,
-                                                            totIva,
-                                                            totBruto)
-                                                        .then((value) =>
-                                                            pdfString =
-                                                                value.pdf);
+                                                        await infoPro
+                                                            .postBoleta(
+                                                                pref
+                                                                    .descripcion,
+                                                                totNeto,
+                                                                totIva,
+                                                                totBruto)
+                                                            .then((value) =>
+                                                                pdfString =
+                                                                    value.pdf);
 
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    PdfPage(
-                                                                      pdfString:
-                                                                          pdfString,
-                                                                    )));
-                                                    desCon.clear();
-                                                    userQuestion = '';
-                                                    userAnswer = '';
-                                                  },
-                                                  child: Text('Confirmar')),
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Cancelar'))
-                                            ],
-                                          ));
-                                } else if (totBruto >= 10000000) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text('Alerta'),
-                                            content: Text(
-                                                'El monto de una Boleta no puede exceder a 10.000.000'),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Ok'))
-                                            ],
-                                          ));
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text('Alerta'),
-                                            content: Text(
-                                                'Debe ingresar una descripción a la boleta, dirigirse a Configuración para establecer un valor'),
-                                            actions: [
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.pushNamed(context,
-                                                        'Preferencias');
-                                                  },
-                                                  child: Text(
-                                                      'Ir a Configuración')),
-                                              FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text('Listo'))
-                                            ],
-                                          ));
-                                }
-                              }),
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        PdfPage(
+                                                                          pdfString:
+                                                                              pdfString,
+                                                                        )));
+                                                        desCon.clear();
+                                                        userQuestion = '';
+                                                        userAnswer = '';
+                                                      },
+                                                      child: Text('Confirmar')),
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Cancelar'))
+                                                ],
+                                              ));
+                                    } else if (totBruto >= 10000000) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                title: Text('Alerta'),
+                                                content: Text(
+                                                    'El monto de una Boleta no puede exceder a 10.000.000'),
+                                                actions: [
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text('Ok'))
+                                                ],
+                                              ));
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                title: Text('Alerta'),
+                                                content: Text(
+                                                    'Debe ingresar una descripción a la boleta, dirigirse a Configuración para establecer un valor'),
+                                                actions: [
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        if (pref.descripcion !=
+                                                                null &&
+                                                            pref.descripcion !=
+                                                                '') {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        } else {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              'Preferencias');
+                                                        }
+                                                      },
+                                                      child: Text('Ok')),
+                                                ],
+                                              ));
+                                    }
+                                  }),
+                            ),
                     ],
                   ),
                 ),

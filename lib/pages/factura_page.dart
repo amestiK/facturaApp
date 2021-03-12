@@ -4,6 +4,7 @@ import 'package:factura/providers/InfoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class FacturaPage extends StatefulWidget {
   final String rutRec;
@@ -41,6 +42,8 @@ class _FacturaPageState extends State<FacturaPage> {
   TextEditingController quanCon = TextEditingController();
   TextEditingController amouCon = TextEditingController();
   TextEditingController totCon = TextEditingController();
+
+  var f = NumberFormat('###,###');
 
   int indexOfItem;
   bool descState = true;
@@ -267,63 +270,73 @@ class _FacturaPageState extends State<FacturaPage> {
                                 label: Text('Neto'),
                               ),
                               DataColumn(
-                                label: Text('Total'),
+                                label: Text('Monto total'),
                               ),
                             ], rows: [
                               ...rows.map(
                                 (element) => DataRow(
                                   cells: [
                                     DataCell(
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                              icon: Icon(Icons.delete),
-                                              onPressed: () {
-                                                print(rows.toList());
-                                                setState(() {
-                                                  //Elimina siempre la posicion 0.
-                                                  //Puede funcionar, pero con errores.
-                                                  // rows.removeAt(index);
-
-                                                  //Elimina el index de la grilla, pero a medida que se van eliminando (En el caso de tener varios elementos), los index van corriendo su valor y posicion.
-                                                  //Funciona, pero ya que los index van cambiando su valor,llega un punto que no encuentra el elemento para ser borrado.
-                                                  rows.removeAt(
-                                                      rows.indexOf(element));
-                                                });
-                                              }),
-                                          Text(
-                                              rows.indexOf(element).toString()),
-                                        ],
+                                      IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            print(rows.toList());
+                                            setState(() {
+                                              rows.removeAt(
+                                                  rows.indexOf(element));
+                                            });
+                                          }),
+                                    ),
+                                    DataCell(
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: 76,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                desCon.text = element
+                                                    .description
+                                                    .toString();
+                                                quanCon.text =
+                                                    element.quantity.toString();
+                                                amouCon.text =
+                                                    element.amount.toString();
+                                                indexOfItem =
+                                                    rows.indexOf(element);
+                                              });
+                                            },
+                                            child: Text(element.description
+                                                .toString())),
                                       ),
                                     ),
                                     DataCell(
-                                      GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              desCon.text = element.description
-                                                  .toString();
-                                              quanCon.text =
-                                                  element.quantity.toString();
-                                              amouCon.text =
-                                                  element.amount.toString();
-                                              indexOfItem =
-                                                  rows.indexOf(element);
-                                            });
-                                          },
-                                          child: Text(
-                                              element.description.toString())),
+                                      Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(f
+                                              .format(element.quantity)
+                                              .toString()
+                                              .replaceAll(",", "."))),
                                     ),
                                     DataCell(
-                                      Text(element.quantity.toString()),
+                                      Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(f
+                                              .format(element.amount)
+                                              .toString()
+                                              .replaceAll(",", "."))),
                                     ),
                                     DataCell(
-                                      Text(element.amount.toString()),
-                                    ),
-                                    DataCell(
-                                      Text((montoTotalPro = element
-                                                  .totalAmount =
-                                              element.quantity * element.amount)
-                                          .toString()),
+                                      Container(
+                                        width: 100,
+                                        alignment: Alignment.centerRight,
+                                        child: Text(f
+                                            .format(montoTotalPro =
+                                                element.totalAmount =
+                                                    element.quantity *
+                                                        element.amount)
+                                            .toString()
+                                            .replaceAll(",", ".")),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -337,12 +350,16 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(Text('')),
                                 DataCell(
-                                  Text(rows
-                                      .fold(
-                                          0,
-                                          (prev, el) =>
-                                              prev + el.amount * el.quantity)
-                                      .toString()),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(f
+                                        .format(rows.fold(
+                                            0,
+                                            (prev, el) =>
+                                                prev + el.amount * el.quantity))
+                                        .toString()
+                                        .replaceAll(",", ".")),
+                                  ),
                                 )
                               ]),
                               DataRow(cells: [
@@ -353,14 +370,19 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(Text('')),
                                 DataCell(Text('')),
-                                DataCell(Text((rows.fold(
-                                            0,
-                                            (prev, el) =>
-                                                prev +
-                                                el.amount * el.quantity) *
-                                        0.19)
-                                    .round()
-                                    .toString())),
+                                DataCell(Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(f
+                                      .format((rows.fold(
+                                                  0,
+                                                  (prev, el) =>
+                                                      prev +
+                                                      el.amount * el.quantity) *
+                                              0.19)
+                                          .round())
+                                      .toString()
+                                      .replaceAll(",", ".")),
+                                )),
                               ]),
                               DataRow(cells: [
                                 DataCell(Text(
@@ -371,13 +393,19 @@ class _FacturaPageState extends State<FacturaPage> {
                                 DataCell(Text('')),
                                 DataCell(Text('')),
                                 DataCell(
-                                  Text((rows.fold(
-                                      0,
-                                      (prev, el) =>
-                                          prev +
-                                          (el.totalAmount +
-                                                  (el.totalAmount * 0.19))
-                                              .round())).toString()),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(f
+                                        .format((rows.fold(
+                                            0,
+                                            (prev, el) =>
+                                                prev +
+                                                (el.totalAmount +
+                                                        (el.totalAmount * 0.19))
+                                                    .round())))
+                                        .toString()
+                                        .replaceAll(",", ".")),
+                                  ),
                                 )
                               ]),
                             ]),
@@ -387,116 +415,125 @@ class _FacturaPageState extends State<FacturaPage> {
                     );
                   },
                 )),
-            RaisedButton(
-                child: Text('Enviar'),
-                textColor: Colors.white,
-                color: Colors.deepPurple,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(200.0)),
-                onPressed: () {
-                  if (rows.length != 0) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: Text('Confirmación'),
-                              content: Text(
-                                  '¿Estás seguro que deseas emitir esta factura?'),
-                              actions: [
-                                FlatButton(
-                                    onPressed: () async {
-                                      _progressDialog.show();
-                                      int totAmou = int.parse(rows
-                                          .fold(
-                                              0,
-                                              (prev, el) =>
-                                                  prev +
-                                                  el.amount * el.quantity)
-                                          .toString());
+            ButtonTheme(
+              minWidth: 150,
+              height: 60,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: RaisedButton(
+                    child: Text('Enviar', style: TextStyle(fontSize: 18)),
+                    textColor: Colors.white,
+                    color: Colors.deepPurple,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(200.0)),
+                    onPressed: () {
+                      if (rows.length != 0) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('Confirmación'),
+                                  content: Text(
+                                      '¿Estás seguro que deseas emitir esta factura?'),
+                                  actions: [
+                                    FlatButton(
+                                        onPressed: () async {
+                                          _progressDialog.show();
+                                          int totAmou = int.parse(rows
+                                              .fold(
+                                                  0,
+                                                  (prev, el) =>
+                                                      prev +
+                                                      el.amount * el.quantity)
+                                              .toString());
 
-                                      double value = (rows.fold(
-                                              0,
-                                              (prev, el) =>
-                                                  prev +
-                                                  el.amount * el.quantity) *
-                                          0.19);
+                                          double value = (rows.fold(
+                                                  0,
+                                                  (prev, el) =>
+                                                      prev +
+                                                      el.amount * el.quantity) *
+                                              0.19);
 
-                                      int totIva = value.round();
+                                          int totIva = value.round();
 
-                                      int totBruto = totAmou + totIva;
+                                          int totBruto = totAmou + totIva;
 
-                                      int mntPeriodo = totBruto;
+                                          int mntPeriodo = totBruto;
 
-                                      int vlrPagar = totBruto;
+                                          int vlrPagar = totBruto;
 
-                                      for (var i = 0; i < rows.length; i++) {
-                                        llenarDetalle.add({
-                                          // "NroLinDet": sum == sum
-                                          //     ? sum = sum + 1
-                                          //     : sum = sum,
-                                          "NroLinDet": i + 1,
-                                          "NmbItem": rows[i].description,
-                                          "QtyItem": rows[i].quantity,
-                                          "PrcItem": rows[i].amount,
-                                          "MontoItem": rows[i].totalAmount
-                                        });
-                                      }
+                                          for (var i = 0;
+                                              i < rows.length;
+                                              i++) {
+                                            llenarDetalle.add({
+                                              // "NroLinDet": sum == sum
+                                              //     ? sum = sum + 1
+                                              //     : sum = sum,
+                                              "NroLinDet": i + 1,
+                                              "NmbItem": rows[i].description,
+                                              "QtyItem": rows[i].quantity,
+                                              "PrcItem": rows[i].amount,
+                                              "MontoItem": rows[i].totalAmount
+                                            });
+                                          }
 
-                                      print(rows.toList());
-                                      print(llenarDetalle.toList());
+                                          print(rows.toList());
+                                          print(llenarDetalle.toList());
 
-                                      await info
-                                          .postInfo(
-                                              widget.rutRec,
-                                              widget.razSocRec,
-                                              widget.giroRec,
-                                              widget.dirRec,
-                                              widget.comRec,
-                                              totAmou,
-                                              totIva,
-                                              totBruto,
-                                              mntPeriodo,
-                                              vlrPagar,
-                                              llenarDetalle)
-                                          .then((value) {
-                                        print(value.pdf);
-                                        setState(() {
-                                          pdfString = value.pdf;
-                                        });
-                                      });
+                                          await info
+                                              .postInfo(
+                                                  widget.rutRec,
+                                                  widget.razSocRec,
+                                                  widget.giroRec,
+                                                  widget.dirRec,
+                                                  widget.comRec,
+                                                  totAmou,
+                                                  totIva,
+                                                  totBruto,
+                                                  mntPeriodo,
+                                                  vlrPagar,
+                                                  llenarDetalle)
+                                              .then((value) {
+                                            print(value.pdf);
+                                            setState(() {
+                                              pdfString = value.pdf;
+                                            });
+                                          });
 
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => PdfPage(
-                                                    pdfString: pdfString,
-                                                  )),
-                                          (Route<dynamic> route) => false);
-                                    },
-                                    child: Text('Confirmar')),
-                                FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancelar'))
-                              ],
-                            ));
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: Text('Alerta'),
-                              content: Text(
-                                  'No puede hacer una factura sin productos'),
-                              actions: [
-                                FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Ok'))
-                              ],
-                            ));
-                  }
-                })
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => PdfPage(
+                                                        pdfString: pdfString,
+                                                      )),
+                                              (Route<dynamic> route) => false);
+                                        },
+                                        child: Text('Confirmar')),
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Cancelar'))
+                                  ],
+                                ));
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('Alerta'),
+                                  content: Text(
+                                      'No puede hacer una factura sin productos'),
+                                  actions: [
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Ok'))
+                                  ],
+                                ));
+                      }
+                    }),
+              ),
+            )
           ],
         ),
       ),
