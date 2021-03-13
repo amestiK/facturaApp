@@ -45,10 +45,10 @@ class _LoginPageState extends State<LoginPage> {
       final user = (await _auth.signInWithCredential(credential)).user;
       print("signed in " + user.displayName);
 
-      if (prefs.apiKey.toString().isNotEmpty) {
-        return Navigator.pushReplacementNamed(context, 'HomePage');
-      } else {
+      if (prefs.apiValid == false) {
         return Navigator.pushReplacementNamed(context, 'Preferencias');
+      } else {
+        return Navigator.pushReplacementNamed(context, 'HomePage');
       }
     } catch (e) {
       print(e.message);
@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacementNamed(context, 'HomePage');
       }
     } else {
-      mostrarAlerta(context, info['Datos incorrectos, ingreselos nuevamente']);
+      mostrarAlerta(context, info['mensaje']);
     }
     // if (info['ok'] == true && prefs.apiKey.toString().isEmpty) {
     //   Navigator.pushReplacementNamed(context, 'Preferencias');
