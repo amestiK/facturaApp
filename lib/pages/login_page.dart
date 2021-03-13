@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacementNamed(context, 'HomePage');
       }
     } else {
-      mostrarAlerta(context, info['mensaje']);
+      mostrarAlerta(context, 'Datos incorrectos, ingreselos nuevamente');
     }
     // if (info['ok'] == true && prefs.apiKey.toString().isEmpty) {
     //   Navigator.pushReplacementNamed(context, 'Preferencias');
