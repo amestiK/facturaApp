@@ -140,14 +140,13 @@ class LoginPage extends StatelessWidget {
     Map info = await usuarioProvider.login(bloc.email, bloc.password);
 
     if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'HomePage');
+      if (prefs.apiValid == false) {
+        Navigator.pushReplacementNamed(context, 'Preferencias');
+      } else {
+        Navigator.pushReplacementNamed(context, 'HomePage');
+      }
     } else {
       mostrarAlerta(context, info['mensaje']);
-    }
-    if (prefs.apiKey == "") {
-      Navigator.pushReplacementNamed(context, 'Preferencias');
-    } else {
-      Navigator.pushReplacementNamed(context, 'HomePage');
     }
   }
 

@@ -138,6 +138,15 @@ class PreferenciasUsuario {
     _prefs.setString('token', value);
   }
 
+//GET Y SET de email
+  get apiValid {
+    return _prefs.getBool('apiValid') ?? false;
+  }
+
+  set apiValid(bool value) {
+    _prefs.setBool('apiValid', value);
+  }
+
   //GET Y SET de la ultima pagina
   /*get ultimaPagina {
     return _prefs.getString('ultimaPagina') ?? 'LoginPage';

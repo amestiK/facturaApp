@@ -16,11 +16,14 @@ class OrgProvider {
 
     final resp = await http.get(url, headers: {'apikey': prefs.apiKey});
 
-    final Map<String, dynamic> decodedData = json.decode(resp.body);
+    if (resp.statusCode == 200) {
+      final Map<String, dynamic> decodedData = json.decode(resp.body);
 
-    OrganizationModel infoOrg = new OrganizationModel.fromJson(decodedData);
-
-    return infoOrg;
+      OrganizationModel infoOrg = new OrganizationModel.fromJson(decodedData);
+      return infoOrg;
+    } else {
+      return null;
+    }
   }
 
   Future<RegistryModel> cargarReg(

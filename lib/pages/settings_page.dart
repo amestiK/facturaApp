@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:factura/Constantsset.dart';
+import 'package:factura/providers/organizationProvider.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:dio/dio.dart';
 import 'package:factura/folder_file_saver.dart';
@@ -41,6 +42,8 @@ class _SettingsPageState extends State<SettingsPage> {
   FileType _pickingType = FileType.any;
 
   InfoProvider info = InfoProvider();
+  OrgProvider org = OrgProvider();
+  bool apiValid = false;
   bool _isLoading = false;
   //FILE PICKER
 
@@ -60,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController _textControllerrut = TextEditingController();
   TextEditingController _textControllertelef = TextEditingController();
   TextEditingController _textControllerDesc = TextEditingController();
+
   //TextEditingController _textControllerdate;
   TextEditingController _textControllerdata = TextEditingController();
 
@@ -281,8 +285,50 @@ class _SettingsPageState extends State<SettingsPage> {
                   labelText: 'ApiKey',
                   helperText: 'Ingrese apiKey',
                 ),
-                onChanged: (value) {
+                onSubmitted: (value) async {
                   prefs.apiKey = value;
+
+                  print("Text $value");
+                  var resp;
+
+                  await org.cargarOrg().then((value) => resp = value);
+
+                  if (resp != null) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Alerta'),
+                              content: Text('La apiKey es válida!'),
+                              actions: [
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Aceptar'))
+                              ],
+                            ));
+                    setState(() {
+                      prefs.apiValid = true;
+                    });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Alerta'),
+                              content: Text(
+                                  'La apiKey es inválida, pruebe ingresando otra.'),
+                              actions: [
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Aceptar'))
+                              ],
+                            ));
+                    setState(() {
+                      prefs.apiValid = false;
+                    });
+                  }
                 },
               ),
             ),
@@ -374,19 +420,19 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z á-ú Á-Ú]'))
-                ],
-                controller: _textControllerDesc,
-                //obscureText: true,
-                decoration: InputDecoration(
-                    labelText: 'Descripción',
-                    helperText: 'Ingrese una descripción',
-                    hintText: 'Venta de alcohol'),
-                onChanged: (value) {
-                  prefs.descripcion = value;
-                },
-              ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp('[a-z A-Z á-ú Á-Ú]'))
+                  ],
+                  controller: _textControllerDesc,
+                  //obscureText: true,
+                  decoration: InputDecoration(
+                      labelText: 'Descripción',
+                      helperText: 'Ingrese una descripción',
+                      hintText: 'Venta de alcohol'),
+                  onChanged: (value) {
+                    prefs.descripcion = value;
+                  }),
             ),
             Center(
                 child: Padding(
@@ -627,12 +673,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void choiceAction(String choice) {
     if (choice == ConstantsSett.HomePage) {
-      if (prefs.apiKey == null || prefs.apiKey == "") {
+      if (prefs.apiValid == false) {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
                   title: Text('Alerta'),
-                  content: Text('No puede navegar a Inicio sin una apiKey'),
+                  content: Text('Debe ingresar una apiKey válida'),
                   actions: [
                     FlatButton(
                         onPressed: () {
