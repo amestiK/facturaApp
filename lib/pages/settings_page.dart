@@ -443,41 +443,41 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
-                      child: DropdownButton(
-                          hint: Text('LOAD PATH FROM'),
-                          value: _pickingType,
-                          items: <DropdownMenuItem>[
-                            DropdownMenuItem(
-                              child: Text('FROM AUDIO'),
-                              value: FileType.audio,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('FROM IMAGE'),
-                              value: FileType.image,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('FROM VIDEO'),
-                              value: FileType.video,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('FROM MEDIA'),
-                              value: FileType.media,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('FROM ANY'),
-                              value: FileType.any,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('CUSTOM FORMAT'),
-                              value: FileType.custom,
-                            ),
-                          ],
-                          onChanged: (value) => setState(() {
-                                _pickingType = value;
-                                if (_pickingType != FileType.custom) {
-                                  _controller.text = _extension = '';
-                                }
-                              })),
+                      // child: DropdownButton(
+                      //     // hint: Text('LOAD PATH FROM'),
+                      //     // value: _pickingType,
+                      //     // items: <DropdownMenuItem>[
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('FROM AUDIO'),
+                      //     //     value: FileType.audio,
+                      //     //   ),
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('FROM IMAGE'),
+                      //     //     value: FileType.image,
+                      //     //   ),
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('FROM VIDEO'),
+                      //     //     value: FileType.video,
+                      //     //   ),
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('FROM MEDIA'),
+                      //     //     value: FileType.media,
+                      //     //   ),
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('FROM ANY'),
+                      //     //     value: FileType.any,
+                      //     //   ),
+                      //     //   DropdownMenuItem(
+                      //     //     child: Text('CUSTOM FORMAT'),
+                      //     //     value: FileType.custom,
+                      //     //   ),
+                      //     // ],
+                      //     onChanged: (value) => setState(() {
+                      //           _pickingType = value;
+                      //           if (_pickingType != FileType.custom) {
+                      //             _controller.text = _extension = '';
+                      //           }
+                      //         })),
                     ),
                     ConstrainedBox(
                       constraints: const BoxConstraints.tightFor(width: 100.0),
@@ -493,32 +493,32 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                           : const SizedBox(),
                     ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.tightFor(width: 200.0),
-                      child: SwitchListTile.adaptive(
-                        title: Text('Pick multiple files',
-                            textAlign: TextAlign.right),
-                        onChanged: (bool value) =>
-                            setState(() => _multiPick = value),
-                        value: _multiPick,
-                      ),
-                    ),
+                    // ConstrainedBox(
+                    //   constraints: const BoxConstraints.tightFor(width: 200.0),
+                    //   child: SwitchListTile.adaptive(
+                    //     title: Text('Pick multiple files',
+                    //         textAlign: TextAlign.right),
+                    //     onChanged: (bool value) =>
+                    //         setState(() => _multiPick = value),
+                    //     value: _multiPick,
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
                       child: Column(
                         children: <Widget>[
                           RaisedButton(
                             onPressed: () => _openFileExplorer(),
-                            child: Text("Open file picker"),
+                            child: Text("Abrir carpeta de archivos"),
                           ),
-                          RaisedButton(
-                            onPressed: () => _selectFolder(),
-                            child: Text("Pick folder"),
-                          ),
-                          RaisedButton(
-                            onPressed: () => _clearCachedFiles(),
-                            child: Text("Clear temporary files"),
-                          ),
+                          // RaisedButton(
+                          //   onPressed: () => _selectFolder(),
+                          //   child: Text("Pick folder"),
+                          // ),
+                          // RaisedButton(
+                          //   onPressed: () => _clearCachedFiles(),
+                          //   child: Text("Clear temporary files"),
+                          // ),
                         ],
                       ),
                     ),
@@ -530,7 +530,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                           : _directoryPath != null
                               ? ListTile(
-                                  title: Text('Directory path'),
+                                  title: Text('Ruta del directorio'),
                                   subtitle: Text(_directoryPath),
                                 )
                               : _paths != null
@@ -551,12 +551,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                           final bool isMultiPath =
                                               _paths != null &&
                                                   _paths.isNotEmpty;
-                                          final String name = 'File $index: ' +
-                                              (isMultiPath
-                                                  ? _paths
-                                                      .map((e) => e.name)
-                                                      .toList()[index]
-                                                  : _fileName ?? '...');
+                                          final String name =
+                                              'Archivo $index: ' +
+                                                  (isMultiPath
+                                                      ? _paths
+                                                          .map((e) => e.name)
+                                                          .toList()[index]
+                                                      : _fileName ?? '...');
                                           final path = _paths
                                               .map((e) => e.path)
                                               .toList()[index]
