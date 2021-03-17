@@ -42,6 +42,7 @@ dependencies:
   firebase_core: ^0.7.0
   firebase_auth: ^0.20.1
   provider: ^4.3.3
+  flutter_signin_button: ^1.1.0
 
   # dart.io
   io: ^0.3.4

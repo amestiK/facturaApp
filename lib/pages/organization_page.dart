@@ -1,6 +1,8 @@
 import 'package:factura/model/organizationModel.dart';
+import 'package:factura/pages/receptor_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
 import 'package:factura/providers/organizationProvider.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,6 +19,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
   String fechaFormateada = '';
   List<Actividade> act = [];
+  PreferenciasUsuario prefs = PreferenciasUsuario();
+
+  String rutEmi;
+  String rznEmi;
+  String giroEmi;
+  String actEmi;
+  String dirEmi;
+  String cmaEmi;
+  String codEmi;
 
   String giro = '';
   String actEco = '';
@@ -48,9 +59,12 @@ class _OrganizationPageState extends State<OrganizationPage> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
+            SizedBox(height: 60.0),
+            Text('Bienvenido: ' + prefs.nombreGoogle,
+                style: TextStyle(fontSize: 20.0))
           ],
         ),
       ),
@@ -73,7 +87,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
             if (act[i].actividadPrincipal == true) {
               giro = act[i].giro;
               actEco = act[i].actividadEconomica;
-              codActEco = act[i].codigoActividadEconomica;
+              prefs.actEmi = codActEco = act[i].codigoActividadEconomica;
             }
           }
           return ListView.builder(
@@ -89,7 +103,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                                 padding: EdgeInsets.fromLTRB(0, 8, 0, 20),
                                 width: MediaQuery.of(context).size.width - 8,
                                 child: Text(
-                                  'Bienvenido ${infoOrg.razonSocial == null ? "" : infoOrg.razonSocial}',
+                                  'Bienvenido ${prefs.rznEmi = infoOrg.razonSocial}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                   textAlign: TextAlign.center,
@@ -104,15 +118,13 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text(
-                                '${infoOrg.rut == null ? "" : infoOrg.rut}',
+                            child: Text('${prefs.rutEmi = infoOrg.rut}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text(
-                                '${infoOrg.nombreFantasia == null ? "" : infoOrg.nombreFantasia}',
+                            child: Text('${infoOrg.nombreFantasia}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -122,15 +134,13 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text(
-                                '${infoOrg.email == null ? "" : infoOrg.email}',
+                            child: Text('${infoOrg.email}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text(
-                                '${infoOrg.telefono == null ? "" : infoOrg.telefono}',
+                            child: Text('${infoOrg.telefono}',
                                 style: TextStyle(color: Colors.white)),
                           )
                         ],
@@ -140,15 +150,14 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text(
-                                '${infoOrg.direccion == null ? "" : infoOrg.direccion}',
+                            child: Text('${prefs.dirEmi = infoOrg.direccion}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                'Codigo Sucursal: ${infoOrg.cdgSiiSucur == null ? "" : infoOrg.cdgSiiSucur}',
+                                'Codigo Sucursal: ${prefs.codEmi = infoOrg.cdgSiiSucur}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -159,14 +168,14 @@ class _OrganizationPageState extends State<OrganizationPage> {
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
                             child: Text(
-                                '${infoOrg.glosaDescriptiva == null ? "" : infoOrg.glosaDescriptiva}',
+                                '${prefs.giroEmi = infoOrg.glosaDescriptiva}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                '${infoOrg.direccionRegional == null ? "" : infoOrg.direccionRegional}',
+                                '${prefs.cmaEmi = infoOrg.direccionRegional}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -176,14 +185,14 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
-                            child: Text('${actEco == null ? "" : actEco}',
+                            child: Text('${actEco == null ? '' : actEco}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                '${infoOrg.web == null ? "" : infoOrg.web}',
+                                '${infoOrg.web == null ? 'Web : No especificada' : infoOrg.web}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -194,7 +203,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2,
                             child: Text(
-                                'Resolución\nFecha : ${fechaFormateada == null ? 'Fecha : ' : fechaFormateada}\nNumero: ${infoOrg.resolucion.numero == null ? "" : infoOrg.resolucion.numero}',
+                                'Resolución\nFecha : ${fechaFormateada == null ? 'Fecha : ' : fechaFormateada}\nNumero: ${infoOrg.resolucion.numero} ',
                                 style: TextStyle(color: Colors.white)),
                           )
                         ],

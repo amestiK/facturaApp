@@ -18,6 +18,63 @@ class PreferenciasUsuario {
     }
   }
 
+  //Get y Set de los valores del receptor
+  get rutEmi {
+    return _prefs.getString('rutEmi') ?? '';
+  }
+
+  set rutEmi(String value) {
+    _prefs.setString('rutEmi', value);
+  }
+
+  get rznEmi {
+    return _prefs.getString('rznEmi') ?? '';
+  }
+
+  set rznEmi(String value) {
+    _prefs.setString('rznEmi', value);
+  }
+
+  get giroEmi {
+    return _prefs.getString('giroEmi') ?? '';
+  }
+
+  set giroEmi(String value) {
+    _prefs.setString('giroEmi', value);
+  }
+
+  get actEmi {
+    return _prefs.getString('actEmi') ?? '';
+  }
+
+  set actEmi(String value) {
+    _prefs.setString('actEmi', value);
+  }
+
+  get dirEmi {
+    return _prefs.getString('dirEmi') ?? '';
+  }
+
+  set dirEmi(String value) {
+    _prefs.setString('dirEmi', value);
+  }
+
+  get cmaEmi {
+    return _prefs.getString('cmaEmi') ?? '';
+  }
+
+  set cmaEmi(String value) {
+    _prefs.setString('cmaEmi', value);
+  }
+
+  get codEmi {
+    return _prefs.getString('codEmi') ?? '';
+  }
+
+  set codEmi(String value) {
+    _prefs.setString('codEmi', value);
+  }
+
   //GET Y SET del GENERO
   /*get genero {
     return _prefs.getInt('genero') ?? 1;
@@ -92,6 +149,14 @@ class PreferenciasUsuario {
 
   set nombre(String value) {
     _prefs.setString('nombre', value);
+  }
+
+  get nombreGoogle {
+    return _prefs.getString('nombreGoogle') ?? '';
+  }
+
+  set nombreGoogle(String value) {
+    _prefs.setString('nombreGoogle', value);
   }
 
   //GET Y SET de telefono

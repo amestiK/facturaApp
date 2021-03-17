@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:factura/model/boletaModel.dart';
+import 'package:factura/model/organizationModel.dart';
 import 'package:factura/model/pdfModel.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
@@ -97,7 +98,22 @@ class InfoProvider {
     }
   }
 
+  // "RUTEmisor": "76430498-5",
+  //           "RznSoc": "HOSTY SPA",
+  //           "GiroEmis": "EMPRESAS DE SERVICIOS INTEGRALES DE INFORMÁTICA",
+  //           "Acteco": "620200",
+  //           "DirOrigen": "ARTURO PRAT 527 3 pis OF 1",
+  //           "CmnaOrigen": "Curicó",
+  //           "CdgSIISucur": "79457965"
+
   Future<PdfModel> postInfo(
+      String rutEmi,
+      String rznEmi,
+      String giroEmi,
+      String actEmi,
+      String dirEmi,
+      String cmaEmi,
+      String codEmi,
       String rutRec,
       String razSocRec,
       String giroRec,
@@ -128,14 +144,13 @@ class InfoProvider {
             "FmaPago": "2"
           },
           "Emisor": {
-            "RUTEmisor": "76795561-8",
-            "RznSoc": "HAULMER SPA",
-            "GiroEmis": "VENTAALPORMENORPORCORREO,PORINTERNETYVIATELEFONICA",
-            "Acteco": "479100",
-            "DirOrigen": "ARTUROPRAT527CURICO",
-            "CmnaOrigen": "Curicó",
-            "Telefono": "00",
-            "CdgSIISucur": "81303347"
+            "RUTEmisor": rutEmi,
+            "RznSoc": rznEmi,
+            "GiroEmis": giroEmi,
+            "Acteco": actEmi,
+            "DirOrigen": dirEmi,
+            "CmnaOrigen": cmaEmi,
+            "CdgSIISucur": codEmi
           },
           "Receptor": {
             "RUTRecep": rutRec,

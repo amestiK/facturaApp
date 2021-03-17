@@ -9,6 +9,8 @@ import 'package:factura/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -44,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
       final user = (await _auth.signInWithCredential(credential)).user;
       print("signed in " + user.displayName);
+      prefs.nombreGoogle = user.displayName;
 
       if (prefs.apiValid == false) {
         return Navigator.pushReplacementNamed(context, 'Preferencias');
@@ -191,19 +194,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget _crearBotonGoogle() {
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return RaisedButton(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-              child: Text('Ingresar'),
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
-            elevation: 0.0,
-            color: Colors.deepPurple,
-            textColor: Colors.white,
+        return SignInButton(Buttons.Google,
+            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
             onPressed: () {
-              _googleSignUp();
-            });
+          _googleSignUp();
+        });
       },
     );
   }

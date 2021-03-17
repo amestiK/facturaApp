@@ -7,6 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class FacturaPage extends StatefulWidget {
+  final String rutEmi;
+  final String rznEmi;
+  final String giroEmi;
+  final String actEmi;
+  final String dirEmi;
+  final String cmaEmi;
+  final String codEmi;
   final String rutRec;
   final String razSocRec;
   final String giroRec;
@@ -15,6 +22,13 @@ class FacturaPage extends StatefulWidget {
 
   const FacturaPage(
       {Key key,
+      this.rutEmi,
+      this.rznEmi,
+      this.giroEmi,
+      this.actEmi,
+      this.dirEmi,
+      this.cmaEmi,
+      this.codEmi,
       this.rutRec,
       this.razSocRec,
       this.giroRec,
@@ -481,6 +495,13 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                           await info
                                               .postInfo(
+                                                  widget.rutEmi,
+                                                  widget.rznEmi,
+                                                  widget.giroEmi,
+                                                  widget.actEmi,
+                                                  widget.dirEmi,
+                                                  widget.cmaEmi,
+                                                  widget.codEmi,
                                                   widget.rutRec,
                                                   widget.razSocRec,
                                                   widget.giroRec,

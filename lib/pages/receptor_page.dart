@@ -1,5 +1,6 @@
 import 'package:factura/Constants.dart';
 import 'package:factura/pages/factura_page.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:factura/model/InfoModel.dart';
 import 'package:dart_rut_validator/dart_rut_validator.dart';
@@ -15,6 +16,8 @@ class ReceptorPage extends StatefulWidget {
 }
 
 class _ReceptorPageState extends State<ReceptorPage> {
+  //SharePreferences
+  PreferenciasUsuario prefs = PreferenciasUsuario();
   //Var de infoModel.dart e infoProvider.dart.
   InfoModel info = new InfoModel();
   final infoProvider = new InfoProvider();
@@ -38,6 +41,14 @@ class _ReceptorPageState extends State<ReceptorPage> {
 
   bool desplegar = false;
 
+  String rutEmi;
+  String rznEmi;
+  String giroEmi;
+  String actEmi;
+  String dirEmi;
+  String cmaEmi;
+  String codEmi;
+  String actecoEmi;
   String rutRec;
   String razSocRec;
   String giroRec;
@@ -549,9 +560,32 @@ class _ReceptorPageState extends State<ReceptorPage> {
           giroRec != "" &&
           giroRec != "" &&
           dirRec != "" &&
-          comRec != "") {
+          comRec != "" &&
+          rutEmi != null &&
+          rznEmi != null &&
+          giroEmi != null &&
+          actEmi != null &&
+          dirEmi != null &&
+          cmaEmi != null &&
+          codEmi != null &&
+          actecoEmi != null &&
+          rutEmi != "" &&
+          rznEmi != "" &&
+          giroEmi != "" &&
+          actEmi != "" &&
+          dirEmi != "" &&
+          cmaEmi != "" &&
+          codEmi != "" &&
+          actecoEmi != "") {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => FacturaPage(
+                  rutEmi: prefs.rutEmi,
+                  rznEmi: prefs.rznEmi,
+                  giroEmi: prefs.giroEmi,
+                  actEmi: prefs.actEmi,
+                  dirEmi: prefs.dirEmi,
+                  cmaEmi: prefs.cmaEmi,
+                  codEmi: prefs.codEmi,
                   rutRec: rutRec,
                   razSocRec: razSocRec,
                   giroRec: giroRec,
