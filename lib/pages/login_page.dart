@@ -88,8 +88,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
             width: size.width * 0.85,
-            margin: EdgeInsets.symmetric(vertical: 30.0),
-            padding: EdgeInsets.symmetric(vertical: 50.0),
+            margin: EdgeInsets.symmetric(vertical: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 30.0),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5.0),
