@@ -1,10 +1,12 @@
 import 'package:factura/bloc/provider.dart';
 import 'package:factura/pages/utils.dart';
 import 'package:factura/providers/usuario_provider.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 
 class RegistroPage extends StatelessWidget {
   final usuarioProvider = new UsuarioProvider();
+  PreferenciasUsuario prefs = PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +133,13 @@ class RegistroPage extends StatelessWidget {
     //metodo que nos permite crear un nuevo usuario
     final info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
     if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'HomePage');
+      if (prefs.apiValid == false) {
+        Navigator.pushReplacementNamed(context, 'Preferencias');
+      } else {
+        Navigator.pushReplacementNamed(context, 'HomePage');
+      }
     } else {
-      mostrarAlerta(context, info['mensaje']);
+      mostrarAlerta(context, 'Datos incorrectos, ingreselos nuevamente');
     }
   }
 

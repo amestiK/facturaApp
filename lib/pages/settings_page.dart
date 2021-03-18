@@ -63,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController _textControllerrut = TextEditingController();
   TextEditingController _textControllertelef = TextEditingController();
   TextEditingController _textControllerDesc = TextEditingController();
+  TextEditingController _textControllerFecha = TextEditingController();
 
   //TextEditingController _textControllerdate;
   TextEditingController _textControllerdata = TextEditingController();
@@ -79,17 +80,22 @@ class _SettingsPageState extends State<SettingsPage> {
 
   DateTime _date = new DateTime.now();
 
+  //final formato = new DateFormat.yMMMMd('es_CL');
+
   Future<Null> _selectDate(BuildContext context) async {
     DateTime _datePicker = await showDatePicker(
         context: context,
         initialDate: _date,
-        currentDate: prefs.fecha,
+        currentDate: _date,
         firstDate: DateTime(1947),
         lastDate: DateTime(2100));
     if (_datePicker != null && _datePicker != _date) {
       setState(() {
         _date = _datePicker;
-        prefs.fecha = _datePicker.toString();
+        var date =
+            "${_datePicker.toLocal().day}/${_datePicker.toLocal().month}/${_datePicker.toLocal().year}";
+        _textControllerFecha.text = date;
+        prefs.fecha = date;
       });
     }
   }
@@ -112,6 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
     //_colorSecundario = prefs.colorSecundario;
     //dropdownValue = prefs.combo;
     // _selectedItem = _dropdownMenuItems[0].value;
+    _textControllerFecha = new TextEditingController(text: prefs.fecha);
     _textControllernomb = new TextEditingController(text: prefs.nombre);
     _textController = new TextEditingController(text: prefs.apiKey);
     _textControllerEm = new TextEditingController(text: prefs.email);
@@ -120,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _textControllerDesc = new TextEditingController(text: prefs.descripcion);
     _imagepath = prefs.image;
     //prefs.image = _imagepath;
-    prefs.fecha;
+    //prefs.fecha;
     //prefs.fecha = (_date).toString();
     _controller.addListener(() => _extension = _controller.text);
     prefs.pathsii;
@@ -203,11 +210,6 @@ class _SettingsPageState extends State<SettingsPage> {
   //Widget
   @override
   Widget build(BuildContext context) {
-    /*var json = JsonDecoder().convert(data.toString());
-    _ite = (json).map<Item>((data) {
-      return Item.fromJson(data);
-    }).toList();
-    dropdownValue = _ite[0].item.toString();*/
     var df = new DateFormat.yMMMd().format(_date);
     return Scaffold(
       appBar: AppBar(
@@ -379,7 +381,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 decoration: InputDecoration(
                     labelText: 'Rut',
                     helperText: 'Ingrese su Rut',
-                    hintText: '156982320'),
+                    hintText: '15698232-0'),
+                maxLength: 10,
                 onChanged: (value) {
                   prefs.rut = value;
                 },
@@ -405,6 +408,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: TextFormField(
+                  controller: _textControllerFecha,
                   showCursor: true,
                   readOnly: true,
                   onTap: () {
