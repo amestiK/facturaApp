@@ -561,23 +561,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
           giroRec != "" &&
           giroRec != "" &&
           dirRec != "" &&
-          comRec != "" &&
-          rutEmi != null &&
-          rznEmi != null &&
-          giroEmi != null &&
-          actEmi != null &&
-          dirEmi != null &&
-          cmaEmi != null &&
-          codEmi != null &&
-          actecoEmi != null &&
-          rutEmi != "" &&
-          rznEmi != "" &&
-          giroEmi != "" &&
-          actEmi != "" &&
-          dirEmi != "" &&
-          cmaEmi != "" &&
-          codEmi != "" &&
-          actecoEmi != "") {
+          comRec != "") {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => FacturaPage(
                   rutEmi: prefs.rutEmi,
