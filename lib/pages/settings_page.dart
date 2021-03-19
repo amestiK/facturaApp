@@ -287,7 +287,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   labelText: 'ApiKey',
                   helperText: 'Ingrese apiKey',
                 ),
-                onSubmitted: (value) async {
+                onChanged: (value) async {
                   prefs.apiKey = value;
 
                   print("Text $value");
@@ -295,7 +295,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
                   await org.cargarOrg().then((value) => resp = value);
 
-                  if (resp != null) {
+                  if (value.length != 32) {
+                    setState(() {
+                      prefs.apiValid = false;
+                    });
+                    return;
+                  } else if (resp != null) {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -376,6 +381,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
                 ],
+                validator: RUTValidator().validator,
                 controller: _textControllerrut,
                 //obscureText: true,
                 decoration: InputDecoration(
@@ -384,7 +390,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     hintText: '15698232-0'),
                 maxLength: 10,
                 onChanged: (value) {
-                  prefs.rut = value;
+                  if (_formKey.currentState.validate()) {
+                    setState(() {
+                      RUTValidator.formatFromText(_textControllerrut.text);
+                    });
+                    prefs.rut = value;
+                  } else {
+                    prefs.rut = "";
+                  }
                 },
               ),
             ),

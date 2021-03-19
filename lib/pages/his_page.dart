@@ -313,7 +313,10 @@ class __ListaRegistrosState extends State<_ListaRegistros> {
         _progressDialog = ArsProgressDialog(context,
             blur: 2,
             backgroundColor: Color(0x33000000),
-            animationDuration: Duration(milliseconds: 500));
+            animationDuration: const Duration(seconds: 1)
+            // animationDuration: Duration(
+            //   milliseconds: 1,
+            );
 
         return ListTile(
           title: Text(

@@ -52,7 +52,7 @@ class _HomePageState extends State<PdfPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 550),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 520),
             child: FloatingActionButton(
               backgroundColor: Colors.purple,
               heroTag: btn2,
@@ -69,13 +69,16 @@ class _HomePageState extends State<PdfPage> {
               },
             ),
           ),
-          FloatingActionButton(
-            backgroundColor: Colors.purple,
-            heroTag: btn2,
-            child: Icon(Icons.share),
-            onPressed: () {
-              onTabTapped(0);
-            },
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 32),
+            child: FloatingActionButton(
+              backgroundColor: Colors.purple,
+              heroTag: btn2,
+              child: Icon(Icons.share),
+              onPressed: () {
+                onTabTapped(0);
+              },
+            ),
           ),
         ],
       ),

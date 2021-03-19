@@ -102,75 +102,92 @@ class _FacturaPageState extends State<FacturaPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextFormField(
-                maxLength: 20,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[A-Z a-z0-9]')),
-                ],
-                enabled: descState,
-                keyboardType: TextInputType.text,
-                controller: desCon,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  labelText: 'Descripción',
+            Container(
+              height: 70,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextFormField(
+                  maxLength: 20,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp('[A-Z a-z0-9]')),
+                  ],
+                  enabled: descState,
+                  keyboardType: TextInputType.text,
+                  controller: desCon,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    labelText: 'Descripción',
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Por favor ingresa una descripción';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Por favor ingresa una descripción';
-                  }
-                  return null;
-                },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextFormField(
-                maxLength: 4,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-                ],
-                keyboardType: TextInputType.number,
-                controller: quanCon,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  labelText: 'Cantidad',
+            Row(
+              children: [
+                Container(
+                  height: 70,
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextFormField(
+                      maxLength: 7,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                      ],
+                      keyboardType: TextInputType.number,
+                      controller: quanCon,
+                      decoration: InputDecoration(
+                        counterText: "",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        labelText: 'Cantidad',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Ingrese un valor';
+                        } else if (int.parse(value) > 1000000) {
+                          return 'Cant. max 1000000';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Ingrese un valor en cantidad';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextFormField(
-                maxLength: 6,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-                ],
-                keyboardType: TextInputType.number,
-                controller: amouCon,
-                decoration: InputDecoration(
-                  counterText: "",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  labelText: 'Monto',
+                Container(
+                  height: 70,
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextFormField(
+                      maxLength: 7,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                      ],
+                      keyboardType: TextInputType.number,
+                      controller: amouCon,
+                      decoration: InputDecoration(
+                        counterText: "",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        labelText: 'Monto',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Ingrese un valor';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Ingrese un valor en el monto';
-                  }
-                  return null;
-                },
-              ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -261,7 +278,7 @@ class _FacturaPageState extends State<FacturaPage> {
             Expanded(
                 flex: 1,
                 child: ListView.builder(
-                  itemCount: rows.length,
+                  itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -270,7 +287,7 @@ class _FacturaPageState extends State<FacturaPage> {
                           Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            child: DataTable(columnSpacing: 16, columns: [
+                            child: DataTable(columnSpacing: 3, columns: [
                               DataColumn(
                                 label: Text('N°'),
                               ),
@@ -284,7 +301,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                 label: Text('Neto'),
                               ),
                               DataColumn(
-                                label: Text('Monto total'),
+                                label: Text('Total'),
                               ),
                             ], rows: [
                               ...rows.map(
@@ -304,7 +321,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                     DataCell(
                                       Container(
                                         alignment: Alignment.centerLeft,
-                                        width: 76,
+                                        width: 80,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -325,6 +342,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                     ),
                                     DataCell(
                                       Container(
+                                          width: 63,
                                           alignment: Alignment.centerRight,
                                           child: Text(f
                                               .format(element.quantity)
@@ -333,6 +351,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                     ),
                                     DataCell(
                                       Container(
+                                          width: 63,
                                           alignment: Alignment.centerRight,
                                           child: Text(f
                                               .format(element.amount)
@@ -341,7 +360,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                     ),
                                     DataCell(
                                       Container(
-                                        width: 100,
+                                        width: 118,
                                         alignment: Alignment.centerRight,
                                         child: Text(f
                                             .format(montoTotalPro =
