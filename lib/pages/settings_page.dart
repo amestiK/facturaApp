@@ -377,7 +377,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
+              child: TextFormField(
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9-k]'))
                 ],
