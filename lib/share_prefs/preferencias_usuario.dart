@@ -105,11 +105,11 @@ class PreferenciasUsuario {
 
   //GET Y SET de rut
   get rut {
-    return _prefs.getInt('rut') ?? '';
+    return _prefs.getString('rut') ?? '';
   }
 
   set rut(String value) {
-    _prefs.getInt(value);
+    _prefs.setString('rut', value);
   }
 
   //GET Y SET de ApiKey

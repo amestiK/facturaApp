@@ -75,7 +75,8 @@ class _ReceptorPageState extends State<ReceptorPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(20, 16, 20, 10),
+                      height: 105,
+                      width: MediaQuery.of(context).size.width - 80,
                       child: Center(
                         child: TextFormField(
                           cursorColor: Colors.white,
@@ -96,7 +97,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                                   borderSide: BorderSide(color: Colors.white),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(30))),
-                              prefixText: 'Rut : ',
+                              prefixText: 'Rut receptor: ',
                               labelStyle: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
@@ -204,7 +205,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                       Container(
                         padding: EdgeInsets.fromLTRB(0, 8, 0, 20),
                         child: Text(
-                          'Información de la factura',
+                          'Información',
                           style: TextStyle(
                               color: Colors.deepPurple,
                               fontSize: 20,
@@ -213,7 +214,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height,
+                        height: 400,
                         width: MediaQuery.of(context).size.width - 20,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
