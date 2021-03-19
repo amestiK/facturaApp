@@ -78,89 +78,93 @@ class _ReceptorPageState extends State<ReceptorPage> {
         body: Column(
           children: [
             Expanded(
+                flex: 2,
                 child: Container(
-              color: Colors.deepPurple[500],
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 105,
-                      width: MediaQuery.of(context).size.width - 80,
-                      child: Center(
-                        child: TextFormField(
-                          cursorColor: Colors.white,
-                          style: TextStyle(color: Colors.white),
-                          maxLength: 10,
-                          controller: rutt,
-                          validator: RUTValidator().validator,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('[0-9-]'))
-                          ],
-                          decoration: InputDecoration(
-                              counterText: "",
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30))),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30))),
-                              prefixText: 'Rut receptor: ',
-                              labelStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              prefixIcon: Icon(
-                                Icons.domain,
-                                color: Colors.white,
-                              ),
-                              prefixStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              labelText: 'Ej: 70657324-7'),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  color: Colors.deepPurple[500],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(200.0)),
-                            color: Colors.deepPurple[700],
-                            textColor: Colors.white,
-                            onPressed: () {
-                              if (_formKey.currentState.validate()) {
+                        Container(
+                          height: 105,
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: Center(
+                            child: TextFormField(
+                              cursorColor: Colors.white,
+                              style: TextStyle(color: Colors.white),
+                              maxLength: 10,
+                              controller: rutt,
+                              validator: RUTValidator().validator,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp('[0-9-]'))
+                              ],
+                              decoration: InputDecoration(
+                                  counterText: "",
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  prefixText: 'Rut receptor: ',
+                                  labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  prefixIcon: Icon(
+                                    Icons.domain,
+                                    color: Colors.white,
+                                  ),
+                                  prefixStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  labelText: 'Ej: 70657324-7'),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(200.0)),
+                                color: Colors.deepPurple[700],
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() {
+                                      RUTValidator.formatFromText(rutt.text);
+                                      _limpiarForm();
+                                      desplegar = true;
+                                    });
+                                  }
+                                },
+                                child: Text('Buscar')),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(200.0)),
+                              color: Colors.deepPurple[700],
+                              textColor: Colors.white,
+                              onPressed: () {
                                 setState(() {
-                                  RUTValidator.formatFromText(rutt.text);
                                   _limpiarForm();
-                                  desplegar = true;
+                                  rutt.clear();
+                                  desplegar = false;
                                 });
-                              }
-                            },
-                            child: Text('Buscar')),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200.0)),
-                          color: Colors.deepPurple[700],
-                          textColor: Colors.white,
-                          onPressed: () {
-                            setState(() {
-                              _limpiarForm();
-                              rutt.clear();
-                              desplegar = false;
-                            });
-                          },
-                          child: Text('Limpiar'),
-                        )
+                              },
+                              child: Text('Limpiar'),
+                            )
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            )),
+                  ),
+                )),
             Expanded(
                 flex: 3,
                 child: desplegar == false ? Text('') : _crearListado(rutt.text))
