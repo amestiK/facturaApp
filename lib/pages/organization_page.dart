@@ -3,6 +3,7 @@ import 'package:factura/pages/receptor_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
 import 'package:factura/providers/organizationProvider.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +21,12 @@ class _OrganizationPageState extends State<OrganizationPage> {
   String fechaFormateada = '';
   List<Actividade> act = [];
   PreferenciasUsuario prefs = PreferenciasUsuario();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  signOut() async {
+    await auth.signOut();
+    Navigator.pushReplacementNamed(context, 'LoginPage');
+  }
 
   String rutEmi;
   String rznEmi;
@@ -64,7 +71,18 @@ class _OrganizationPageState extends State<OrganizationPage> {
             ),
             SizedBox(height: 60.0),
             Text('Bienvenido: ' + prefs.nombreGoogle,
-                style: TextStyle(fontSize: 20.0))
+                style: TextStyle(fontSize: 20.0)),
+            SizedBox(height: 20.0),
+            RaisedButton(
+                child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+                    child: Text('Cerrar sesión')),
+                color: Colors.deepPurple,
+                textColor: Colors.white,
+                onPressed: () {
+                  signOut();
+                })
           ],
         ),
       ),

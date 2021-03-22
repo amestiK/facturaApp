@@ -13,6 +13,7 @@ import 'package:factura/folder_file_saver.dart';
 import 'package:factura/providers/InfoProvider.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //import 'package:factura/widget/birthday_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,13 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _hasValidMime = false;
 
   TextEditingController _controller = new TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  signOut() async {
+    await auth.signOut();
+    Navigator.pushReplacementNamed(context, 'LoginPage');
+  }
 
   //Item ite = new Item();
   //List<Item> _ite = [];
@@ -210,6 +218,7 @@ class _SettingsPageState extends State<SettingsPage> {
   //Widget
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     var df = new DateFormat.yMMMd().format(_date);
     return Scaffold(
       appBar: AppBar(
@@ -598,6 +607,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             )),
+            RaisedButton(
+                child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 65.0, vertical: 15.0),
+                    child: Text('Cerrar sesión')),
+                color: Colors.deepPurple,
+                textColor: Colors.white,
+                onPressed: () {
+                  signOut();
+                })
           ],
         ),
       ),
