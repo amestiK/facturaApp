@@ -195,8 +195,9 @@ class _LoginPageState extends State<LoginPage> {
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return SignInButton(Buttons.Google,
-            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            onPressed: () {
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 6,
+                vertical: 15.0), onPressed: () {
           _googleSignUp();
         });
       },

@@ -117,7 +117,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
+                            width: MediaQuery.of(context).size.width / 2.2,
                             child: Text('${prefs.rutEmi = infoOrg.rut}',
                                 style: TextStyle(color: Colors.white)),
                           ),
@@ -133,7 +133,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
+                            width: MediaQuery.of(context).size.width / 2.2,
                             child: Text('${infoOrg.email}',
                                 style: TextStyle(color: Colors.white)),
                           ),
@@ -149,7 +149,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
+                            width: MediaQuery.of(context).size.width / 2.2,
                             child: Text('${prefs.dirEmi = infoOrg.direccion}',
                                 style: TextStyle(color: Colors.white)),
                           ),
@@ -166,7 +166,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
+                            width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
                                 '${prefs.giroEmi = infoOrg.glosaDescriptiva}',
                                 style: TextStyle(color: Colors.white)),
@@ -184,7 +184,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width / 2,
+                            width: MediaQuery.of(context).size.width / 2.2,
                             child: Text('${actEco == null ? '' : actEco}',
                                 style: TextStyle(color: Colors.white)),
                           ),
