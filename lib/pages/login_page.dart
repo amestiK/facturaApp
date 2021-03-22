@@ -192,18 +192,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _crearBotonGoogle() {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width * 0.84,
-      child: StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return SignInButton(Buttons.Google,
-              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-              onPressed: () {
-            _googleSignUp();
-          });
-        },
-      ),
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return SignInButton(Buttons.Google,
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 6,
+                vertical: 15.0), onPressed: () {
+          _googleSignUp();
+        });
+      },
     );
   }
 

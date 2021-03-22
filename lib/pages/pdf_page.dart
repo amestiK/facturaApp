@@ -51,8 +51,8 @@ class _HomePageState extends State<PdfPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 520),
+          Container(
+            height: MediaQuery.of(context).size.height / 5,
             child: FloatingActionButton(
               backgroundColor: Colors.purple,
               heroTag: btn2,
@@ -69,8 +69,8 @@ class _HomePageState extends State<PdfPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 32),
+          Container(
+            height: MediaQuery.of(context).size.height / 5,
             child: FloatingActionButton(
               backgroundColor: Colors.purple,
               heroTag: btn2,

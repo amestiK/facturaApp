@@ -58,8 +58,8 @@ class _BoletaPageState extends State<BoletaPage> {
     '2',
     '3',
     '+',
+    '',
     '0',
-    '.',
     '',
     '=',
   ];
@@ -225,7 +225,7 @@ class _BoletaPageState extends State<BoletaPage> {
                       Text(
                         "Descripción boleta: ${pref.descripcion}",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25.0),
+                            fontWeight: FontWeight.bold, fontSize: 20.0),
                       ),
                       isLoading
                           ? Center(
@@ -402,7 +402,7 @@ class _BoletaPageState extends State<BoletaPage> {
   void equalPressed() {
     String finalQuestion = userQuestion;
     finalQuestion = finalQuestion.replaceAll('x', '*');
-    finalQuestion = finalQuestion.replaceAll(',', '');
+    finalQuestion = finalQuestion.replaceAll('.', '');
     Parser p = Parser();
     Expression exp = p.parse(finalQuestion);
     ContextModel cm = ContextModel();

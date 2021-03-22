@@ -309,6 +309,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                   cells: [
                                     DataCell(
                                       IconButton(
+                                          alignment: Alignment.centerLeft,
                                           icon: Icon(Icons.delete),
                                           onPressed: () {
                                             print(rows.toList());
@@ -321,7 +322,7 @@ class _FacturaPageState extends State<FacturaPage> {
                                     DataCell(
                                       Container(
                                         alignment: Alignment.centerLeft,
-                                        width: 80,
+                                        width: 50,
                                         child: GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -360,7 +361,9 @@ class _FacturaPageState extends State<FacturaPage> {
                                     ),
                                     DataCell(
                                       Container(
-                                        width: 118,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                3.5,
                                         alignment: Alignment.centerRight,
                                         child: Text(f
                                             .format(montoTotalPro =
