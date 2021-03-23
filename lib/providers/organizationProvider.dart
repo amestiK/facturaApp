@@ -26,21 +26,21 @@ class OrgProvider {
     }
   }
 
-  Future<RegistryModel> cargarReg(
-      String fechaLte, String fechaGte, String tipoDte, int rutRec) async {
+  Future<RegistryModel> cargarReg(String fechaLte, String fechaGte,
+      String tipoDte, int rutRec, int page) async {
     final url = '$_url/v2/dte/document/issued';
     var data = json.encode({});
 
     if (rutRec == null) {
       data = json.encode({
-        "Page": "1",
+        "Page": page,
         "TipoDTE": {"eq": tipoDte},
         "FchEmis": {"lte": fechaLte, "gte": fechaGte},
         // "RUTRecep": {"eq": rutRec}
       });
     } else {
       data = json.encode({
-        "Page": "1",
+        "Page": page,
         "TipoDTE": {"eq": tipoDte},
         "FchEmis": {"lte": fechaLte, "gte": fechaGte},
         "RUTRecep": {"eq": rutRec}
