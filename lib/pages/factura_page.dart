@@ -90,7 +90,8 @@ class _FacturaPageState extends State<FacturaPage> {
     _progressDialog = ArsProgressDialog(context,
         blur: 2,
         backgroundColor: Color(0x33000000),
-        animationDuration: Duration(milliseconds: 500));
+        animationDuration: Duration(milliseconds: 500),
+        dismissable: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -542,13 +543,22 @@ class _FacturaPageState extends State<FacturaPage> {
                                             });
                                           });
 
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
+                                          _progressDialog.dismiss();
+
+                                          // Navigator.pushAndRemoveUntil(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) => PdfPage(
+                                          //               pdfString: pdfString,
+                                          //             )),
+                                          //     (Route<dynamic> route) => true);
+                                          Navigator.pop(context);
+                                          await Navigator.of(context)
+                                              .push(new MaterialPageRoute(
                                                   builder: (context) => PdfPage(
                                                         pdfString: pdfString,
-                                                      )),
-                                              (Route<dynamic> route) => false);
+                                                      )));
+                                          setState(() {});
                                         },
                                         child: Text('Confirmar')),
                                     FlatButton(

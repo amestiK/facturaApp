@@ -36,15 +36,15 @@ class _HomePageState extends State<PdfPage> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        leading: IconButton(
-            alignment: Alignment.centerLeft,
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                  (Route<dynamic> route) => false);
-            }),
+        // leading: IconButton(
+        //     alignment: Alignment.centerLeft,
+        //     icon: Icon(Icons.arrow_back),
+        //     onPressed: () {
+        //       Navigator.pushAndRemoveUntil(
+        //           context,
+        //           MaterialPageRoute(builder: (context) => Home()),
+        //           (Route<dynamic> route) => false);
+        //     }),
         title: Center(child: Text('PDF')),
       ), //Boton flotante
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

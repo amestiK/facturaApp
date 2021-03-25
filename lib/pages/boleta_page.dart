@@ -69,7 +69,8 @@ class _BoletaPageState extends State<BoletaPage> {
     _progressDialog = ArsProgressDialog(context,
         blur: 2,
         backgroundColor: Color(0x33000000),
-        animationDuration: Duration(milliseconds: 500));
+        animationDuration: Duration(milliseconds: 500),
+        dismissable: false);
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -268,6 +269,7 @@ class _BoletaPageState extends State<BoletaPage> {
                                               totIva, totBruto)
                                           .then(
                                               (value) => pdfString = value.pdf);
+                                      _progressDialog.dismiss();
 
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(

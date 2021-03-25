@@ -313,7 +313,8 @@ class __ListaRegistrosState extends State<_ListaRegistros> {
         _progressDialog = ArsProgressDialog(context,
             blur: 2,
             backgroundColor: Color(0x33000000),
-            animationDuration: const Duration(seconds: 1)
+            animationDuration: const Duration(seconds: 1),
+            dismissable: false
             // animationDuration: Duration(
             //   milliseconds: 1,
             );
@@ -335,6 +336,7 @@ class __ListaRegistrosState extends State<_ListaRegistros> {
 
               await orgInfo.cargarDte(codDte, folio).then((value) {
                 pdfString = value.pdf;
+                _progressDialog.dismiss();
               });
 
               Navigator.of(context).push(MaterialPageRoute(
