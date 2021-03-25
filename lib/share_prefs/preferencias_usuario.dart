@@ -203,13 +203,36 @@ class PreferenciasUsuario {
     _prefs.setString('token', value);
   }
 
-//GET Y SET de email
   get apiValid {
     return _prefs.getBool('apiValid') ?? false;
   }
 
   set apiValid(bool value) {
     _prefs.setBool('apiValid', value);
+  }
+
+  get checkBox80mm {
+    return _prefs.getBool('checkBox80mm') ?? false;
+  }
+
+  set checkBox80mm(bool value) {
+    _prefs.setBool('checkBox80mm', value);
+  }
+
+  get checkBoxLetter {
+    return _prefs.getBool('checkBoxLetter') ?? false;
+  }
+
+  set checkBoxLetter(bool value) {
+    _prefs.setBool('checkBoxLetter', value);
+  }
+
+  get formatFact {
+    return _prefs.getString('formatFact') ?? '';
+  }
+
+  set formatFact(String value) {
+    _prefs.setString('formatFact', value);
   }
 
   //GET Y SET de la ultima pagina

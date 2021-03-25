@@ -1,6 +1,7 @@
 import 'package:factura/model/pdfModel.dart';
 import 'package:factura/pages/pdf_page.dart';
 import 'package:factura/providers/InfoProvider.dart';
+import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +42,8 @@ class FacturaPage extends StatefulWidget {
 }
 
 class _FacturaPageState extends State<FacturaPage> {
+  PreferenciasUsuario prefs = new PreferenciasUsuario();
+
   ArsProgressDialog _progressDialog;
 
   PdfModel pdfModel = new PdfModel();
@@ -63,6 +66,10 @@ class _FacturaPageState extends State<FacturaPage> {
   bool descState = true;
   bool exeArrayJson = true;
   bool sameDesc = false;
+
+  String format = "";
+  bool checkBoxValue80mm = false;
+  bool checkBoxValueLetter = false;
 
   //Producto
   int montoTotalPro = 0;
@@ -207,7 +214,22 @@ class _FacturaPageState extends State<FacturaPage> {
                         });
                       }
                     }
-                    if (_formKey.currentState.validate() &&
+                    if (rows.length == 10) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text('Alerta'),
+                                content: Text(
+                                    'Solo puede agregar 10 productos por Factura.'),
+                                actions: [
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Ok'))
+                                ],
+                              ));
+                    } else if (_formKey.currentState.validate() &&
                         descState == true &&
                         sameDesc == false) {
                       addItemToList();
@@ -274,6 +296,33 @@ class _FacturaPageState extends State<FacturaPage> {
                     }
                   },
                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(
+                    value: prefs.checkBox80mm,
+                    onChanged: prefs.checkBoxLetter == true
+                        ? null
+                        : (checkBoxValue80mm) {
+                            setState(() {
+                              prefs.checkBox80mm = checkBoxValue80mm;
+                              prefs.formatFact = "80MM";
+                            });
+                          }),
+                Text('80mm', style: TextStyle(fontWeight: FontWeight.bold)),
+                Checkbox(
+                    value: prefs.checkBoxLetter,
+                    onChanged: prefs.checkBox80mm == true
+                        ? null
+                        : (checkBoxValueLetter) {
+                            setState(() {
+                              prefs.checkBoxLetter = checkBoxValueLetter;
+                              prefs.formatFact = "LETTER";
+                            });
+                          }),
+                Text('Carta', style: TextStyle(fontWeight: FontWeight.bold))
               ],
             ),
             Expanded(
@@ -464,13 +513,29 @@ class _FacturaPageState extends State<FacturaPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(200.0)),
                     onPressed: () {
-                      if (rows.length != 0) {
+                      if (prefs.checkBox80mm == false &&
+                          prefs.checkBoxLetter == false) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('Alerta'),
+                                  content: Text(
+                                      'Debe seleccionar un formato para el despliegue de la factura.'),
+                                  actions: [
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Ok'))
+                                  ],
+                                ));
+                      } else if (rows.length != 0) {
                         showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: Text('Confirmación'),
                                   content: Text(
-                                      '¿Estás seguro que deseas emitir esta factura?'),
+                                      '¿Estás seguro que deseas emitir esta factura por el total de ${rows.fold(0, (prev, el) => prev + (el.totalAmount + (el.totalAmount * 0.19)).round())}?'),
                                   actions: [
                                     FlatButton(
                                         onPressed: () async {
@@ -518,6 +583,7 @@ class _FacturaPageState extends State<FacturaPage> {
 
                                           await info
                                               .postInfo(
+                                                  prefs.formatFact,
                                                   widget.rutEmi,
                                                   widget.rznEmi,
                                                   widget.giroEmi,

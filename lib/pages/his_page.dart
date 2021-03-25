@@ -16,6 +16,12 @@ class HisPage extends StatefulWidget {
 }
 
 class _HisPageState extends State<HisPage> {
+  int page = 1;
+  int lastPage = 0;
+
+  bool _isButtonDisabledLeft = true;
+  bool _isButtonDisabledRight = false;
+
   PreferenciasUsuario prefs = PreferenciasUsuario();
   OrgProvider orgInfo = OrgProvider();
 
@@ -248,6 +254,10 @@ class _HisPageState extends State<HisPage> {
                         onPressed: () {
                           setState(() {
                             desplegar = true;
+                            page = 1;
+                            lastPage = 0;
+                            _isButtonDisabledLeft = true;
+                            _isButtonDisabledRight = false;
                           });
                         })
                   ],
@@ -263,19 +273,60 @@ class _HisPageState extends State<HisPage> {
                   tipoDteVal,
                   rutt.text == "" || rutt.text == null
                       ? null
-                      : int.parse(rutt.text))
+                      : int.parse(rutt.text),
+                  page),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  icon: Icon(Icons.arrow_left),
+                  onPressed: _isButtonDisabledLeft == true
+                      ? null
+                      : () {
+                          setState(() {
+                            page = page - 1;
+                          });
+
+                          if (page == 1) {
+                            setState(() {
+                              _isButtonDisabledLeft = true;
+                              _isButtonDisabledRight = false;
+                            });
+                          }
+                        }),
+              Text('$page - ${lastPage == 0 ? '...' : lastPage}'),
+              IconButton(
+                  icon: Icon(Icons.arrow_right),
+                  onPressed: _isButtonDisabledRight == true
+                      ? null
+                      : () {
+                          setState(() {
+                            page = page + 1;
+                          });
+
+                          if (page == lastPage) {
+                            _isButtonDisabledRight = true;
+                            _isButtonDisabledLeft = false;
+                          } else {
+                            setState(() {
+                              _isButtonDisabledLeft = false;
+                            });
+                          }
+                        })
+            ],
+          )
         ],
       ),
     );
   }
 
-  Widget returnInfo(
-      DateTime fechaDesde, DateTime fechaHasta, String tipoDte, int rutRec) {
+  Widget returnInfo(DateTime fechaDesde, DateTime fechaHasta, String tipoDte,
+      int rutRec, int page) {
     return Expanded(
       flex: 4,
       child: FutureBuilder(
         future: orgInfo.cargarReg(formatter.format(_dateTime2),
-            formatter.format(_dateTime1), tipoDte, rutRec),
+            formatter.format(_dateTime1), tipoDte, rutRec, page),
         builder: (BuildContext context, AsyncSnapshot<RegistryModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -284,6 +335,7 @@ class _HisPageState extends State<HisPage> {
                 child: Text(
                     'No se encontraron datos de los DTE, inténtalo mas tarde'));
           } else {
+            lastPage = snapshot.data.lastPage;
             return _ListaRegistros(snapshot.data.data);
           }
         },
