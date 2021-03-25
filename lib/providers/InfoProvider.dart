@@ -98,15 +98,8 @@ class InfoProvider {
     }
   }
 
-  // "RUTEmisor": "76430498-5",
-  //           "RznSoc": "HOSTY SPA",
-  //           "GiroEmis": "EMPRESAS DE SERVICIOS INTEGRALES DE INFORMÁTICA",
-  //           "Acteco": "620200",
-  //           "DirOrigen": "ARTURO PRAT 527 3 pis OF 1",
-  //           "CmnaOrigen": "Curicó",
-  //           "CdgSIISucur": "79457965"
-
   Future<PdfModel> postInfo(
+      String format,
       String rutEmi,
       String rznEmi,
       String giroEmi,
@@ -132,7 +125,7 @@ class InfoProvider {
     var formatter = new DateFormat('yyyy-MM-dd');
 
     var data = json.encode({
-      "response": ["PDF", "FOLIO", "80MM"],
+      "response": ["PDF", "FOLIO", format],
       "dte": {
         "Encabezado": {
           "IdDoc": {

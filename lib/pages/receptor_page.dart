@@ -166,7 +166,7 @@ class _ReceptorPageState extends State<ReceptorPage> {
                   ),
                 )),
             Expanded(
-                flex: 3,
+                flex: 4,
                 child: desplegar == false ? Text('') : _crearListado(rutt.text))
           ],
         ));
