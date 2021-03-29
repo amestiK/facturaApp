@@ -396,7 +396,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 decoration: InputDecoration(
                     labelText: 'Rut',
                     helperText: 'Ingrese su Rut',
-                    hintText: '15698232-0'),
+                    hintText: '15698232-0',
+                    counterText: ''),
                 maxLength: 10,
                 onChanged: (value) {
                   if (_formKey.currentState.validate()) {
@@ -445,7 +446,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 )),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
+              child: TextFormField(
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
                         RegExp('[a-z A-Z á-ú Á-Ú]'))
@@ -457,7 +458,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       helperText: 'Ingrese una descripción',
                       hintText: 'Venta de alcohol'),
                   onChanged: (value) {
-                    prefs.descripcion = value;
+                    if (value.length <= 15) {
+                      prefs.descripcion = value;
+                    } else {
+                      prefs.descripcion = value.substring(0, 15);
+                    }
                   }),
             ),
             Center(
