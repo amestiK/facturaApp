@@ -70,8 +70,14 @@ class _OrganizationPageState extends State<OrganizationPage> {
               ],
             ),
             SizedBox(height: 60.0),
-            Text('Bienvenido: ' + prefs.nombreGoogle,
-                style: TextStyle(fontSize: 20.0)),
+            Container(
+              width: MediaQuery.of(context).size.width - 50,
+              child: Center(
+                child: Text(
+                    'Bienvenido: ${prefs.nombreGoogle == null || prefs.nombreGoogle == '' ? prefs.nombre : prefs.nombreGoogle}',
+                    style: TextStyle(fontSize: 20.0)),
+              ),
+            ),
             SizedBox(height: 20.0),
             RaisedButton(
                 child: Container(
@@ -121,7 +127,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
                                 padding: EdgeInsets.fromLTRB(0, 8, 0, 20),
                                 width: MediaQuery.of(context).size.width - 8,
                                 child: Text(
-                                  'Bienvenido ${prefs.rznEmi = infoOrg.razonSocial}',
+                                  'Bienvenido ${prefs.rznEmi = infoOrg.razonSocial == null ? '' : infoOrg.razonSocial}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                   textAlign: TextAlign.center,
@@ -136,13 +142,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${prefs.rutEmi = infoOrg.rut}',
+                            child: Text(
+                                '${prefs.rutEmi = infoOrg.rut == null ? '' : infoOrg.rut}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.nombreFantasia}',
+                            child: Text(
+                                '${infoOrg.nombreFantasia == null ? '' : infoOrg.nombreFantasia}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -152,13 +160,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.email}',
+                            child: Text(
+                                '${infoOrg.email == null ? '' : infoOrg.email}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${infoOrg.telefono}',
+                            child: Text(
+                                '${infoOrg.telefono == null ? '' : infoOrg.telefono}',
                                 style: TextStyle(color: Colors.white)),
                           )
                         ],
@@ -168,14 +178,15 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
-                            child: Text('${prefs.dirEmi = infoOrg.direccion}',
+                            child: Text(
+                                '${prefs.dirEmi = infoOrg.direccion == null ? '' : infoOrg.direccion}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                'Codigo Sucursal: ${prefs.codEmi = infoOrg.cdgSiiSucur}',
+                                'Codigo Sucursal: ${prefs.codEmi = infoOrg.cdgSiiSucur == null ? '' : infoOrg.cdgSiiSucur}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],
@@ -186,14 +197,14 @@ class _OrganizationPageState extends State<OrganizationPage> {
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                '${prefs.giroEmi = infoOrg.glosaDescriptiva}',
+                                '${prefs.giroEmi = infoOrg.glosaDescriptiva == null ? '' : infoOrg.glosaDescriptiva}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                           Container(
                             padding: EdgeInsets.all(8),
                             width: MediaQuery.of(context).size.width / 2.2,
                             child: Text(
-                                '${prefs.cmaEmi = infoOrg.direccionRegional}',
+                                '${prefs.cmaEmi = infoOrg.direccionRegional == null ? '' : infoOrg.direccionRegional}',
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],

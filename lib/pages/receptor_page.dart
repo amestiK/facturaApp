@@ -205,9 +205,19 @@ class _ReceptorPageState extends State<ReceptorPage> {
           razSocRec = info.razonSocial == null
               ? info.razonSocial = ""
               : info.razonSocial.replaceAll(" ", "");
-          giroRec = giro == null
-              ? giro = ""
-              : giro.replaceAll(" ", "").substring(0, 36);
+
+          if (giro == null) {
+            giroRec = giro = "";
+          } else if (giro.length < 36) {
+            giroRec = giro = giro;
+          } else {
+            giroRec = giro = giro.replaceAll(" ", "").substring(0, 36);
+          }
+
+          // giroRec = giro == null
+          //     ? giro = ""
+          //     : giro.replaceAll(" ", "").substring(0, 36);
+
           dirRec = info.direccion == null
               ? info.direccion = ""
               : info.direccion.replaceAll(" ", "");
