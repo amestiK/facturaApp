@@ -56,13 +56,12 @@ class InfoProvider {
             "IndServicio": "3"
           },
           "Emisor": {
-            "RUTEmisor": "76795561-8",
-            "RznSocEmisor": "HAULMERSPA",
-            "GiroEmisor":
-                "VENTA AL POR MENOR EN EMPRESAS DE VENTA A DISTANCIA VÍA INTERNET",
-            "CdgSIISucur": "81303347",
-            "DirOrigen": "ARTURO PRAT 527 CURICO",
-            "CmnaOrigen": "Curicó"
+            "RUTEmisor": prefs.rutEmi,
+            "RznSocEmisor": prefs.rznEmi,
+            "GiroEmisor": prefs.giroEmi,
+            "CdgSIISucur": prefs.codEmi,
+            "DirOrigen": prefs.dirEmi,
+            "CmnaOrigen": prefs.cmaEmi
           },
           "Receptor": {"RUTRecep": "66666666-6"},
           "Totales": {
