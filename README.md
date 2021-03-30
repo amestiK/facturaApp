@@ -37,3 +37,21 @@ Librerías
 -path_provider: Un complemento de Flutter para encontrar ubicaciones de uso común en el sistema de archivos. Soporta iOS, Android, Linux y MacOS. No todos los métodos son compatibles con todas las plataformas
 
 -io: Permite crear archivos, designar sus rutas para el almacenamiento y desplegarlos. En este proyecto se utilizaron para almacenar y desplegar el pdf.
+
+-share_preferences: plugin que nos permite guardar datos en la data del celular, estos datos se borraran al momento de actualizar la app o borrar el cache. Funciona tanto en Android como en iOS
+
+-ImagePicker: plugin que nos permite seleccionar imagenes de la galeria o tomar fotos con la camara del celular. Funciona tanto en Android como en iOS
+
+-filePicker: puglin que nos permite seleccionar archivos del celular. Funciona tanto en Android como en iOS
+
+-google_sign_in: puglin que permite crear un login con google. Funciona tanto en Android como en iOS
+
+-firebase_core: puglin que nos permite hacer una conexión con la api de Firebase. Funciona tanto en Android como en iOS
+
+-firebase_auth: puglin que permite hacer un login con la api de Firebase. Funciona tanto en Android como en iOS
+
+-flutter_signin_button: puglin que nos permite crear botones con el diseño de los tipos de login mas conocidos (Google, Twitter, Facebook, etc.). Funciona tanto en Android como en iOS
+
+
+
+
