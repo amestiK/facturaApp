@@ -1,4 +1,10 @@
-# factura
+# FacturaApp
+Preview de FacturaApp
+
+![Gif1](https://user-images.githubusercontent.com/77164627/113045660-7aa88e00-9175-11eb-836b-a92639eb1160.gif)
+
+![Gift2](https://user-images.githubusercontent.com/77164627/113047949-569a7c00-9178-11eb-811c-7e3224947929.gif)
+
 
 Factura app es una aplicación que permite realizar la emision de documentos electronicos a traves de un entorno mobile para iOS/Android. Sus funcionalidades integran el consumo de Open Factura por medio de sus Apis.
 
