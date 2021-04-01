@@ -8,13 +8,11 @@ class LoginBloc with Validators {
   final _passwordController = BehaviorSubject<String>();
 
   // Recuperar los datos del Stream
-  Stream<String> get emailStream =>
-      _emailController.stream.transform(validarEmail);
-  Stream<String> get passwordStream =>
-      _passwordController.stream.transform(validarPassword);
+  get emailStream => _emailController.stream.transform(validarEmail);
+  get passwordStream => _passwordController.stream.transform(validarPassword);
 
-  Stream<bool> get formValidStream =>
-      Observable.combineLatest2(emailStream, passwordStream, (e, p) => true);
+  get formValidStream =>
+      Rx.combineLatest2(emailStream, passwordStream, (e, p) => true);
 
   // Insertar valores al Stream
   Function(String) get changeEmail => _emailController.sink.add;

@@ -3,15 +3,13 @@ import 'package:factura/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:printing/printing.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
+// import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
-/// prueba de atualización de archivo
-///
 class PdfPage extends StatefulWidget {
   final String pdfString;
 
@@ -27,7 +25,7 @@ class _HomePageState extends State<PdfPage> {
   String btn2;
   // PDF
   bool _isLoading = true;
-  PDFDocument document;
+  // PDFDocument document;
   final DateFormat formatter = DateFormat('ddMMyyyyHHmmss');
 
   @override
@@ -64,6 +62,16 @@ class _HomePageState extends State<PdfPage> {
 
                 var printPdf = await writePDF(widget.pdfString);
 
+                var info = await Printing.info();
+
+                // final printers = await Printing.listPrinters();
+
+                print(info);
+
+                // await Printing.directPrintPdf(
+                //     printer: printers.first,
+                //     onLayout: (_) => printPdf.readAsBytesSync());
+
                 await Printing.layoutPdf(
                     onLayout: (_) => printPdf.readAsBytesSync());
               },
@@ -99,15 +107,15 @@ class _HomePageState extends State<PdfPage> {
                 icon: Icon(Icons.picture_as_pdf), label: 'Mostrar PDF creado')
           ],
         ),*/
-      body: Column(
-        children: [
-          Expanded(
-              flex: 6,
-              child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : PDFViewer(document: document)),
-        ],
-      ),
+      // body: Column(
+      //   children: [
+      //     Expanded(
+      //         flex: 6,
+      //         child: _isLoading
+      //             ? Center(child: CircularProgressIndicator())
+      //             : PDFViewer(document: document)),
+      //   ],
+      // ),
     );
   }
 
@@ -122,7 +130,7 @@ class _HomePageState extends State<PdfPage> {
     final filename = "default.pdf";
     File file = new File('$dir/$filename');
     debugPrint(file.path);
-    document = await PDFDocument.fromFile(await writePDF(pdfString));
+    // document = await PDFDocument.fromFile(await writePDF(pdfString));
 
     setState(() => _isLoading = false);
   }
@@ -142,7 +150,7 @@ class _HomePageState extends State<PdfPage> {
       writePDF(widget.pdfString);
       await loadDocument(widget.pdfString);
     } else {
-      document = await PDFDocument.fromFile(await writePDF(widget.pdfString));
+      // document = await PDFDocument.fromFile(await writePDF(widget.pdfString));
     }
     setState(() => _isLoading = false);
   }

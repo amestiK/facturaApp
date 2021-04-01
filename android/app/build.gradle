@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
    android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,8 +46,8 @@ if (keystorePropertiesFile.exists()) {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.kis.facturaapp"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 28
         multiDexEnabled true
         versionCode 2 //Cada vez que se realice un cambio debe ser distinto 1 - 10000000000 no hay limite
         versionName "1.1.0" //Primer dato version mayor , segundo dato actualizacion de una version, tercero correccion de errores

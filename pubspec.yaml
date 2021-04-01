@@ -26,8 +26,8 @@ dependencies:
   http:
   dart_rut_validator: ^1.1.0
   intl: ^0.16.1
-  rxdart: ^0.21.0
-  flutter_plugin_pdf_viewer: ^1.0.7
+  rxdart: ^0.23.0
+  # flutter_plugin_pdf_viewer: ^1.0.7
   path_provider:
   shared_preferences: ^0.5.12+4
   image_picker: ^0.6.7+22
@@ -43,6 +43,9 @@ dependencies:
   firebase_auth: ^0.20.1
   provider: ^4.3.3
   flutter_signin_button: ^1.1.0
+
+  esc_pos_bluetooth: ^0.2.8
+  flutter_bluetooth_basic: ^0.1.5
 
   # dart.io
   io: ^0.3.4

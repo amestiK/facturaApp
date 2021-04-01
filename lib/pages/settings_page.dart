@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:factura/Constantsset.dart';
+import 'package:factura/pages/print.dart';
 import 'package:factura/providers/organizationProvider.dart';
 import 'package:factura/share_prefs/preferencias_usuario.dart';
 import 'package:dio/dio.dart';
@@ -236,6 +237,43 @@ class _SettingsPageState extends State<SettingsPage> {
               }).toList();
             },
           )
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 5,
+            child: FloatingActionButton(
+              backgroundColor: Colors.purple,
+              child: Icon(Icons.print),
+              onPressed: () async {
+                final List<Map<String, dynamic>> data = [
+                  {
+                    'title': 'Produk 1',
+                    'price': 10000,
+                    'qty': 2,
+                    'total_price': 20000,
+                  },
+                  {
+                    'title': 'Produk 2',
+                    'price': 20000,
+                    'qty': 2,
+                    'total_price': 40000,
+                  },
+                  {
+                    'title': 'Produk 3',
+                    'price': 12000,
+                    'qty': 1,
+                    'total_price': 12000,
+                  },
+                ];
+
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => Print(data)));
+              },
+            ),
+          ),
         ],
       ),
       body: Form(
