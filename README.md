@@ -52,6 +52,22 @@ Librerías
 
 -flutter_signin_button: puglin que nos permite crear botones con el diseño de los tipos de login mas conocidos (Google, Twitter, Facebook, etc.). Funciona tanto en Android como en iOS
 
+-dio: puglin que nos da soporte para realizar conexiones http, configuraciones globales, etc. Funciona tanto en Android como en iOS
 
+-flutter_flavor: puglin que nos permite crear los distintos flavors en la app, es decir tener una para debug otra, de desarrollo y producción. Funciona tanto en Android como en iOS
+ 
+-printing: puglin que permite a la app de flutter generar una impresion en cualquier dispositivo. Funciona tanto en Android como en iOS
+
+-provider: puglin que permite hacer un uso mas facil de los InheritedWidget. Funciona tanto en Android como en iOS
+
+-io: puglin para poder crear conexiones a archivos, formato de codigo, etc. Funciona tanto en Android como en iOS
+
+-math_expressions: puglin para parsiar y evaluar expresiones matematicas. Funciona tanto en Android como en iOS
+
+-esys_flutter_share: puglin para compartir imagenes, texto, etc. Con otras aplicaciones. Funciona tanto en Android como en iOS
+
+-ars_progress_dialog: puglin que genera un popup animado y un progressDialog con un estilo nativo. Funciona tanto en Android como en iOS
+
+-random_string: puglin que generar numeros random, segun el tipo que se necesite. Funciona tanto en Android como en iOS
 
 
